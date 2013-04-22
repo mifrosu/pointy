@@ -1,0 +1,57 @@
+#!/usr/bin/env pinpoint
+# comments with a hash
+# global settings before first slide
+
+[images/adelie_penguin.jpeg]
+[fill]
+[font=Sans 50px]
+[duration=5.000000]
+
+--[fill]
+A new slide
+
+--[images/molly.jpeg][fill]
+A slide with a specific background
+
+--[font=monospace 18px][shading-opacity=1.0]
+Here we have changed font, and set opacity.
+
+--[text-align=center]
+We can align text
+
+--[video.ogv][fill]
+Videos may form the background
+
+--[text-align=right][bottom-left]
+We can control
+text alignment
+and position
+
+--[white][text-color=blue][no-markup]
+A simple slide
+
+--[top-left]
+Text positions:
+
+[top-left] [top] [top-right]
+[left] [center] [right]
+[bottom-left] [bottom] [bottom-right]
+
+[center] is default
+
+--[transition=sheet][top-left]
+Transitions:
+
+text-side-up
+swing
+sheet
+slide-left
+slide-up
+slide-down
+slide-in-left
+
+--[command=killall xeyes; xeyes]
+
+Enter - run the command
+Tab - edit the command
+
