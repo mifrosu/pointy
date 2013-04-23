@@ -1,5 +1,8 @@
 #include "slide_list_model.h"
 #include "slide_data.h"
+#include <QtCore/QtCore>
+#include <QMessageLogger>
+
 
 namespace pointy {
 /**
@@ -24,6 +27,27 @@ const int SlideListModel::SlideText = Qt::UserRole + 15;
 int SlideListModel::rowCount(const QModelIndex /*&parent*/) const
 {
     return slideList.size();
+}
+
+void SlideListModel::readSlideFile(const QString fileName)
+{
+    haveCustomSettings = false;
+    defaultSettings = SlideData();
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly)) {
+        qFatal("Slide file can not be read");
+        //return 1;
+    }
+
+    QTextStream in(&file);
+    while (!in.atEnd())
+    {
+
+    }
+
+
+
+
 }
 
 QVariant SlideListModel::data(const QModelIndex &index, int role) const
@@ -74,4 +98,22 @@ QVariant SlideListModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 }
+
+QString stripComments(const QString& lineIn, const QString comment)
+{
+    int commentIndex = lineIn.indexOf(comment);
+    qDebug() << "Comment Index: " << commentIndex;
+    if (commentIndex == -1) {
+        // no comment in line
+        return lineIn;
+    }
+    else if (commentIndex == 0) {
+        // comment at start of line
+        return QString();
+    }
+    else {
+        return lineIn.left(commentIndex);
+    }
+}
+
 }

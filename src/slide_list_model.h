@@ -2,6 +2,7 @@
 #define SLIDE_LIST_MODEL_H
 
 #include <QAbstractListModel>
+#include "slide_data.h"
 #include <qvariant.h>
 //#include <qscopedpointer.h>
 #include <qsharedpointer.h>
@@ -19,24 +20,18 @@ public:
     SlideListModel(QObject* parent=0);
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex = QModelIndex()) const;
-    void readSlideFile(QString fileName);
+    void readSlideFile(const QString fileName);
 
 private:
     Q_DISABLE_COPY(SlideListModel)
-    QList<QSharedPointer<SlideData> > slideList;
+
     //SlideData newSlide();
     //void appendSlide(SlideData currentSlide);
 
-    // can we use enums here?
-    /**
-     * try swapping for
-     * enum SlideSettings
-     *{
-     *   StageColorRole = Qt::UserRole
-     *   ...
-     *};
-     *
-     **/
+    QList<QSharedPointer<SlideData> > slideList;
+    bool haveCustomSettings;
+    SlideData defaultSettings;
+
     enum SlideRoles {
         StageColorRole = Qt::UserRole + 1,
         FontRole,
@@ -57,6 +52,7 @@ private:
         SlideMediaRole
     };
 
+
     /**
     static const int StageColorRole;		// transition tint
     static const int Font;
@@ -76,6 +72,8 @@ private:
     static const int SlideText;
 **/
 };
+
+QString stripComments(const QString& lineIn, const QString comment="#");
 
 
 

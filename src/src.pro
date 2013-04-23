@@ -12,3 +12,5 @@ HEADERS += \
     slide_list_model.h
 
 QT += core
+
+
