@@ -1,11 +1,14 @@
 
 
 HEADERS += slide_list_model.h \
-           slide_data.h
+           slide_data.h \
+    pointy_text_parse_tests.h
 
-SOURCES += pointy_tests.cpp \
+SOURCES += \
       ../src/slide_list_model.cpp \
-      ../src/slide_data.cpp
+      ../src/slide_data.cpp \
+    main.cpp \
+    pointy_text_parse_tests.cpp
 
 INCLUDEPATH += ../src/
 
@@ -15,3 +18,6 @@ INCLUDEPATH += ../src/
 QT += testlib
 
 CONFIG += debug
+
+RESOURCES += \
+    test_resources.qrc

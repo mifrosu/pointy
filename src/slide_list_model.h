@@ -6,6 +6,8 @@
 #include <qvariant.h>
 //#include <qscopedpointer.h>
 #include <qsharedpointer.h>
+#include <qmap.h>
+#include <qstring.h>
 
 
 namespace pointy {
@@ -30,7 +32,6 @@ private:
 
     QList<QSharedPointer<SlideData> > slideList;
     bool haveCustomSettings;
-    SlideData defaultSettings;
 
     enum SlideRoles {
         StageColorRole = Qt::UserRole + 1,
@@ -51,6 +52,9 @@ private:
         SlideTextRole,
         SlideMediaRole
     };
+
+    QMap<SlideRoles, QString> defaultSettings;
+    QMap<SlideRoles, QString> currentSlideSettings;
 
 
     /**
@@ -73,7 +77,7 @@ private:
 **/
 };
 
-QString stripComments(const QString& lineIn, const QString comment="#");
+QByteArray stripComments(const QByteArray lineIn, const QString comment="#");
 
 
 

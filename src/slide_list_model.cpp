@@ -32,23 +32,59 @@ int SlideListModel::rowCount(const QModelIndex /*&parent*/) const
 void SlideListModel::readSlideFile(const QString fileName)
 {
     haveCustomSettings = false;
-    defaultSettings = SlideData();
+
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly)) {
         qFatal("Slide file can not be read");
         //return 1;
     }
 
-    QTextStream in(&file);
-    while (!in.atEnd())
-    {
+    while (!file.atEnd()) {
+        QByteArray line = file.readLine();
+        line = stripComments(line, "#");
+        if (line.startsWith("[") && haveCustomSettings == false) {
 
+        }
+        if (line.startsWith("--") && haveCustomSettings == false) {
+            haveCustomSettings = true;
+            // apply currentSettings map to default slide (with function)
+
+            // makeSlide function --- process map
+            // ... clear map
+            // ... new map = copy of default map
+        }
+        else {
+            // slide body -- add to current map
+        }
     }
 
 
 
-
 }
+
+QByteArray stripComments(QByteArray lineIn, const QString comment)
+{
+    //lineIn.replace(QByteArray("\\"),QByteArray("\\\\"));
+    int commentIndex = lineIn.indexOf(comment);
+    if (commentIndex == -1) {
+        // no comment in line
+        return lineIn;
+    }
+    else if (commentIndex == 0) {
+        // comment at start of line
+        return QByteArray();
+    }
+    else if (lineIn[commentIndex-1] == '\\'){
+        // recursively check for escaped comments and actual comments
+        QByteArray remains = stripComments(lineIn.mid(commentIndex + 1),
+                                           comment);
+        return (lineIn.left(commentIndex + 1)).append(remains);
+    }
+    else {
+        return QByteArray(lineIn.left(commentIndex));
+    }
+}
+
 
 QVariant SlideListModel::data(const QModelIndex &index, int role) const
 {
@@ -99,21 +135,5 @@ QVariant SlideListModel::data(const QModelIndex &index, int role) const
     }
 }
 
-QString stripComments(const QString& lineIn, const QString comment)
-{
-    int commentIndex = lineIn.indexOf(comment);
-    qDebug() << "Comment Index: " << commentIndex;
-    if (commentIndex == -1) {
-        // no comment in line
-        return lineIn;
-    }
-    else if (commentIndex == 0) {
-        // comment at start of line
-        return QString();
-    }
-    else {
-        return lineIn.left(commentIndex);
-    }
-}
 
 }
