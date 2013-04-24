@@ -70,6 +70,89 @@ void TestTextParser::stripCommentsFile()
     QCOMPARE(outStr, QByteArray("Hello \\#and \\#and "));
 }
 
+void TestTextParser::stripCommentsEscapedOutofRange()
+{
+    QByteArray testStr = "Hello \\# and \\#";
+    QByteArray outStr = pointy::stripComments(testStr);
+    QCOMPARE(outStr, QByteArray("Hello \\# and \\#"));
+}
+
+void TestTextParser::stripSquareBracketsNoBrackets()
+{
+    QStringList store;
+    QByteArray lineIn("no brackets here");
+    pointy::stripSquareBrackets(lineIn, store, lineCount);
+    QCOMPARE(store, QStringList());
+}
+
+void TestTextParser::stripSquareBracketsOneSetting()
+{
+    QStringList store;
+    QByteArray lineIn("[one bracket here]");
+    pointy::stripSquareBrackets(lineIn, store, lineCount);
+    QCOMPARE(store, QStringList("one bracket here"));
+}
+
+void TestTextParser::stripSquareBracketsTwoSettings()
+{
+    QStringList store;
+    QStringList expectedStore;
+    expectedStore.append("first setting");
+    expectedStore.append("second setting");
+    QByteArray lineIn("[first setting][second setting]");
+    pointy::stripSquareBrackets(lineIn, store, lineCount);
+    QCOMPARE(store, expectedStore);
+}
+
+void TestTextParser::stripSquareBracketsThreeSettings()
+{
+    QStringList store;
+    QStringList expectedStore;
+    expectedStore.append("first setting");
+    expectedStore.append("second setting");
+    expectedStore.append("third setting");
+    QByteArray lineIn("[first setting][second setting][third setting]");
+    pointy::stripSquareBrackets(lineIn, store, lineCount);
+    QCOMPARE(store, expectedStore);
+}
+
+void TestTextParser::stripSquareBracketsSettingsWithJunk()
+{
+    QStringList store;
+    QStringList expectedStore;
+    expectedStore.append("first setting");
+    expectedStore.append("second setting");
+    expectedStore.append("third setting");
+    QByteArray lineIn("[first setting]junk[second setting]meh[third setting]");
+    pointy::stripSquareBrackets(lineIn, store, lineCount);
+    QCOMPARE(store, expectedStore);
+}
+
+void TestTextParser::stripSquareBracketsMalformedStart()
+{
+    QStringList store;
+    QStringList expectedStore;
+    lineCount = 1;
+    expectedStore.append("first setting");
+    expectedStore.append("second setting");
+    expectedStore.append("third setting");
+    QByteArray lineIn("first setting]junk[second setting]meh[third setting]");
+    pointy::stripSquareBrackets(lineIn, store, lineCount);
+    QCOMPARE(store, QStringList());
+}
+
+void TestTextParser::stripSquareBracketsMalformedEnd()
+{
+    QStringList store;
+    QStringList expectedStore;
+    lineCount = 1;
+    expectedStore.append("first setting");
+    expectedStore.append("second setting");
+    expectedStore.append("third setting");
+    QByteArray lineIn("[first settingjunk[second setting]meh[third setting]");
+    pointy::stripSquareBrackets(lineIn, store, lineCount);
+    QCOMPARE(store, QStringList());
+}
 
 /**
 class TestQString: public QObject

@@ -6,6 +6,8 @@
 class TestTextParser: public QObject
 {
     Q_OBJECT
+
+    int lineCount;
 private slots:
     void stripCommentsMiddle();
     void stripCommentsStart();
@@ -13,6 +15,19 @@ private slots:
     void stripCommentsMultiComment();
     void stripCommentsEscaped();
     void stripCommentsFile();
+    void stripCommentsEscapedOutofRange();
+
+    // malformed 1: one ]
+    // malformed 2: one [
+    void stripSquareBracketsNoBrackets();
+    void stripSquareBracketsOneSetting();
+    void stripSquareBracketsTwoSettings();
+    void stripSquareBracketsThreeSettings();
+    void stripSquareBracketsSettingsWithJunk();
+    void stripSquareBracketsMalformedStart();
+    void stripSquareBracketsMalformedEnd();
+
+    
 };
 
 

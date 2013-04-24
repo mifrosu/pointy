@@ -8,58 +8,25 @@ namespace pointy {
 /**
 // define custom data roles starting with Qt::UserRole
 const int SlideListModel::StageColorRole = Qt::UserRole + 1;
-const int SlideListModel::Font = Qt::UserRole + 2;
-const int SlideListModel::NotesFont = Qt::UserRole + 3;
-const int SlideListModel::NotesFontSize = Qt::UserRole + 4;
-const int SlideListModel::TextColor = Qt::UserRole + 5;
-const int SlideListModel::TextAlign = Qt::UserRole + 6;
-const int SlideListModel::ShadingColor = Qt::UserRole + 7;
-const int SlideListModel::Duration = Qt::UserRole + 8;
-const int SlideListModel::Command = Qt::UserRole + 9;
-const int SlideListModel::Transition = Qt::UserRole + 10;
-const int SlideListModel::CameraFrameRate = Qt::UserRole + 11;
-const int SlideListModel::BackgroundScale = Qt::UserRole + 12;
-const int SlideListModel::Position = Qt::UserRole + 13;
-const int SlideListModel::UseMarkup = Qt::UserRole + 14;
-const int SlideListModel::SlideText = Qt::UserRole + 15;
+const int SlideListModel::FontRole = Qt::UserRole + 2;
+const int SlideListModel::NotesFontRole = Qt::UserRole + 3;
+const int SlideListModel::NotesFontSizeRole = Qt::UserRole + 4;
+const int SlideListModel::TextColorRole = Qt::UserRole + 5;
+const int SlideListModel::TextAlignRole = Qt::UserRole + 6;
+const int SlideListModel::ShadingColorRole = Qt::UserRole + 7;
+const int SlideListModel::DurationRole = Qt::UserRole + 8;
+const int SlideListModel::CommandRole = Qt::UserRole + 9;
+const int SlideListModel::TransitionRole = Qt::UserRole + 10;
+const int SlideListModel::CameraFrameRateRole = Qt::UserRole + 11;
+const int SlideListModel::BackgroundScaleRole = Qt::UserRole + 12;
+const int SlideListModel::PositionRole = Qt::UserRole + 13;
+const int SlideListModel::UseMarkupRole = Qt::UserRole + 14;
+const int SlideListModel::SlideTextRole = Qt::UserRole + 15;
 **/
 
 int SlideListModel::rowCount(const QModelIndex /*&parent*/) const
 {
     return slideList.size();
-}
-
-void SlideListModel::readSlideFile(const QString fileName)
-{
-    haveCustomSettings = false;
-
-    QFile file(fileName);
-    if (!file.open(QIODevice::ReadOnly)) {
-        qFatal("Slide file can not be read");
-        //return 1;
-    }
-
-    while (!file.atEnd()) {
-        QByteArray line = file.readLine();
-        line = stripComments(line, "#");
-        if (line.startsWith("[") && haveCustomSettings == false) {
-
-        }
-        if (line.startsWith("--") && haveCustomSettings == false) {
-            haveCustomSettings = true;
-            // apply currentSettings map to default slide (with function)
-
-            // makeSlide function --- process map
-            // ... clear map
-            // ... new map = copy of default map
-        }
-        else {
-            // slide body -- add to current map
-        }
-    }
-
-
-
 }
 
 QByteArray stripComments(QByteArray lineIn, const QString comment)
@@ -74,16 +41,96 @@ QByteArray stripComments(QByteArray lineIn, const QString comment)
         // comment at start of line
         return QByteArray();
     }
-    else if (lineIn[commentIndex-1] == '\\'){
+    else if (lineIn.at(commentIndex-1) == '\\'){
         // recursively check for escaped comments and actual comments
-        QByteArray remains = stripComments(lineIn.mid(commentIndex + 1),
-                                           comment);
+        QByteArray remains = stripComments(lineIn.mid(commentIndex + 1));
         return (lineIn.left(commentIndex + 1)).append(remains);
     }
     else {
         return QByteArray(lineIn.left(commentIndex));
     }
 }
+
+void stripSquareBrackets(const QByteArray &lineIn, QStringList& store,
+                         int& lineCount)
+{
+    int numberStartBracket = lineIn.count("[");
+    int numberEndBracket = lineIn.count("]");
+    if (numberStartBracket != numberEndBracket)
+    {
+        qWarning("Line %d: incomplete brackets", lineCount);
+        return;
+    }
+    int startBracket = lineIn.indexOf("[");
+    if (startBracket < 0) {
+        return;
+    }
+
+    int endBracket = lineIn.indexOf("]");
+    if (endBracket < startBracket) {
+        qWarning("Line %d: mismatched brackets", lineCount);
+        return;
+    }
+    QByteArray remains = lineIn.mid(endBracket + 1);
+    store.append(lineIn.mid(startBracket + 1, endBracket-(startBracket+1)));
+    // recursive search for additional settings on the line
+    stripSquareBrackets(remains, store, lineCount);
+}
+
+//void setSlideSettingsMap(const QByteArray line, bool& isNewSlideShow,
+//                         QMap<QString, QString>& slideSettings)
+//{
+//    if (line.startsWith("[") && isNewSlideShow == true)
+//    {
+
+//    }
+
+
+//}
+
+
+//void SlideListModel::readSlideFile(const QString fileName)
+//{
+//    lineCount = 0;      // for error reporting
+//    haveCustomSettings = false;
+
+//    QFile file(fileName);
+//    if (!file.open(QIODevice::ReadOnly)) {
+//        qFatal("Slide file can not be read");
+//        //return 1;
+//    }
+
+//    while (!file.atEnd()) {
+//        ++lineCount;
+//        QByteArray line = file.readLine();
+//        line = stripComments(line, "#");
+//        // processLine
+        // process function
+//        if (line.startsWith("[") && settingsFlag == false) {
+//            // strip []
+//            //
+
+//        }
+//        if (line.startsWith("--") && settingsFlag == false) {
+//            settingsFlag = true;
+//            // apply currentSettings map to default slide (with function)
+
+//            // makeSlide function --- process map
+//            // ... clear map
+//            // ... new map = copy of default map
+//        }
+//        else {
+//            // slide body -- add to current map
+//        }
+//    }
+
+//}
+
+
+
+
+
+
 
 
 QVariant SlideListModel::data(const QModelIndex &index, int role) const

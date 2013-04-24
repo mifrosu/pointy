@@ -8,6 +8,7 @@
 #include <qsharedpointer.h>
 #include <qmap.h>
 #include <qstring.h>
+#include <qstringlist.h>
 
 
 namespace pointy {
@@ -27,10 +28,11 @@ public:
 private:
     Q_DISABLE_COPY(SlideListModel)
 
-    //SlideData newSlide();
+    SlideData newSlide();
     //void appendSlide(SlideData currentSlide);
 
     QList<QSharedPointer<SlideData> > slideList;
+    int lineCount;
     bool haveCustomSettings;
 
     enum SlideRoles {
@@ -53,8 +55,8 @@ private:
         SlideMediaRole
     };
 
-    QMap<SlideRoles, QString> defaultSettings;
-    QMap<SlideRoles, QString> currentSlideSettings;
+    QMap<QString, QString> defaultSettings;
+    QMap<QString, QString> currentSlideSettings;
 
 
     /**
@@ -78,6 +80,11 @@ private:
 };
 
 QByteArray stripComments(const QByteArray lineIn, const QString comment="#");
+//QMap<QString, QString> readSlideFile(const QString fileName);
+void setSlideSettingsMap(const QByteArray line, bool& isNewSlideShow,
+                      QMap<QString,QString>& slideSettings);
+void stripSquareBrackets(const QByteArray& lineIn, QStringList& store,
+                         int& lineCount);
 
 
 
