@@ -29,29 +29,29 @@ int SlideListModel::rowCount(const QModelIndex /*&parent*/) const
     return slideList.size();
 }
 
-QByteArray stripComments(const QByteArray* lineIn, const QString comment)
+void stripComments(QByteArray* lineIn, const QString comment)
 {
     if(!lineIn)
     {
-        return QByteArray();
+        return;
     }
     int commentIndex = lineIn->indexOf(comment);
     if (commentIndex == -1) {
         // no comment in line
-        return *lineIn;
+        return;
     }
     else if (commentIndex == 0) {
         // comment at start of line
-        return QByteArray();
+        lineIn->clear();
     }
     else if (lineIn->at(commentIndex-1) == '\\'){
         // recursively check for escaped comments and actual comments
         QByteArray remains = (lineIn->mid(commentIndex + 1));
-        remains = stripComments(&remains);
-        return (lineIn->left(commentIndex + 1)).append(remains);
+        stripComments(&remains);
+        *lineIn = (lineIn->left(commentIndex + 1)).append(remains);
     }
     else {
-        return QByteArray(lineIn->left(commentIndex));
+        *lineIn = (lineIn->left(commentIndex));
     }
 }
 
@@ -82,6 +82,9 @@ void stripSquareBrackets(QByteArray* lineIn,
     stripSquareBrackets(&remains,
                         store, lineCount);
 }
+
+void populateSlideMap(const QStringList *listIn,
+                      QMap<QString, QString> *slideSettings);
 
 //void setSlideSettingsMap(const QByteArray line, bool& isNewSlideShow,
 //                         QMap<QString, QString>& slideSettings)

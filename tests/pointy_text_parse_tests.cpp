@@ -26,36 +26,36 @@
 void TestTextParser::stripCommentsMiddle()
 {
     QByteArray testStr = "Hello # and goodbye";
-    QByteArray outStr = pointy::stripComments(&testStr);
-    QCOMPARE(outStr, QByteArray("Hello "));
+    pointy::stripComments(&testStr);
+    QCOMPARE(testStr, QByteArray("Hello "));
 }
 
 void TestTextParser::stripCommentsStart()
 {
     QByteArray testStr = "#Hello and goodbye";
-    QByteArray outStr = pointy::stripComments(&testStr);
-    QCOMPARE(outStr, QByteArray());
+    pointy::stripComments(&testStr);
+    QCOMPARE(testStr, QByteArray());
 }
 
 void TestTextParser::stripCommentsNoComment()
 {
     QByteArray testStr = "Hello and goodbye";
-    QByteArray outStr = pointy::stripComments(&testStr);
-    QCOMPARE(outStr, QByteArray("Hello and goodbye"));
+    pointy::stripComments(&testStr);
+    QCOMPARE(testStr, QByteArray("Hello and goodbye"));
 }
 
 void TestTextParser::stripCommentsMultiComment()
 {
     QByteArray testStr = "Hello #and #goodbye";
-    QByteArray outStr = pointy::stripComments(&testStr);
-    QCOMPARE(outStr, QByteArray("Hello "));
+    pointy::stripComments(&testStr);
+    QCOMPARE(testStr, QByteArray("Hello "));
 }
 
 void TestTextParser::stripCommentsEscaped()
 {
     QByteArray testStr = "Hello \\#and \\#and #goodbye";
-    QByteArray outStr = pointy::stripComments(&testStr);
-    QCOMPARE(outStr, QByteArray("Hello \\#and \\#and "));
+    pointy::stripComments(&testStr);
+    QCOMPARE(testStr, QByteArray("Hello \\#and \\#and "));
 }
 
 
@@ -66,15 +66,15 @@ void TestTextParser::stripCommentsFile()
         qFatal("Slide file can not be read");
     }
     QByteArray line = file.readLine();
-    QByteArray outStr = pointy::stripComments(&line);
-    QCOMPARE(outStr, QByteArray("Hello \\#and \\#and "));
+    pointy::stripComments(&line);
+    QCOMPARE(line, QByteArray("Hello \\#and \\#and "));
 }
 
 void TestTextParser::stripCommentsEscapedOutofRange()
 {
     QByteArray testStr = "Hello \\# and \\#";
-    QByteArray outStr = pointy::stripComments(&testStr);
-    QCOMPARE(outStr, QByteArray("Hello \\# and \\#"));
+    pointy::stripComments(&testStr);
+    QCOMPARE(testStr, QByteArray("Hello \\# and \\#"));
 }
 
 void TestTextParser::stripSquareBracketsNoBrackets()
