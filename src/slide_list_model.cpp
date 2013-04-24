@@ -29,52 +29,58 @@ int SlideListModel::rowCount(const QModelIndex /*&parent*/) const
     return slideList.size();
 }
 
-QByteArray stripComments(QByteArray lineIn, const QString comment)
+QByteArray stripComments(const QByteArray* lineIn, const QString comment)
 {
-    //lineIn.replace(QByteArray("\\"),QByteArray("\\\\"));
-    int commentIndex = lineIn.indexOf(comment);
+    if(!lineIn)
+    {
+        return QByteArray();
+    }
+    int commentIndex = lineIn->indexOf(comment);
     if (commentIndex == -1) {
         // no comment in line
-        return lineIn;
+        return *lineIn;
     }
     else if (commentIndex == 0) {
         // comment at start of line
         return QByteArray();
     }
-    else if (lineIn.at(commentIndex-1) == '\\'){
+    else if (lineIn->at(commentIndex-1) == '\\'){
         // recursively check for escaped comments and actual comments
-        QByteArray remains = stripComments(lineIn.mid(commentIndex + 1));
-        return (lineIn.left(commentIndex + 1)).append(remains);
+        QByteArray remains = (lineIn->mid(commentIndex + 1));
+        remains = stripComments(&remains);
+        return (lineIn->left(commentIndex + 1)).append(remains);
     }
     else {
-        return QByteArray(lineIn.left(commentIndex));
+        return QByteArray(lineIn->left(commentIndex));
     }
 }
 
-void stripSquareBrackets(const QByteArray &lineIn, QStringList& store,
-                         int& lineCount)
+void stripSquareBrackets(QByteArray* lineIn,
+                         QStringList* store,
+                         int* lineCount)
 {
-    int numberStartBracket = lineIn.count("[");
-    int numberEndBracket = lineIn.count("]");
+    int numberStartBracket = lineIn->count("[");
+    int numberEndBracket = lineIn->count("]");
     if (numberStartBracket != numberEndBracket)
     {
-        qWarning("Line %d: incomplete brackets", lineCount);
+        qWarning("Line %d: incomplete brackets", *lineCount);
         return;
     }
-    int startBracket = lineIn.indexOf("[");
+    int startBracket = lineIn->indexOf("[");
     if (startBracket < 0) {
         return;
     }
 
-    int endBracket = lineIn.indexOf("]");
+    int endBracket = lineIn->indexOf("]");
     if (endBracket < startBracket) {
-        qWarning("Line %d: mismatched brackets", lineCount);
+        qWarning("Line %d: mismatched brackets", *lineCount);
         return;
     }
-    QByteArray remains = lineIn.mid(endBracket + 1);
-    store.append(lineIn.mid(startBracket + 1, endBracket-(startBracket+1)));
+    QByteArray remains = (lineIn->mid(endBracket + 1));
+    store->append(lineIn->mid(startBracket + 1, endBracket-(startBracket+1)));
     // recursive search for additional settings on the line
-    stripSquareBrackets(remains, store, lineCount);
+    stripSquareBrackets(&remains,
+                        store, lineCount);
 }
 
 //void setSlideSettingsMap(const QByteArray line, bool& isNewSlideShow,

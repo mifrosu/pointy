@@ -79,12 +79,15 @@ private:
 **/
 };
 
-QByteArray stripComments(const QByteArray lineIn, const QString comment="#");
+QByteArray stripComments(const QByteArray* lineIn, const QString comment="#");
+
 //QMap<QString, QString> readSlideFile(const QString fileName);
+
 void setSlideSettingsMap(const QByteArray line, bool& isNewSlideShow,
                       QMap<QString,QString>& slideSettings);
-void stripSquareBrackets(const QByteArray& lineIn, QStringList& store,
-                         int& lineCount);
+void stripSquareBrackets(QByteArray* lineIn, QStringList* store, int* lineCount);
+void populateSlideMap(const QStringList& listIn,
+                      QMap<QString, QString>& slideSettings);
 
 
 
