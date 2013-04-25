@@ -154,6 +154,177 @@ void TestTextParser::stripSquareBracketsMalformedEnd()
     QCOMPARE(store, QStringList());
 }
 
+void TestTextParser::populateSlideMapEquals()
+{
+    QStringList listIn;
+    listIn.append("font=monospace 18px");
+    QMap<QString, QString> slideMap;
+    QMap<QString, QString> expectMap;
+    expectMap.insert("font","monospace 18px");
+    pointy::populateSlideSettingsMap(&listIn, &slideMap);
+    QList<QString> slideKeys = slideMap.keys();
+    QList<QString> expectKeys = expectMap.keys();
+    QList<QString> slideValues = slideMap.values();
+    QList<QString> expectValues = expectMap.values();
+    QCOMPARE(slideKeys,expectKeys);
+    QCOMPARE(slideValues,expectValues);
+}
+
+void TestTextParser::populateSlideMapEqualsMulti()
+{
+    QStringList listIn;
+    listIn.append("font=monospace 18px");
+    listIn.append("duration=5.000000");
+    QMap<QString, QString> slideMap;
+    QMap<QString, QString> expectMap;
+    expectMap.insert("font","monospace 18px");
+    expectMap.insert("duration","5.000000");
+    pointy::populateSlideSettingsMap(&listIn, &slideMap);
+    QList<QString> slideKeys = slideMap.keys();
+    QList<QString> expectKeys = expectMap.keys();
+    QList<QString> slideValues = slideMap.values();
+    QList<QString> expectValues = expectMap.values();
+    QCOMPARE(slideKeys,expectKeys);
+    QCOMPARE(slideValues,expectValues);
+}
+
+void TestTextParser::populateSlideMapMedia()
+{
+    QStringList listIn;
+    QString test1("doctorwho_blink.jpeg");
+    listIn.append(test1);
+    QMap<QString, QString> slideMap;
+    QMap<QString, QString> expectMap;
+    expectMap.insert("slideMedia",test1);
+    pointy::populateSlideSettingsMap(&listIn, &slideMap);
+    QList<QString> slideKeys = slideMap.keys();
+    QList<QString> expectKeys = expectMap.keys();
+    QList<QString> slideValues = slideMap.values();
+    QList<QString> expectValues = expectMap.values();
+    QCOMPARE(slideKeys,expectKeys);
+    QCOMPARE(slideValues,expectValues);
+}
+
+void TestTextParser::populateSlideMapBackgroundScalingFill()
+{
+    QStringList listIn;
+    QString test1("fill");
+    listIn.append(test1);
+    QMap<QString, QString> slideMap;
+    QMap<QString, QString> expectMap;
+    expectMap.insert("backgroundScaling",test1);
+    pointy::populateSlideSettingsMap(&listIn, &slideMap);
+    QList<QString> slideKeys = slideMap.keys();
+    QList<QString> expectKeys = expectMap.keys();
+    QList<QString> slideValues = slideMap.values();
+    QList<QString> expectValues = expectMap.values();
+    QCOMPARE(slideKeys,expectKeys);
+    QCOMPARE(slideValues,expectValues);
+}
+
+
+void TestTextParser::populateSlideMapBackgroundScalingFit()
+{
+    QStringList listIn;
+    QString test1("fit");
+    listIn.append(test1);
+    QMap<QString, QString> slideMap;
+    QMap<QString, QString> expectMap;
+    expectMap.insert("backgroundScaling",test1);
+    pointy::populateSlideSettingsMap(&listIn, &slideMap);
+    QList<QString> slideKeys = slideMap.keys();
+    QList<QString> expectKeys = expectMap.keys();
+    QList<QString> slideValues = slideMap.values();
+    QList<QString> expectValues = expectMap.values();
+    QCOMPARE(slideKeys,expectKeys);
+    QCOMPARE(slideValues,expectValues);
+}
+
+void TestTextParser::populateSlideMapBackgroundScalingStretch()
+{
+    QStringList listIn;
+    QString test1("stretch");
+    listIn.append(test1);
+    QMap<QString, QString> slideMap;
+    QMap<QString, QString> expectMap;
+    expectMap.insert("backgroundScaling",test1);
+    pointy::populateSlideSettingsMap(&listIn, &slideMap);
+    QList<QString> slideKeys = slideMap.keys();
+    QList<QString> expectKeys = expectMap.keys();
+    QList<QString> slideValues = slideMap.values();
+    QList<QString> expectValues = expectMap.values();
+    QCOMPARE(slideKeys,expectKeys);
+    QCOMPARE(slideValues,expectValues);
+}
+
+void TestTextParser::populateSlideMapBackgroundScalingUnscaled()
+{
+    QStringList listIn;
+    QString test1("unscaled");
+    listIn.append(test1);
+    QMap<QString, QString> slideMap;
+    QMap<QString, QString> expectMap;
+    expectMap.insert("backgroundScaling",test1);
+    pointy::populateSlideSettingsMap(&listIn, &slideMap);
+    QList<QString> slideKeys = slideMap.keys();
+    QList<QString> expectKeys = expectMap.keys();
+    QList<QString> slideValues = slideMap.values();
+    QList<QString> expectValues = expectMap.values();
+    QCOMPARE(slideKeys,expectKeys);
+    QCOMPARE(slideValues,expectValues);
+}
+
+void TestTextParser::populateSlideMapPositionBottomLeft()
+{
+    QStringList listIn;
+    QString test1("bottom-left");
+    listIn.append(test1);
+    QMap<QString, QString> slideMap;
+    QMap<QString, QString> expectMap;
+    expectMap.insert("position",test1);
+    pointy::populateSlideSettingsMap(&listIn, &slideMap);
+    QList<QString> slideKeys = slideMap.keys();
+    QList<QString> expectKeys = expectMap.keys();
+    QList<QString> slideValues = slideMap.values();
+    QList<QString> expectValues = expectMap.values();
+    QCOMPARE(slideKeys,expectKeys);
+    QCOMPARE(slideValues,expectValues);
+}
+
+void TestTextParser::populateSlideMapPositionTopRight()
+{
+    QStringList listIn;
+    QString test1("top-right");
+    listIn.append(test1);
+    QMap<QString, QString> slideMap;
+    QMap<QString, QString> expectMap;
+    expectMap.insert("position",test1);
+    pointy::populateSlideSettingsMap(&listIn, &slideMap);
+    QList<QString> slideKeys = slideMap.keys();
+    QList<QString> expectKeys = expectMap.keys();
+    QList<QString> slideValues = slideMap.values();
+    QList<QString> expectValues = expectMap.values();
+    QCOMPARE(slideKeys,expectKeys);
+    QCOMPARE(slideValues,expectValues);
+}
+
+void TestTextParser::populateSlideMapPositionCenter()
+{
+    QStringList listIn;
+    QString test1("center");
+    listIn.append(test1);
+    QMap<QString, QString> slideMap;
+    QMap<QString, QString> expectMap;
+    expectMap.insert("position",test1);
+    pointy::populateSlideSettingsMap(&listIn, &slideMap);
+    QList<QString> slideKeys = slideMap.keys();
+    QList<QString> expectKeys = expectMap.keys();
+    QList<QString> slideValues = slideMap.values();
+    QList<QString> expectValues = expectMap.values();
+    QCOMPARE(slideKeys,expectKeys);
+    QCOMPARE(slideValues,expectValues);
+}
+
 /**
 class TestQString: public QObject
 {

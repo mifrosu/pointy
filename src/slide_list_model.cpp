@@ -2,6 +2,7 @@
 #include "slide_data.h"
 #include <QtCore/QtCore>
 #include <QMessageLogger>
+#include <qregexp.h>
 
 
 namespace pointy {
@@ -83,8 +84,45 @@ void stripSquareBrackets(QByteArray* lineIn,
                         store, lineCount);
 }
 
-void populateSlideMap(const QStringList *listIn,
-                      QMap<QString, QString> *slideSettings);
+void populateSlideSettingsMap(const QStringList *listIn,
+                      QMap<QString, QString> *slideSettings)
+{
+    if (!listIn || !slideSettings) {
+        return;
+    }
+    QStringList::const_iterator iter;
+    QStringList::const_iterator end = listIn->end();
+
+    for (iter = listIn->begin(); iter!=end;++iter)
+    {
+        int equalsIndex = (*iter).indexOf("=");
+        if (equalsIndex > 0) {
+            slideSettings->insert((*iter).left(equalsIndex).trimmed(),
+                                  (*iter).mid(equalsIndex+ 1).trimmed());
+            continue;
+        }
+        int stopIndex = (*iter).indexOf(".");
+        if (stopIndex != -1) {
+            // check if file exists?
+            slideSettings->insert("slideMedia",(*iter).trimmed());
+            continue;
+        }
+        int markupIndex = (*iter).indexOf("markup");
+        if (markupIndex != -1) {
+            slideSettings->insert("useMarkup",(*iter).trimmed());
+            continue;
+        }
+        if ((*iter).contains(QRegExp("fill|fit|stretch|unscaled")))
+        {
+            slideSettings->insert("backgroundScaling",(*iter).trimmed());
+            continue;
+        }
+        else {
+            slideSettings->insert("position", (*iter).trimmed());
+        }
+    }
+
+}
 
 //void setSlideSettingsMap(const QByteArray line, bool& isNewSlideShow,
 //                         QMap<QString, QString>& slideSettings)
@@ -134,12 +172,6 @@ void populateSlideMap(const QStringList *listIn,
 //    }
 
 //}
-
-
-
-
-
-
 
 
 QVariant SlideListModel::data(const QModelIndex &index, int role) const

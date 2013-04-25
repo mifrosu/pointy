@@ -17,8 +17,6 @@ private slots:
     void stripCommentsFile();
     void stripCommentsEscapedOutofRange();
 
-    // malformed 1: one ]
-    // malformed 2: one [
     void stripSquareBracketsNoBrackets();
     void stripSquareBracketsOneSetting();
     void stripSquareBracketsTwoSettings();
@@ -26,6 +24,19 @@ private slots:
     void stripSquareBracketsSettingsWithJunk();
     void stripSquareBracketsMalformedStart();
     void stripSquareBracketsMalformedEnd();
+
+    void populateSlideMapEquals();
+    void populateSlideMapEqualsMulti();
+    void populateSlideMapMedia();
+    void populateSlideMapBackgroundScalingFill();
+    void populateSlideMapBackgroundScalingFit();
+    void populateSlideMapBackgroundScalingStretch();
+    void populateSlideMapBackgroundScalingUnscaled();
+    void populateSlideMapPositionBottomLeft();
+    void populateSlideMapPositionTopRight();
+    void populateSlideMapPositionCenter();
+
+
 
     
 };

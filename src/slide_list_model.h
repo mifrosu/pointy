@@ -24,6 +24,7 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex = QModelIndex()) const;
     void readSlideFile(const QString fileName);
+    void clearSlides();
 
 private:
     Q_DISABLE_COPY(SlideListModel)
@@ -86,12 +87,10 @@ void stripSquareBrackets(QByteArray* lineIn, QStringList* store,
 //QMap<QString, QString> readSlideFile(const QString fileName);
 
 
-
+void populateSlideSettingsMap(const QStringList* listIn,
+                      QMap<QString, QString>* slideSettings);
 void setSlideSettingsMap(const QByteArray line, bool& isNewSlideShow,
                       QMap<QString,QString>& slideSettings);
-void populateSlideMap(const QStringList* listIn,
-                      QMap<QString, QString>* slideSettings);
-
 
 
 }
