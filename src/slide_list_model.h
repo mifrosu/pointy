@@ -86,8 +86,6 @@ void stripSquareBrackets(QSharedPointer<QByteArray>& lineIn,
                          QSharedPointer<QStringList>& store,
                          QSharedPointer<int>& lineCount);
 
-//QMap<QString, QString> readSlideFile(const QString fileName);
-
 
 void populateSlideSettingsMap(QSharedPointer<QStringList>& listIn,
                       QSharedPointer<QMap<QString, QString> >& slideSettings);
