@@ -22,6 +22,16 @@
 //    void stripCommentsFile();
 //};
 
+void TestTextParser::heapTest()
+{
+    QByteArray testStr = "Hello # and goodbye";
+    QSharedPointer<QByteArray> testPtr =
+            QSharedPointer<QByteArray>(new QByteArray);
+    *testPtr = testStr;
+    pointy::stripComments(&(*testPtr));
+    QCOMPARE(*testPtr, QByteArray("Hello "));
+}
+
 void TestTextParser::stripCommentsMiddle()
 {
     QByteArray testStr = "Hello # and goodbye";
@@ -323,6 +333,8 @@ void TestTextParser::populateSlideMapPositionCenter()
     QCOMPARE(slideKeys,expectKeys);
     QCOMPARE(slideValues,expectValues);
 }
+
+
 
 /**
 class TestQString: public QObject

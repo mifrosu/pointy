@@ -36,6 +36,8 @@ private slots:
     void populateSlideMapPositionTopRight();
     void populateSlideMapPositionCenter();
 
+    void heapTest();
+
 
 
     
