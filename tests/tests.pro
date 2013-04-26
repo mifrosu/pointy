@@ -1,4 +1,4 @@
-
+QMAKE_CXXFLAGS += -std=c++11
 
 HEADERS += slide_list_model.h \
            slide_data.h \

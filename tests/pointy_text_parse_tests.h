@@ -3,11 +3,18 @@
 
 #include <QtTest/QtTest>
 
-class TestTextParser: public QObject
+class TestCommentTextParser: public QObject
 {
     Q_OBJECT
 
+public:
+    TestCommentTextParser();
+
+private:
     int lineCount;
+    QByteArray testStr;
+    QSharedPointer<QByteArray> testPtr;
+
 private slots:
     void stripCommentsMiddle();
     void stripCommentsStart();
@@ -16,7 +23,20 @@ private slots:
     void stripCommentsEscaped();
     void stripCommentsFile();
     void stripCommentsEscapedOutofRange();
+};
 
+class TestSquareBracketParser: public QObject
+{
+    Q_OBJECT
+public:
+    TestSquareBracketParser();
+
+private:
+    QSharedPointer<QByteArray> linePtr;
+    QSharedPointer<QStringList> storePtr;
+    QSharedPointer<int> lineCountPtr;
+
+private slots:
     void stripSquareBracketsNoBrackets();
     void stripSquareBracketsOneSetting();
     void stripSquareBracketsTwoSettings();
@@ -25,6 +45,19 @@ private slots:
     void stripSquareBracketsMalformedStart();
     void stripSquareBracketsMalformedEnd();
 
+};
+
+class TestPopulateMapParser: public QObject
+{
+    Q_OBJECT
+public:
+    TestPopulateMapParser();
+
+private:
+    QSharedPointer<QStringList> listInPtr;
+    QSharedPointer<QMap<QString,QString> > slideMapPtr;
+
+private slots:
     void populateSlideMapEquals();
     void populateSlideMapEqualsMulti();
     void populateSlideMapMedia();
@@ -35,12 +68,6 @@ private slots:
     void populateSlideMapPositionBottomLeft();
     void populateSlideMapPositionTopRight();
     void populateSlideMapPositionCenter();
-
-    void heapTest();
-
-
-
-    
 };
 
 

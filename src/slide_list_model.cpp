@@ -30,7 +30,7 @@ int SlideListModel::rowCount(const QModelIndex /*&parent*/) const
     return slideList.size();
 }
 
-void stripComments(QByteArray* lineIn, const QString comment)
+void stripComments(QSharedPointer<QByteArray>& lineIn, const QString comment)
 {
     if(!lineIn)
     {
@@ -47,18 +47,20 @@ void stripComments(QByteArray* lineIn, const QString comment)
     }
     else if (lineIn->at(commentIndex-1) == '\\'){
         // recursively check for escaped comments and actual comments
-        QByteArray remains = (lineIn->mid(commentIndex + 1));
-        stripComments(&remains);
-        *lineIn = (lineIn->left(commentIndex + 1)).append(remains);
+        QSharedPointer<QByteArray> remains =
+                QSharedPointer<QByteArray>(new QByteArray);
+        *remains = (lineIn->mid(commentIndex + 1));
+        stripComments(remains);
+        *lineIn = (lineIn->left(commentIndex + 1)).append(*remains);
     }
     else {
         *lineIn = (lineIn->left(commentIndex));
     }
 }
 
-void stripSquareBrackets(QByteArray* lineIn,
-                         QStringList* store,
-                         int* lineCount)
+void stripSquareBrackets(QSharedPointer<QByteArray>& lineIn,
+                         QSharedPointer<QStringList>& store,
+                         QSharedPointer<int>& lineCount)
 {
     int numberStartBracket = lineIn->count("[");
     int numberEndBracket = lineIn->count("]");
@@ -77,15 +79,17 @@ void stripSquareBrackets(QByteArray* lineIn,
         qWarning("Line %d: mismatched brackets", *lineCount);
         return;
     }
-    QByteArray remains = (lineIn->mid(endBracket + 1));
+    QSharedPointer<QByteArray> remains =
+            QSharedPointer<QByteArray>(new QByteArray);
+    *remains = (lineIn->mid(endBracket + 1));
     store->append(lineIn->mid(startBracket + 1, endBracket-(startBracket+1)));
     // recursive search for additional settings on the line
-    stripSquareBrackets(&remains,
+    stripSquareBrackets(remains,
                         store, lineCount);
 }
 
-void populateSlideSettingsMap(const QStringList *listIn,
-                      QMap<QString, QString> *slideSettings)
+void populateSlideSettingsMap(QSharedPointer<QStringList>& listIn,
+                      QSharedPointer<QMap<QString, QString> >& slideSettings)
 {
     if (!listIn || !slideSettings) {
         return;
