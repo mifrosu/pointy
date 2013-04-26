@@ -87,6 +87,10 @@ void stripSquareBrackets(QSharedPointer<QByteArray>& lineIn,
                          QSharedPointer<int>& lineCount);
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> d497cba6c452d9c99074e8966f2e91ddf1614f17
 void populateSlideSettingsMap(QSharedPointer<QStringList>& listIn,
                       QSharedPointer<QMap<QString, QString> >& slideSettings);
 void setSlideSettingsMap(const QByteArray line, bool& isNewSlideShow,
