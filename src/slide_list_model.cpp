@@ -112,28 +112,19 @@ void populateSlideSettingsMap(const QStringList *listIn,
             slideSettings->insert("useMarkup",(*iter).trimmed());
             continue;
         }
-        if ((*iter).contains(QRegExp("fill|fit|stretch|unscaled")))
-        {
+        if ((*iter).contains(QRegExp("fill|fit|stretch|unscaled"))) {
             slideSettings->insert("backgroundScaling",(*iter).trimmed());
             continue;
         }
-        else {
+        if ((*iter).contains(QRegExp("top|bottom|left|right|center"))) {
             slideSettings->insert("position", (*iter).trimmed());
+        }
+        else {
+            return;
         }
     }
 
 }
-
-//void setSlideSettingsMap(const QByteArray line, bool& isNewSlideShow,
-//                         QMap<QString, QString>& slideSettings)
-//{
-//    if (line.startsWith("[") && isNewSlideShow == true)
-//    {
-
-//    }
-
-
-//}
 
 
 //void SlideListModel::readSlideFile(const QString fileName)

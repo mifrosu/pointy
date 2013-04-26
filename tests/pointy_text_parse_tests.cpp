@@ -1,7 +1,6 @@
 #include "pointy_text_parse_tests.h"
 #include "slide_list_model.h"
 
-
 /**
  * Test list
  *
