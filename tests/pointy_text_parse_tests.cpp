@@ -1,337 +1,343 @@
 #include "pointy_text_parse_tests.h"
 #include "slide_list_model.h"
 
-/**
- * Test list
- *
- * 1. Slide list model creates a list with a default slide
- * 2. Default values are set correctly
- * 3.
- */
 
-
-//class TestTextParser: public QObject
-//{
-//    Q_OBJECT
-//private slots:
-//    void stripCommentsMiddle();
-//    void stripCommentsStart();
-//    void stripCommentsNoComment();
-//    void stripCommentsMultiComment();
-//    void stripCommentsEscaped();
-//    void stripCommentsFile();
-//};
-
-void TestTextParser::heapTest()
+TestCommentTextParser::TestCommentTextParser()
 {
-    QByteArray testStr = "Hello # and goodbye";
-    QSharedPointer<QByteArray> testPtr =
-            QSharedPointer<QByteArray>(new QByteArray);
+    testPtr = QSharedPointer<QByteArray>(new QByteArray);
+
+}
+
+void TestCommentTextParser::stripCommentsMiddle()
+{
+    testStr = "Hello # and goodbye";
     *testPtr = testStr;
-    pointy::stripComments(&(*testPtr));
+    pointy::stripComments(testPtr);
     QCOMPARE(*testPtr, QByteArray("Hello "));
 }
 
-void TestTextParser::stripCommentsMiddle()
+void TestCommentTextParser::stripCommentsStart()
 {
-    QByteArray testStr = "Hello # and goodbye";
-    pointy::stripComments(&testStr);
-    QCOMPARE(testStr, QByteArray("Hello "));
+    testStr = "#Hello and goodbye";
+    *testPtr = testStr;
+    pointy::stripComments(testPtr);
+    QCOMPARE(*testPtr, QByteArray());
 }
 
-void TestTextParser::stripCommentsStart()
+void TestCommentTextParser::stripCommentsNoComment()
 {
-    QByteArray testStr = "#Hello and goodbye";
-    pointy::stripComments(&testStr);
-    QCOMPARE(testStr, QByteArray());
+    testStr = "Hello and goodbye";
+    *testPtr = testStr;
+    pointy::stripComments(testPtr);
+    QCOMPARE(*testPtr, QByteArray("Hello and goodbye"));
 }
 
-void TestTextParser::stripCommentsNoComment()
+void TestCommentTextParser::stripCommentsMultiComment()
 {
-    QByteArray testStr = "Hello and goodbye";
-    pointy::stripComments(&testStr);
-    QCOMPARE(testStr, QByteArray("Hello and goodbye"));
+    testStr = "Hello #and #goodbye";
+    *testPtr = testStr;
+    pointy::stripComments(testPtr);
+    QCOMPARE(*testPtr, QByteArray("Hello "));
 }
 
-void TestTextParser::stripCommentsMultiComment()
+void TestCommentTextParser::stripCommentsEscaped()
 {
-    QByteArray testStr = "Hello #and #goodbye";
-    pointy::stripComments(&testStr);
-    QCOMPARE(testStr, QByteArray("Hello "));
-}
-
-void TestTextParser::stripCommentsEscaped()
-{
-    QByteArray testStr = "Hello \\#and \\#and #goodbye";
-    pointy::stripComments(&testStr);
-    QCOMPARE(testStr, QByteArray("Hello \\#and \\#and "));
+    testStr = "Hello \\#and \\#and #goodbye";
+    *testPtr = testStr;
+    pointy::stripComments(testPtr);
+    QCOMPARE(*testPtr, QByteArray("Hello \\#and \\#and "));
 }
 
 
-void TestTextParser::stripCommentsFile()
+void TestCommentTextParser::stripCommentsFile()
 {
     QFile file(":/test_input_files/comment_test_file.pin");
     if (!file.open(QIODevice::ReadOnly)) {
         qFatal("Slide file can not be read");
     }
-    QByteArray line = file.readLine();
-    pointy::stripComments(&line);
-    QCOMPARE(line, QByteArray("Hello \\#and \\#and "));
+    testStr = file.readLine();
+    *testPtr = testStr;
+    pointy::stripComments(testPtr);
+    QCOMPARE(*testPtr, QByteArray("Hello \\#and \\#and "));
 }
 
-void TestTextParser::stripCommentsEscapedOutofRange()
+void TestCommentTextParser::stripCommentsEscapedOutofRange()
 {
-    QByteArray testStr = "Hello \\# and \\#";
-    pointy::stripComments(&testStr);
-    QCOMPARE(testStr, QByteArray("Hello \\# and \\#"));
+    testStr = "Hello \\# and \\#";
+    *testPtr = testStr;
+    pointy::stripComments(testPtr);
+    QCOMPARE(*testPtr, QByteArray("Hello \\# and \\#"));
 }
 
-void TestTextParser::stripSquareBracketsNoBrackets()
+TestSquareBracketParser::TestSquareBracketParser()
 {
-    QStringList store;
-    QByteArray lineIn("no brackets here");
-    pointy::stripSquareBrackets(&lineIn, &store, &lineCount);
-    QCOMPARE(store, QStringList());
+    linePtr = QSharedPointer<QByteArray>(new QByteArray);
+    storePtr = QSharedPointer<QStringList>(new QStringList);
+    lineCountPtr = QSharedPointer<int>(new int);
+    *lineCountPtr = 1;
+
 }
 
-void TestTextParser::stripSquareBracketsOneSetting()
+void TestSquareBracketParser::stripSquareBracketsNoBrackets()
 {
-    QStringList store;
-    QByteArray lineIn("[one bracket here]");
-    pointy::stripSquareBrackets(&lineIn, &store, &lineCount);
-    QCOMPARE(store, QStringList("one bracket here"));
+    linePtr->clear();
+    storePtr->clear();
+    linePtr->append("no brackets here");
+    pointy::stripSquareBrackets(linePtr, storePtr, lineCountPtr);
+    QCOMPARE(*storePtr, QStringList());
 }
 
-void TestTextParser::stripSquareBracketsTwoSettings()
+void TestSquareBracketParser::stripSquareBracketsOneSetting()
 {
-    QStringList store;
+    linePtr->clear();
+    storePtr->clear();
+    linePtr->append("[one bracket here]");
+    pointy::stripSquareBrackets(linePtr, storePtr, lineCountPtr);
+    QCOMPARE(*storePtr, QStringList("one bracket here"));
+}
+
+void TestSquareBracketParser::stripSquareBracketsTwoSettings()
+{
     QStringList expectedStore;
     expectedStore.append("first setting");
     expectedStore.append("second setting");
-    QByteArray lineIn("[first setting][second setting]");
-    pointy::stripSquareBrackets(&lineIn, &store, &lineCount);
-    QCOMPARE(store, expectedStore);
+    linePtr->clear();
+    linePtr->append("[first setting][second setting]");
+    storePtr->clear();
+    pointy::stripSquareBrackets(linePtr, storePtr, lineCountPtr);
+    QCOMPARE(*storePtr, expectedStore);
 }
 
-void TestTextParser::stripSquareBracketsThreeSettings()
+void TestSquareBracketParser::stripSquareBracketsThreeSettings()
 {
-    QStringList store;
     QStringList expectedStore;
     expectedStore.append("first setting");
     expectedStore.append("second setting");
     expectedStore.append("third setting");
-    QByteArray lineIn("[first setting][second setting][third setting]");
-    pointy::stripSquareBrackets(&lineIn, &store, &lineCount);
-    QCOMPARE(store, expectedStore);
+    linePtr->clear();
+    storePtr->clear();
+    linePtr->append("[first setting][second setting][third setting]");
+    pointy::stripSquareBrackets(linePtr, storePtr, lineCountPtr);
+    qDebug() << "*** StorePtr" << *storePtr << '\n';
+    QCOMPARE(*storePtr, expectedStore);
 }
 
-void TestTextParser::stripSquareBracketsSettingsWithJunk()
+void TestSquareBracketParser::stripSquareBracketsSettingsWithJunk()
 {
-    QStringList store;
     QStringList expectedStore;
     expectedStore.append("first setting");
     expectedStore.append("second setting");
     expectedStore.append("third setting");
-    QByteArray lineIn("[first setting]junk[second setting]meh[third setting]");
-    pointy::stripSquareBrackets(&lineIn, &store, &lineCount);
-    QCOMPARE(store, expectedStore);
+    linePtr->clear();
+    storePtr->clear();
+    linePtr->append("[first setting]junk[second setting]meh[third setting]");
+    pointy::stripSquareBrackets(linePtr, storePtr, lineCountPtr);
+    QCOMPARE(*storePtr, expectedStore);
 }
 
-void TestTextParser::stripSquareBracketsMalformedStart()
+void TestSquareBracketParser::stripSquareBracketsMalformedStart()
 {
-    QStringList store;
     QStringList expectedStore;
-    lineCount = 1;
     expectedStore.append("first setting");
     expectedStore.append("second setting");
     expectedStore.append("third setting");
-    QByteArray lineIn("first setting]junk[second setting]meh[third setting]");
-    pointy::stripSquareBrackets(&lineIn, &store, &lineCount);
-    QCOMPARE(store, QStringList());
+    linePtr->clear();
+    storePtr->clear();
+    linePtr->append("first setting]junk[second setting]meh[third setting]");
+    pointy::stripSquareBrackets(linePtr, storePtr, lineCountPtr);
+    QCOMPARE(*storePtr, QStringList());
 }
 
-void TestTextParser::stripSquareBracketsMalformedEnd()
+void TestSquareBracketParser::stripSquareBracketsMalformedEnd()
 {
-    QStringList store;
     QStringList expectedStore;
-    lineCount = 1;
     expectedStore.append("first setting");
     expectedStore.append("second setting");
     expectedStore.append("third setting");
-    QByteArray lineIn("[first settingjunk[second setting]meh[third setting]");
-    pointy::stripSquareBrackets(&lineIn, &store, &lineCount);
-    QCOMPARE(store, QStringList());
+    linePtr->clear();
+    storePtr->clear();
+    linePtr->append("[first settingjunk[second setting]meh[third setting]");
+    pointy::stripSquareBrackets(linePtr, storePtr, lineCountPtr);
+    QCOMPARE(*storePtr, QStringList());
 }
 
-void TestTextParser::populateSlideMapEquals()
+TestPopulateMapParser::TestPopulateMapParser()
 {
-    QStringList listIn;
-    listIn.append("font=monospace 18px");
-    QMap<QString, QString> slideMap;
+    listInPtr = QSharedPointer<QStringList> (new QStringList);
+    slideMapPtr =
+            QSharedPointer<QMap<QString,QString> >(new QMap<QString,QString>);
+
+}
+
+void TestPopulateMapParser::populateSlideMapEquals()
+{
     QMap<QString, QString> expectMap;
+    QList<QString> expectKeys;
+    QList<QString> expectValues;
+    listInPtr->clear();
+    slideMapPtr->clear();
+    listInPtr->append("font=monospace 18px");
     expectMap.insert("font","monospace 18px");
-    pointy::populateSlideSettingsMap(&listIn, &slideMap);
-    QList<QString> slideKeys = slideMap.keys();
-    QList<QString> expectKeys = expectMap.keys();
-    QList<QString> slideValues = slideMap.values();
-    QList<QString> expectValues = expectMap.values();
-    QCOMPARE(slideKeys,expectKeys);
-    QCOMPARE(slideValues,expectValues);
+    expectKeys = expectMap.keys();
+    expectValues = expectMap.values();
+    pointy::populateSlideSettingsMap(listInPtr, slideMapPtr);
+    QCOMPARE(slideMapPtr->keys(),expectKeys);
+    QCOMPARE(slideMapPtr->values(),expectValues);
 }
 
-void TestTextParser::populateSlideMapEqualsMulti()
+void TestPopulateMapParser::populateSlideMapEqualsMulti()
 {
-    QStringList listIn;
-    listIn.append("font=monospace 18px");
-    listIn.append("duration=5.000000");
-    QMap<QString, QString> slideMap;
     QMap<QString, QString> expectMap;
+    QList<QString> expectKeys;
+    QList<QString> expectValues;
+    listInPtr->clear();
+    slideMapPtr->clear();
+    listInPtr->append("font=monospace 18px");
+    listInPtr->append("duration=5.000000");
     expectMap.insert("font","monospace 18px");
     expectMap.insert("duration","5.000000");
-    pointy::populateSlideSettingsMap(&listIn, &slideMap);
-    QList<QString> slideKeys = slideMap.keys();
-    QList<QString> expectKeys = expectMap.keys();
-    QList<QString> slideValues = slideMap.values();
-    QList<QString> expectValues = expectMap.values();
-    QCOMPARE(slideKeys,expectKeys);
-    QCOMPARE(slideValues,expectValues);
+    expectKeys = expectMap.keys();
+    expectValues = expectMap.values();
+    pointy::populateSlideSettingsMap(listInPtr, slideMapPtr);
+    QCOMPARE(slideMapPtr->keys(),expectKeys);
+    QCOMPARE(slideMapPtr->values(),expectValues);
 }
 
-void TestTextParser::populateSlideMapMedia()
+void TestPopulateMapParser::populateSlideMapMedia()
 {
-    QStringList listIn;
+    QMap<QString, QString> expectMap;
+    QList<QString> expectKeys;
+    QList<QString> expectValues;
+    listInPtr->clear();
+    slideMapPtr->clear();
     QString test1("doctorwho_blink.jpeg");
-    listIn.append(test1);
-    QMap<QString, QString> slideMap;
-    QMap<QString, QString> expectMap;
+    listInPtr->append(test1);
     expectMap.insert("slideMedia",test1);
-    pointy::populateSlideSettingsMap(&listIn, &slideMap);
-    QList<QString> slideKeys = slideMap.keys();
-    QList<QString> expectKeys = expectMap.keys();
-    QList<QString> slideValues = slideMap.values();
-    QList<QString> expectValues = expectMap.values();
-    QCOMPARE(slideKeys,expectKeys);
-    QCOMPARE(slideValues,expectValues);
+    expectKeys = expectMap.keys();
+    expectValues = expectMap.values();
+    pointy::populateSlideSettingsMap(listInPtr, slideMapPtr);
+    QCOMPARE(slideMapPtr->keys(),expectKeys);
+    QCOMPARE(slideMapPtr->values(),expectValues);
 }
 
-void TestTextParser::populateSlideMapBackgroundScalingFill()
+void TestPopulateMapParser::populateSlideMapBackgroundScalingFill()
 {
-    QStringList listIn;
+    QMap<QString, QString> expectMap;
+    QList<QString> expectKeys;
+    QList<QString> expectValues;
+    listInPtr->clear();
+    slideMapPtr->clear();
     QString test1("fill");
-    listIn.append(test1);
-    QMap<QString, QString> slideMap;
-    QMap<QString, QString> expectMap;
+    listInPtr->append(test1);
     expectMap.insert("backgroundScaling",test1);
-    pointy::populateSlideSettingsMap(&listIn, &slideMap);
-    QList<QString> slideKeys = slideMap.keys();
-    QList<QString> expectKeys = expectMap.keys();
-    QList<QString> slideValues = slideMap.values();
-    QList<QString> expectValues = expectMap.values();
-    QCOMPARE(slideKeys,expectKeys);
-    QCOMPARE(slideValues,expectValues);
+    expectKeys = expectMap.keys();
+    expectValues = expectMap.values();
+    pointy::populateSlideSettingsMap(listInPtr, slideMapPtr);
+    QCOMPARE(slideMapPtr->keys(),expectKeys);
+    QCOMPARE(slideMapPtr->values(),expectValues);
 }
 
 
-void TestTextParser::populateSlideMapBackgroundScalingFit()
+void TestPopulateMapParser::populateSlideMapBackgroundScalingFit()
 {
-    QStringList listIn;
+    QMap<QString, QString> expectMap;
+    QList<QString> expectKeys;
+    QList<QString> expectValues;
+    listInPtr->clear();
+    slideMapPtr->clear();
     QString test1("fit");
-    listIn.append(test1);
-    QMap<QString, QString> slideMap;
-    QMap<QString, QString> expectMap;
+    listInPtr->append(test1);
     expectMap.insert("backgroundScaling",test1);
-    pointy::populateSlideSettingsMap(&listIn, &slideMap);
-    QList<QString> slideKeys = slideMap.keys();
-    QList<QString> expectKeys = expectMap.keys();
-    QList<QString> slideValues = slideMap.values();
-    QList<QString> expectValues = expectMap.values();
-    QCOMPARE(slideKeys,expectKeys);
-    QCOMPARE(slideValues,expectValues);
+    expectKeys = expectMap.keys();
+    expectValues = expectMap.values();
+    pointy::populateSlideSettingsMap(listInPtr, slideMapPtr);
+    QCOMPARE(slideMapPtr->keys(),expectKeys);
+    QCOMPARE(slideMapPtr->values(),expectValues);
 }
 
-void TestTextParser::populateSlideMapBackgroundScalingStretch()
+void TestPopulateMapParser::populateSlideMapBackgroundScalingStretch()
 {
-    QStringList listIn;
+    QMap<QString, QString> expectMap;
+    QList<QString> expectKeys;
+    QList<QString> expectValues;
+    listInPtr->clear();
+    slideMapPtr->clear();
     QString test1("stretch");
-    listIn.append(test1);
-    QMap<QString, QString> slideMap;
-    QMap<QString, QString> expectMap;
+    listInPtr->append(test1);
     expectMap.insert("backgroundScaling",test1);
-    pointy::populateSlideSettingsMap(&listIn, &slideMap);
-    QList<QString> slideKeys = slideMap.keys();
-    QList<QString> expectKeys = expectMap.keys();
-    QList<QString> slideValues = slideMap.values();
-    QList<QString> expectValues = expectMap.values();
-    QCOMPARE(slideKeys,expectKeys);
-    QCOMPARE(slideValues,expectValues);
+    expectKeys = expectMap.keys();
+    expectValues = expectMap.values();
+    pointy::populateSlideSettingsMap(listInPtr, slideMapPtr);
+    QCOMPARE(slideMapPtr->keys(),expectKeys);
+    QCOMPARE(slideMapPtr->values(),expectValues);
 }
 
-void TestTextParser::populateSlideMapBackgroundScalingUnscaled()
+void TestPopulateMapParser::populateSlideMapBackgroundScalingUnscaled()
 {
-    QStringList listIn;
+    QMap<QString, QString> expectMap;
+    QList<QString> expectKeys;
+    QList<QString> expectValues;
+    listInPtr->clear();
+    slideMapPtr->clear();
     QString test1("unscaled");
-    listIn.append(test1);
-    QMap<QString, QString> slideMap;
-    QMap<QString, QString> expectMap;
+    listInPtr->append(test1);
     expectMap.insert("backgroundScaling",test1);
-    pointy::populateSlideSettingsMap(&listIn, &slideMap);
-    QList<QString> slideKeys = slideMap.keys();
-    QList<QString> expectKeys = expectMap.keys();
-    QList<QString> slideValues = slideMap.values();
-    QList<QString> expectValues = expectMap.values();
-    QCOMPARE(slideKeys,expectKeys);
-    QCOMPARE(slideValues,expectValues);
+    expectKeys = expectMap.keys();
+    expectValues = expectMap.values();
+    pointy::populateSlideSettingsMap(listInPtr, slideMapPtr);
+    QCOMPARE(slideMapPtr->keys(),expectKeys);
+    QCOMPARE(slideMapPtr->values(),expectValues);
 }
 
-void TestTextParser::populateSlideMapPositionBottomLeft()
+void TestPopulateMapParser::populateSlideMapPositionBottomLeft()
 {
-    QStringList listIn;
+    QMap<QString, QString> expectMap;
+    QList<QString> expectKeys;
+    QList<QString> expectValues;
+    listInPtr->clear();
+    slideMapPtr->clear();
     QString test1("bottom-left");
-    listIn.append(test1);
-    QMap<QString, QString> slideMap;
-    QMap<QString, QString> expectMap;
+    listInPtr->append(test1);
     expectMap.insert("position",test1);
-    pointy::populateSlideSettingsMap(&listIn, &slideMap);
-    QList<QString> slideKeys = slideMap.keys();
-    QList<QString> expectKeys = expectMap.keys();
-    QList<QString> slideValues = slideMap.values();
-    QList<QString> expectValues = expectMap.values();
-    QCOMPARE(slideKeys,expectKeys);
-    QCOMPARE(slideValues,expectValues);
+    expectKeys = expectMap.keys();
+    expectValues = expectMap.values();
+    pointy::populateSlideSettingsMap(listInPtr, slideMapPtr);
+    QCOMPARE(slideMapPtr->keys(),expectKeys);
+    QCOMPARE(slideMapPtr->values(),expectValues);
 }
 
-void TestTextParser::populateSlideMapPositionTopRight()
+void TestPopulateMapParser::populateSlideMapPositionTopRight()
 {
-    QStringList listIn;
+    QMap<QString, QString> expectMap;
+    QList<QString> expectKeys;
+    QList<QString> expectValues;
+    listInPtr->clear();
+    slideMapPtr->clear();
     QString test1("top-right");
-    listIn.append(test1);
-    QMap<QString, QString> slideMap;
-    QMap<QString, QString> expectMap;
+    listInPtr->append(test1);
     expectMap.insert("position",test1);
-    pointy::populateSlideSettingsMap(&listIn, &slideMap);
-    QList<QString> slideKeys = slideMap.keys();
-    QList<QString> expectKeys = expectMap.keys();
-    QList<QString> slideValues = slideMap.values();
-    QList<QString> expectValues = expectMap.values();
-    QCOMPARE(slideKeys,expectKeys);
-    QCOMPARE(slideValues,expectValues);
+    expectKeys = expectMap.keys();
+    expectValues = expectMap.values();
+    pointy::populateSlideSettingsMap(listInPtr, slideMapPtr);
+    QCOMPARE(slideMapPtr->keys(),expectKeys);
+    QCOMPARE(slideMapPtr->values(),expectValues);
 }
 
-void TestTextParser::populateSlideMapPositionCenter()
+void TestPopulateMapParser::populateSlideMapPositionCenter()
 {
-    QStringList listIn;
-    QString test1("center");
-    listIn.append(test1);
-    QMap<QString, QString> slideMap;
     QMap<QString, QString> expectMap;
+    QList<QString> expectKeys;
+    QList<QString> expectValues;
+    listInPtr->clear();
+    slideMapPtr->clear();
+    QString test1("center");
+    listInPtr->append(test1);
     expectMap.insert("position",test1);
-    pointy::populateSlideSettingsMap(&listIn, &slideMap);
-    QList<QString> slideKeys = slideMap.keys();
-    QList<QString> expectKeys = expectMap.keys();
-    QList<QString> slideValues = slideMap.values();
-    QList<QString> expectValues = expectMap.values();
-    QCOMPARE(slideKeys,expectKeys);
-    QCOMPARE(slideValues,expectValues);
+    expectKeys = expectMap.keys();
+    expectValues = expectMap.values();
+    pointy::populateSlideSettingsMap(listInPtr, slideMapPtr);
+    QCOMPARE(slideMapPtr->keys(),expectKeys);
+    QCOMPARE(slideMapPtr->values(),expectValues);
 }
 
 

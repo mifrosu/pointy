@@ -3,8 +3,14 @@
 
 int main()
 {
-    TestTextParser testParser;
-    QTest::qExec(&testParser);
+    TestCommentTextParser testCommentStripParser;
+    QTest::qExec(&testCommentStripParser);
+
+    TestSquareBracketParser testSquareBracketParser;
+    QTest::qExec(&testSquareBracketParser);
+
+    TestPopulateMapParser popMapParser;
+    QTest::qExec(&popMapParser);
 
     return 0;
 
