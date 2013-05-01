@@ -1,7 +1,9 @@
+
 SOURCES += \
     main.cpp \
     slide_list_model.cpp \
     slide_data.cpp
+
 
 TEMPLATE = app
 
@@ -12,5 +14,7 @@ HEADERS += \
     slide_list_model.h
 
 QT += core
+
+
 
 

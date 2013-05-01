@@ -3,6 +3,7 @@
 #include <QtCore/QtCore>
 #include <QMessageLogger>
 #include <qregexp.h>
+#include <qhash.h>
 
 
 namespace pointy {
@@ -25,9 +26,90 @@ const int SlideListModel::UseMarkupRole = Qt::UserRole + 14;
 const int SlideListModel::SlideTextRole = Qt::UserRole + 15;
 **/
 
-int SlideListModel::rowCount(const QModelIndex /*&parent*/) const
+
+SlideListModel::SlideListModel(QObject *parent) : QAbstractListModel(parent)
+{
+
+}
+
+
+
+QVariant SlideListModel::data(const QModelIndex &index, int role) const
+{
+    if (!index.isValid())
+        return QVariant();      // return a Null variant
+
+    if (index.row() >= slideList.size() )
+        return QVariant();
+
+    const QSharedPointer<SlideData> currentSlide = slideList.at(index.row());
+    switch (role) {
+    case StageColorRole:
+        return QVariant::fromValue(currentSlide->stageColor);
+    case FontRole:
+        return QVariant::fromValue(currentSlide->font);
+    case NotesFontRole:
+        return QVariant::fromValue(currentSlide->notesFont);
+    case NotesFontSizeRole:
+        return QVariant::fromValue(currentSlide->notesFontSize);
+    case TextColorRole:
+        return QVariant::fromValue(currentSlide->textColor);
+    case TextAlignRole:
+        return QVariant::fromValue(currentSlide->textAlign);
+    case ShadingColorRole:
+        return QVariant::fromValue(currentSlide->shadingColor);
+    case ShadingOpacityRole:
+        return QVariant::fromValue(currentSlide->shadingOpacity);
+    case DurationRole:
+        return QVariant::fromValue(currentSlide->duration);
+    case CommandRole:
+        return QVariant::fromValue(currentSlide->command);
+    case TransitionRole:
+        return QVariant::fromValue(currentSlide->transition);
+    case CameraFrameRateRole:
+        return QVariant::fromValue(currentSlide->cameraFrameRate);
+    case BackgroundScaleRole:
+        return QVariant::fromValue(currentSlide->backgroundScale);
+    case PositionRole:
+        return QVariant::fromValue(currentSlide->position);
+    case UseMarkupRole:
+        return QVariant::fromValue(currentSlide->useMarkup);
+    case SlideTextRole:
+        return QVariant::fromValue(currentSlide->slideText);
+    case SlideMediaRole:
+        return QVariant::fromValue(currentSlide->slideMedia);
+    default:
+        return QVariant();
+    }
+}
+
+int SlideListModel::rowCount(const QModelIndex& parent) const
 {
     return slideList.size();
+}
+
+QHash<int, QByteArray> SlideListModel::roleNames() const
+{
+    QHash<int, QByteArray> roles;
+    roles[StageColorRole] = "stageColor";
+    roles[FontRole] = "font";
+    roles[NotesFontRole] = "notesFont";
+    roles[NotesFontSizeRole] = "notesFontSize";
+    roles[TextColorRole] = "text";
+    roles[TextAlignRole] = "textAlign";
+    roles[ShadingColorRole] ="shadingColor";
+    roles[ShadingOpacityRole] ="shadingOpacity";
+    roles[DurationRole] ="duration";
+    roles[CommandRole] ="command";
+    roles[TransitionRole] ="transition";
+    roles[CameraFrameRateRole] ="cameraRameRate";
+    roles[BackgroundScaleRole] ="backgroundScale";
+    roles[PositionRole] ="postition";
+    roles[UseMarkupRole] ="useMarkup";
+    roles[SlideTextRole] ="slideText";
+    roles[SlideMediaRole] ="slideMedia";
+    return roles;
+
 }
 
 void stripComments(QSharedPointer<QByteArray>& lineIn, const QString comment)
@@ -169,54 +251,6 @@ void populateSlideSettingsMap(QSharedPointer<QStringList>& listIn,
 //}
 
 
-QVariant SlideListModel::data(const QModelIndex &index, int role) const
-{
-    if (!index.isValid())
-        return QVariant();      // return a Null variant
-
-    if (index.row() >= slideList.size() )
-        return QVariant();
-
-    const QSharedPointer<SlideData> currentSlide = slideList.at(index.row());
-    switch (role) {
-    case StageColorRole:
-        return QVariant::fromValue(currentSlide->stage_color);
-    case FontRole:
-        return QVariant::fromValue(currentSlide->font);
-    case NotesFontRole:
-        return QVariant::fromValue(currentSlide->notes_font);
-    case NotesFontSizeRole:
-        return QVariant::fromValue(currentSlide->notes_font_size);
-    case TextColorRole:
-        return QVariant::fromValue(currentSlide->text_color);
-    case TextAlignRole:
-        return QVariant::fromValue(currentSlide->text_align);
-    case ShadingColorRole:
-        return QVariant::fromValue(currentSlide->shading_color);
-    case ShadingOpacityRole:
-        return QVariant::fromValue(currentSlide->shading_opacity);
-    case DurationRole:
-        return QVariant::fromValue(currentSlide->duration);
-    case CommandRole:
-        return QVariant::fromValue(currentSlide->command);
-    case TransitionRole:
-        return QVariant::fromValue(currentSlide->transition);
-    case CameraFrameRateRole:
-        return QVariant::fromValue(currentSlide->camera_frame_rate);
-    case BackgroundScaleRole:
-        return QVariant::fromValue(currentSlide->background_scale);
-    case PositionRole:
-        return QVariant::fromValue(currentSlide->position);
-    case UseMarkupRole:
-        return QVariant::fromValue(currentSlide->use_markup);
-    case SlideTextRole:
-        return QVariant::fromValue(currentSlide->slide_text);
-    case SlideMediaRole:
-        return QVariant::fromValue(currentSlide->slide_media);
-    default:
-        return QVariant();
-    }
-}
 
 
 }

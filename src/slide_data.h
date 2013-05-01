@@ -11,23 +11,23 @@ class SlideData
 public:
     SlideData();
 
-    QString stage_color;		// transition tint
+    QString stageColor;		// transition tint
     QString font;
-    QString notes_font;
-    QString notes_font_size;
-    QString text_color;
-    QString text_align;
-    QString shading_color; 		// text rectangle bground color
-    qreal shading_opacity;
+    QString notesFont;
+    QString notesFontSize;
+    QString textColor;
+    QString textAlign;
+    QString shadingColor; 		// text rectangle bground color
+    qreal shadingOpacity;
     qreal duration;
     QString command;
     QString transition;
-    int camera_frame_rate;
-    QString background_scale;
+    int cameraFrameRate;
+    QString backgroundScale;
     QString position;
-    bool use_markup;
-    QString slide_text;
-    QString slide_media;
+    bool useMarkup;
+    QString slideText;
+    QString slideMedia;
 };
 
 

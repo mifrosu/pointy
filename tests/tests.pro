@@ -1,7 +1,13 @@
 QMAKE_CXXFLAGS += -std=c++11
 
-HEADERS += slide_list_model.h \
-           slide_data.h \
+INCLUDEPATH += . ../src/
+
+#DEPENDPATH += . ../src/
+
+
+HEADERS += \
+          ../src/slide_list_model.h \
+          ../src/slide_data.h \
     pointy_text_parse_tests.h
 
 SOURCES += \
@@ -10,9 +16,6 @@ SOURCES += \
     main.cpp \
     pointy_text_parse_tests.cpp
 
-INCLUDEPATH += ../src/
-
-#DEPENDPATH += . ../src/
 
 
 QT += testlib

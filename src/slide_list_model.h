@@ -11,6 +11,7 @@
 #include <qstringlist.h>
 
 
+
 namespace pointy {
 
 class SlideData;
@@ -20,21 +21,12 @@ class SlideListModel: public QAbstractListModel
     Q_OBJECT
 
 public:
-    SlideListModel(QObject* parent=0);
+    SlideListModel(QObject* parent = 0);
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-    int rowCount(const QModelIndex = QModelIndex()) const;
-    void readSlideFile(const QString fileName);
+    int rowCount(const QModelIndex &parent= QModelIndex()) const;
+    //void readSlideFile(const QString fileName);
+
     void clearSlides();
-
-private:
-    Q_DISABLE_COPY(SlideListModel)
-
-    SlideData newSlide();
-    //void appendSlide(SlideData currentSlide);
-
-    QList<QSharedPointer<SlideData> > slideList;
-    int lineCount;
-    bool haveCustomSettings;
 
     enum SlideRoles {
         StageColorRole = Qt::UserRole + 1,
@@ -55,6 +47,22 @@ private:
         SlideTextRole,
         SlideMediaRole
     };
+
+
+private:
+    Q_DISABLE_COPY(SlideListModel)
+
+    QHash<int, QByteArray> roleNames() const;
+
+
+    SlideData newSlide();
+    //void appendSlide(SlideData currentSlide);
+
+    QList<QSharedPointer<SlideData> > slideList;
+    int lineCount;
+    bool haveCustomSettings;
+
+
 
     QMap<QString, QString> defaultSettings;
     QMap<QString, QString> currentSlideSettings;
@@ -86,15 +94,12 @@ void stripSquareBrackets(QSharedPointer<QByteArray>& lineIn,
                          QSharedPointer<QStringList>& store,
                          QSharedPointer<int>& lineCount);
 
-
-<<<<<<< HEAD
-=======
-
->>>>>>> d497cba6c452d9c99074e8966f2e91ddf1614f17
 void populateSlideSettingsMap(QSharedPointer<QStringList>& listIn,
                       QSharedPointer<QMap<QString, QString> >& slideSettings);
 void setSlideSettingsMap(const QByteArray line, bool& isNewSlideShow,
                       QMap<QString,QString>& slideSettings);
+
+
 
 
 }
