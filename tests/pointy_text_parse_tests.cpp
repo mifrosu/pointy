@@ -83,7 +83,7 @@ void TestSquareBracketParser::stripSquareBracketsNoBrackets()
     linePtr->clear();
     storePtr->clear();
     linePtr->append("no brackets here");
-    pointy::stripSquareBrackets(linePtr, storePtr, lineCountPtr);
+    pointy::stripSquareBrackets(linePtr, storePtr, *lineCountPtr);
     QCOMPARE(*storePtr, QStringList());
 }
 
@@ -92,20 +92,8 @@ void TestSquareBracketParser::stripSquareBracketsOneSetting()
     linePtr->clear();
     storePtr->clear();
     linePtr->append("[one bracket here]");
-    pointy::stripSquareBrackets(linePtr, storePtr, lineCountPtr);
+    pointy::stripSquareBrackets(linePtr, storePtr, *lineCountPtr);
     QCOMPARE(*storePtr, QStringList("one bracket here"));
-}
-
-void TestSquareBracketParser::stripSquareBracketsTwoSettings()
-{
-    QStringList expectedStore;
-    expectedStore.append("first setting");
-    expectedStore.append("second setting");
-    linePtr->clear();
-    linePtr->append("[first setting][second setting]");
-    storePtr->clear();
-    pointy::stripSquareBrackets(linePtr, storePtr, lineCountPtr);
-    QCOMPARE(*storePtr, expectedStore);
 }
 
 void TestSquareBracketParser::stripSquareBracketsThreeSettings()
@@ -117,7 +105,7 @@ void TestSquareBracketParser::stripSquareBracketsThreeSettings()
     linePtr->clear();
     storePtr->clear();
     linePtr->append("[first setting][second setting][third setting]");
-    pointy::stripSquareBrackets(linePtr, storePtr, lineCountPtr);
+    pointy::stripSquareBrackets(linePtr, storePtr, *lineCountPtr);
     qDebug() << "*** StorePtr" << *storePtr << '\n';
     QCOMPARE(*storePtr, expectedStore);
 }
@@ -131,7 +119,7 @@ void TestSquareBracketParser::stripSquareBracketsSettingsWithJunk()
     linePtr->clear();
     storePtr->clear();
     linePtr->append("[first setting]junk[second setting]meh[third setting]");
-    pointy::stripSquareBrackets(linePtr, storePtr, lineCountPtr);
+    pointy::stripSquareBrackets(linePtr, storePtr, *lineCountPtr);
     QCOMPARE(*storePtr, expectedStore);
 }
 
@@ -144,7 +132,7 @@ void TestSquareBracketParser::stripSquareBracketsMalformedStart()
     linePtr->clear();
     storePtr->clear();
     linePtr->append("first setting]junk[second setting]meh[third setting]");
-    pointy::stripSquareBrackets(linePtr, storePtr, lineCountPtr);
+    pointy::stripSquareBrackets(linePtr, storePtr, *lineCountPtr);
     QCOMPARE(*storePtr, QStringList());
 }
 
@@ -157,7 +145,7 @@ void TestSquareBracketParser::stripSquareBracketsMalformedEnd()
     linePtr->clear();
     storePtr->clear();
     linePtr->append("[first settingjunk[second setting]meh[third setting]");
-    pointy::stripSquareBrackets(linePtr, storePtr, lineCountPtr);
+    pointy::stripSquareBrackets(linePtr, storePtr, *lineCountPtr);
     QCOMPARE(*storePtr, QStringList());
 }
 

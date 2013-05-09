@@ -39,7 +39,6 @@ private:
 private slots:
     void stripSquareBracketsNoBrackets();
     void stripSquareBracketsOneSetting();
-    void stripSquareBracketsTwoSettings();
     void stripSquareBracketsThreeSettings();
     void stripSquareBracketsSettingsWithJunk();
     void stripSquareBracketsMalformedStart();

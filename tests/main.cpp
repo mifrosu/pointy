@@ -1,5 +1,6 @@
 #include <QtTest/QtTest>
 #include "pointy_text_parse_tests.h"
+#include "pointy_test_file_read.h"
 
 int main()
 {
@@ -11,6 +12,9 @@ int main()
 
     TestPopulateMapParser popMapParser;
     QTest::qExec(&popMapParser);
+
+    pointy::TestFileRead testFileRead;
+    QTest::qExec(&testFileRead);
 
     return 0;
 

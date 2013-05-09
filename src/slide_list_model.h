@@ -24,7 +24,8 @@ public:
     SlideListModel(QObject* parent = 0);
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent= QModelIndex()) const;
-    //void readSlideFile(const QString fileName);
+    void readSlideFile(const QString fileName);
+    QString getRawSlideData() const;
 
     void clearSlides();
 
@@ -45,7 +46,9 @@ public:
         PositionRole,
         UseMarkupRole,
         SlideTextRole,
-        SlideMediaRole
+        SlideMediaRole,
+        BackgroundColorRole,
+        SlideNumberRole
     };
 
 
@@ -58,14 +61,13 @@ private:
     SlideData newSlide();
     //void appendSlide(SlideData currentSlide);
 
+    typedef QSharedPointer<QMap<QString,QString> > stringMapPtr;
+    typedef QList<stringMapPtr> stringMapList;
+
+    QSharedPointer<stringMapList> settingsMapList;
     QList<QSharedPointer<SlideData> > slideList;
-    int lineCount;
-    bool haveCustomSettings;
 
-
-
-    QMap<QString, QString> defaultSettings;
-    QMap<QString, QString> currentSlideSettings;
+    void newSlideSetting();
 
 
     /**
@@ -92,12 +94,13 @@ void stripComments(QSharedPointer<QByteArray>& lineIn,
                    const QString comment="#");
 void stripSquareBrackets(QSharedPointer<QByteArray>& lineIn,
                          QSharedPointer<QStringList>& store,
-                         QSharedPointer<int>& lineCount);
+                         const int &lineCount);
 
 void populateSlideSettingsMap(QSharedPointer<QStringList>& listIn,
                       QSharedPointer<QMap<QString, QString> >& slideSettings);
 void setSlideSettingsMap(const QByteArray line, bool& isNewSlideShow,
                       QMap<QString,QString>& slideSettings);
+
 
 
 

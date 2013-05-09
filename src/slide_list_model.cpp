@@ -29,6 +29,7 @@ const int SlideListModel::SlideTextRole = Qt::UserRole + 15;
 
 SlideListModel::SlideListModel(QObject *parent) : QAbstractListModel(parent)
 {
+    settingsMapList = QSharedPointer<stringMapList>(new stringMapList);
 
 }
 
@@ -78,6 +79,10 @@ QVariant SlideListModel::data(const QModelIndex &index, int role) const
         return QVariant::fromValue(currentSlide->slideText);
     case SlideMediaRole:
         return QVariant::fromValue(currentSlide->slideMedia);
+    case BackgroundColorRole:
+        return QVariant::fromValue(currentSlide->backgroundColor);
+    case SlideNumberRole:
+        return QVariant::fromValue(currentSlide->slideNumber);
     default:
         return QVariant();
     }
@@ -108,6 +113,8 @@ QHash<int, QByteArray> SlideListModel::roleNames() const
     roles[UseMarkupRole] ="useMarkup";
     roles[SlideTextRole] ="slideText";
     roles[SlideMediaRole] ="slideMedia";
+    roles[BackgroundColorRole] ="backgroundColor";
+    roles[SlideNumberRole] = "slideNumber";
     return roles;
 
 }
@@ -142,13 +149,13 @@ void stripComments(QSharedPointer<QByteArray>& lineIn, const QString comment)
 
 void stripSquareBrackets(QSharedPointer<QByteArray>& lineIn,
                          QSharedPointer<QStringList>& store,
-                         QSharedPointer<int>& lineCount)
+                         const int& lineCount)
 {
     int numberStartBracket = lineIn->count("[");
     int numberEndBracket = lineIn->count("]");
     if (numberStartBracket != numberEndBracket)
     {
-        qWarning("Line %d: incomplete brackets", *lineCount);
+        qWarning("Line %d: incomplete brackets", lineCount);
         return;
     }
     int startBracket = lineIn->indexOf("[");
@@ -158,7 +165,7 @@ void stripSquareBrackets(QSharedPointer<QByteArray>& lineIn,
 
     int endBracket = lineIn->indexOf("]");
     if (endBracket < startBracket) {
-        qWarning("Line %d: mismatched brackets", *lineCount);
+        qWarning("Line %d: mismatched brackets", lineCount);
         return;
     }
     QSharedPointer<QByteArray> remains =
@@ -204,53 +211,111 @@ void populateSlideSettingsMap(QSharedPointer<QStringList>& listIn,
         }
         if ((*iter).contains(QRegExp("top|bottom|left|right|center"))) {
             slideSettings->insert("position", (*iter).trimmed());
+            continue;
         }
         else {
-            return;
+            slideSettings->insert("backgroundColor", (*iter).trimmed());
         }
     }
 
 }
 
-
-//void SlideListModel::readSlideFile(const QString fileName)
-//{
-//    lineCount = 0;      // for error reporting
-//    haveCustomSettings = false;
-
-//    QFile file(fileName);
-//    if (!file.open(QIODevice::ReadOnly)) {
-//        qFatal("Slide file can not be read");
-//        //return 1;
-//    }
-
-//    while (!file.atEnd()) {
-//        ++lineCount;
-//        QByteArray line = file.readLine();
-//        line = stripComments(line, "#");
-//        // processLine
-        // process function
-//        if (line.startsWith("[") && settingsFlag == false) {
-//            // strip []
-//            //
-
-//        }
-//        if (line.startsWith("--") && settingsFlag == false) {
-//            settingsFlag = true;
-//            // apply currentSettings map to default slide (with function)
-
-//            // makeSlide function --- process map
-//            // ... clear map
-//            // ... new map = copy of default map
-//        }
-//        else {
-//            // slide body -- add to current map
-//        }
-//    }
-
-//}
+void SlideListModel::newSlideSetting()
+{
+    settingsMapList->push_back(QSharedPointer<QMap<QString,QString> >(
+                                   new QMap<QString,QString>));
+}
 
 
+void SlideListModel::readSlideFile(const QString fileName)
+{
+    int lineCount = 0;      // for error reporting
+    bool haveCustomSettings = false;
 
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly)) {
+        qFatal("Slide file can not be read");
+    }
+
+    QSharedPointer<QStringList> rawSettingsList =
+            QSharedPointer<QStringList>(new QStringList);
+    newSlideSetting();
+    stringMapPtr customSettings = settingsMapList->first();
+    newSlideSetting();
+    stringMapPtr currentSlideSettings = settingsMapList->last();
+    QSharedPointer<QString> currentSlideText =
+            QSharedPointer<QString>(new QString);
+
+    while (!file.atEnd()) {
+        ++lineCount;
+        QSharedPointer<QByteArray> linePtr =
+                QSharedPointer<QByteArray>(new QByteArray);
+        *linePtr = file.readLine();
+        stripComments(linePtr, "#");
+        if (linePtr->startsWith("[") && haveCustomSettings == false) {
+            stripSquareBrackets(linePtr, rawSettingsList, lineCount);
+        }
+        else if (linePtr->startsWith("--")) {
+            if (haveCustomSettings == false) {
+                // this is the first slide, so store header custom settings
+                haveCustomSettings = true;
+                populateSlideSettingsMap(rawSettingsList, customSettings);
+            }
+            if (haveCustomSettings == true) {
+                if (!(currentSlideSettings->isEmpty())) {
+                    if (!(currentSlideText->isEmpty())) {
+                        *currentSlideText = currentSlideText->trimmed();
+                        currentSlideSettings->insert("slideText",
+                                                        *currentSlideText);
+                    }
+                }
+                newSlideSetting();
+                currentSlideSettings = settingsMapList->last();
+                rawSettingsList->clear();
+                currentSlideText->clear();
+            }
+
+            if (linePtr->contains("[")) {
+                stripSquareBrackets(linePtr,rawSettingsList, lineCount);
+                populateSlideSettingsMap(rawSettingsList,
+                                         currentSlideSettings);
+            }
+        }
+        else {
+            currentSlideText->append(*linePtr);
+        }
+    }
+    if (!(currentSlideSettings->isEmpty()) ||
+            !(currentSlideText->isEmpty())) {
+        *currentSlideText = currentSlideText->trimmed();
+        currentSlideSettings->insert("slideText",*currentSlideText);
+    }
 
 }
+
+QString SlideListModel::getRawSlideData() const
+{
+    QString rawData;
+    rawData.append('\n');
+    QList<stringMapPtr>::const_iterator listIter =
+            settingsMapList->begin();
+    QList<stringMapPtr>::const_iterator endList =
+            settingsMapList->end();
+    while (listIter != endList) {
+        QMap<QString,QString>::const_iterator mapIter = (*listIter)->begin();
+        QMap<QString,QString>::const_iterator endMap = (*listIter)->end();
+        while (mapIter != endMap) {
+            QString outData = mapIter.key() + ": " + mapIter.value() + "\n";
+            rawData.append(outData);
+            ++mapIter;
+        }
+        ++listIter;
+    }
+    return rawData;
+
+}
+
+
+
+
+}  // namespace pointy

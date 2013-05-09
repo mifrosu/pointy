@@ -28,6 +28,8 @@ public:
     bool useMarkup;
     QString slideText;
     QString slideMedia;
+    QString backgroundColor;
+    int slideNumber;
 };
 
 

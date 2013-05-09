@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>test_input_files/comment_test_file.pin</file>
+        <file>test_input_files/simple_file.pin</file>
     </qresource>
 </RCC>
