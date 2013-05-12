@@ -3,6 +3,7 @@
 
 #include <QtCore/qstring.h>
 #include <QtCore/qlist.h>
+#include <qsharedpointer.h>
 
 namespace pointy {
 
@@ -30,9 +31,14 @@ public:
     QString slideMedia;
     QString backgroundColor;
     int slideNumber;
+
+    void slideSettingAssign(const QString& lhs_in, const QString& rhs_in);
+    void slideSettingAssign(const QString& setting);
+
+private:
+    bool isValidPosition(const QString& testString);
 };
 
-
-}
+}   // namespace pointy
 
 #endif // SLIDE_DATA_H

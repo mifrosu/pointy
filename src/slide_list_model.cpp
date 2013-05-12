@@ -4,6 +4,7 @@
 #include <QMessageLogger>
 #include <qregexp.h>
 #include <qhash.h>
+#include <qcolor.h>
 
 
 namespace pointy {
@@ -29,6 +30,7 @@ const int SlideListModel::SlideTextRole = Qt::UserRole + 15;
 
 SlideListModel::SlideListModel(QObject *parent) : QAbstractListModel(parent)
 {
+    customSlideSettings = QSharedPointer<SlideData>(new SlideData);
 
 }
 
@@ -219,64 +221,25 @@ void populateSlideSettingsMap(QSharedPointer<QStringList>& listIn,
 
 }
 
-void slideSettingEquals(const QString &lhs_in, const QString &rhs_in,
-                        QSharedPointer<SlideData> currentSlide)
+void populateSlideSettings(QStringList &listIn,
+                           QSharedPointer<SlideData> &currentSlide)
 {
-    QString lhs((lhs_in.toLower()).trimmed());
-    QString rhs(rhs_in.trimmed());
+    if (listIn.isEmpty() || !currentSlide) {
+        return;
+    }
 
-    if (lhs == "stage-color") {
-        currentSlide->stageColor = rhs;
-    }
-    else if (lhs == "font") {
-        currentSlide->font = rhs;
-    }
-    else if (lhs == "notes-font") {
-        currentSlide->notesFont = rhs;
-    }
-    else if (lhs == "notes-font-size") {
-        currentSlide->notesFontSize = rhs;
-    }
-    else if (lhs == "text-color") {
-        currentSlide->textColor = rhs;
-    }
-    else if (lhs == "text-align") {
-        currentSlide->textAlign = rhs;
-    }
-    else if (lhs == "shading-color") {
-        currentSlide->shadingColor = rhs;
-    }
-    else if (lhs == "shading-opacity") {
-        bool ok;
-        qreal temp = rhs.toFloat(&ok);
-        if (!ok) {
-            return;
+    QStringList::const_iterator iter;
+    QStringList::const_iterator endIter = listIn.end();
+
+    for (iter = listIn.begin(); iter != endIter; ++iter) {
+        int equalsIndex = iter->indexOf("=");
+        if (equalsIndex > 0) {
+            currentSlide->slideSettingAssign(iter->left(equalsIndex),
+                                             iter->mid(equalsIndex + 1));
+            continue;
         }
         else {
-        currentSlide->shadingOpacity = temp;
-        }
-    }
-    else if (lhs == "duration") {
-        bool ok;
-        qreal temp = rhs.toFloat(&ok);
-        if (!ok) {
-            return;
-        }
-        else {
-            currentSlide->duration = temp;
-        }
-    }
-    else if (lhs == "transition") {
-        currentSlide->transition = rhs;
-    }
-    else if (lhs == "camera-framerate") {
-        bool ok;
-        int temp = rhs.toInt(&ok);
-        if (!ok) {
-            return;
-        }
-        else {
-            currentSlide->cameraFrameRate = temp;
+            currentSlide->slideSettingAssign(*iter);
         }
     }
 
@@ -284,8 +247,9 @@ void slideSettingEquals(const QString &lhs_in, const QString &rhs_in,
 
 void SlideListModel::newSlideSetting()
 {
-    settingsMapList.push_back(QSharedPointer<QMap<QString,QString> >(
-                                   new QMap<QString,QString>));
+//    settingsMapList.push_back(QSharedPointer<QMap<QString,QString> >(
+//                                   new QMap<QString,QString>));
+    slideList.push_back(QSharedPointer<SlideData>(new SlideData));
 }
 
 
@@ -299,12 +263,10 @@ void SlideListModel::readSlideFile(const QString fileName)
         qFatal("Slide file can not be read");
     }
 
-    QSharedPointer<QStringList> rawSettingsList =
-            QSharedPointer<QStringList>(new QStringList);
+    QSharedPointer<QStringList> rawSettingsList = QSharedPointer<QStringList>
+            (new QStringList);
     newSlideSetting();
-    stringMapPtr customSettings = settingsMapList.first();
-    newSlideSetting();
-    stringMapPtr currentSlideSettings = settingsMapList.last();
+    QSharedPointer<SlideData> currentSlideSettings = slideList.last();
     QSharedPointer<QString> currentSlideText =
             QSharedPointer<QString>(new QString);
 
@@ -321,25 +283,26 @@ void SlideListModel::readSlideFile(const QString fileName)
             if (haveCustomSettings == false) {
                 // this is the first slide, so store header custom settings
                 haveCustomSettings = true;
-                populateSlideSettingsMap(rawSettingsList, customSettings);
+                populateSlideSettings(*rawSettingsList, customSlideSettings);
             }
             if (haveCustomSettings == true) {
-                if (!(currentSlideSettings->isEmpty())) {
-                    if (!(currentSlideText->isEmpty())) {
-                        *currentSlideText = currentSlideText->trimmed();
-                        currentSlideSettings->insert("slideText",
-                                                        *currentSlideText);
-                    }
+
+                if (!(currentSlideText->isEmpty())) {
+                    *currentSlideText = currentSlideText->trimmed();
+                    currentSlideSettings->slideText = *currentSlideText;
+                    //                        currentSlideSettings->insert("slideText",
+                    //                                                        *currentSlideText);
                 }
+
                 newSlideSetting();
-                currentSlideSettings = settingsMapList.last();
+                currentSlideSettings = slideList.last();
                 rawSettingsList->clear();
                 currentSlideText->clear();
             }
 
             if (linePtr->contains("[")) {
                 stripSquareBrackets(linePtr,rawSettingsList, lineCount);
-                populateSlideSettingsMap(rawSettingsList,
+                populateSlideSettings(*rawSettingsList,
                                          currentSlideSettings);
             }
         }
@@ -347,10 +310,10 @@ void SlideListModel::readSlideFile(const QString fileName)
             currentSlideText->append(*linePtr);
         }
     }
-    if (!(currentSlideSettings->isEmpty()) ||
-            !(currentSlideText->isEmpty())) {
+    if (!(currentSlideText->isEmpty())) {
         *currentSlideText = currentSlideText->trimmed();
-        currentSlideSettings->insert("slideText",*currentSlideText);
+        currentSlideSettings->slideText = *currentSlideText;
+                // insert("slideText",*currentSlideText);
     }
 
 }

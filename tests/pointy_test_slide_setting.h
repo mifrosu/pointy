@@ -1,8 +1,7 @@
 #ifndef POINTY_TEST_SLIDE_SETTING_H
 #define POINTY_TEST_SLIDE_SETTING_H
 
-
-#include "../src/slide_list_model.h"
+#include "../src/slide_data.h"
 #include <QtTest/QtTest>
 #include <qsharedpointer.h>
 
@@ -19,8 +18,6 @@ private:
 
 private slots:
     void assignSlideSettings();
-
-
 };
 
 }

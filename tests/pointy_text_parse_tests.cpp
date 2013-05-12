@@ -1,4 +1,5 @@
 #include "pointy_text_parse_tests.h"
+#include "slide_data.h"
 #include "slide_list_model.h"
 
 
@@ -328,6 +329,21 @@ void TestPopulateMapParser::populateSlideMapPositionCenter()
     QCOMPARE(slideMapPtr->values(),expectValues);
 }
 
+void TestPopulateMapParser::populateSlideSettings()
+{
+    QSharedPointer<pointy::SlideData> currentSlide =
+            QSharedPointer<pointy::SlideData>(new pointy::SlideData);
+    QStringList testList;
+    testList.append("top-left");
+    testList.append("lightSteelBlue");
+    testList.append("duration=5.0");
+    testList.append("font=Monospace 12 px");
+    pointy::populateSlideSettings(testList,currentSlide);
+    QCOMPARE(currentSlide->position, QString("top-left"));
+    QCOMPARE(currentSlide->backgroundColor, QString("lightsteelblue"));
+    QCOMPARE(currentSlide->duration, float(5.0));
+    QCOMPARE(currentSlide->font, QString("Monospace 12 px"));
+}
 
 
 /**

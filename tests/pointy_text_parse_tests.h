@@ -67,6 +67,8 @@ private slots:
     void populateSlideMapPositionBottomLeft();
     void populateSlideMapPositionTopRight();
     void populateSlideMapPositionCenter();
+
+    void populateSlideSettings();
 };
 
 

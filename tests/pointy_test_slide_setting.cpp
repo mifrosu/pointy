@@ -2,8 +2,6 @@
 
 namespace pointy {
 
-
-
 TestSlideSetting::TestSlideSetting()
 {
 
@@ -12,29 +10,62 @@ TestSlideSetting::TestSlideSetting()
 
 void TestSlideSetting::assignSlideSettings()
 {
-    slideSettingEquals("stage-color "," black", testSlide);
+    testSlide->slideSettingAssign("stage-color "," black");
     QCOMPARE(testSlide->stageColor, QString("black"));
-    slideSettingEquals("font", "Sans 50 px", testSlide);
+    testSlide->slideSettingAssign("font", "Sans 50 px");
     QCOMPARE(testSlide->font, QString("Sans 50 px"));
-    slideSettingEquals("notes-font", "Sans ", testSlide);
+    testSlide->slideSettingAssign("notes-font", "Sans ");
     QCOMPARE(testSlide->notesFont, QString("Sans"));
-    slideSettingEquals("notes-font-size","100 px", testSlide);
+    testSlide->slideSettingAssign("notes-font-size","100 px");
     QCOMPARE(testSlide->notesFontSize, QString("100 px"));
-    slideSettingEquals("text-color", "crimson", testSlide);
+    testSlide->slideSettingAssign("text-color", "crimson");
     QCOMPARE(testSlide->textColor, QString("crimson"));
-    slideSettingEquals("text-align","left", testSlide);
+    testSlide->slideSettingAssign("text-align","left");
     QCOMPARE(testSlide->textAlign, QString("left"));
-    slideSettingEquals("shading-color", "blue", testSlide);
+    testSlide->slideSettingAssign("shading-color", "blue");
     QCOMPARE(testSlide->shadingColor, QString("blue"));
 
-    slideSettingEquals("shading-opacity","0.5", testSlide);
+    testSlide->slideSettingAssign("shading-opacity","0.5");
     QCOMPARE(testSlide->shadingOpacity, qreal(0.5));
-    slideSettingEquals("duration","0.1", testSlide);
+    testSlide->slideSettingAssign("duration","0.1");
     QCOMPARE(testSlide->duration, float(0.1));
-    slideSettingEquals("transition", "slide", testSlide);
+    testSlide->slideSettingAssign("transition", "slide");
     QCOMPARE(testSlide->transition, QString("slide"));
-    slideSettingEquals("camera-framerate","20", testSlide);
+    testSlide->slideSettingAssign("camera-framerate","20");
     QCOMPARE(testSlide->cameraFrameRate, int(20));
+
+    testSlide->slideSettingAssign("inPictura.jpeg ");
+    QCOMPARE(testSlide->slideMedia, QString("inPictura.jpeg"));
+    testSlide->slideSettingAssign("no-markup");
+    QCOMPARE(testSlide->useMarkup, false);
+    testSlide->slideSettingAssign("stretch");
+    QCOMPARE(testSlide->backgroundScale, QString("stretch"));
+
+    testSlide->slideSettingAssign("top-left");
+    QCOMPARE(testSlide->position, QString("top-left"));
+    testSlide->slideSettingAssign("top-right");
+    QCOMPARE(testSlide->position, QString("top-right"));
+    testSlide->slideSettingAssign("top");
+    QCOMPARE(testSlide->position, QString("top"));
+    testSlide->slideSettingAssign("left");
+    QCOMPARE(testSlide->position, QString("left"));
+    testSlide->slideSettingAssign("right");
+    QCOMPARE(testSlide->position, QString("right"));
+    testSlide->slideSettingAssign("center");
+    QCOMPARE(testSlide->position, QString("center"));
+    testSlide->slideSettingAssign("bottom-left");
+    QCOMPARE(testSlide->position, QString("bottom-left"));
+    testSlide->slideSettingAssign("bottom");
+    QCOMPARE(testSlide->position, QString("bottom"));
+    testSlide->slideSettingAssign("bottom-right");
+    QCOMPARE(testSlide->position, QString("bottom-right"));
+    testSlide->slideSettingAssign("zebra");
+    QCOMPARE(testSlide->backgroundColor, QString("white"));
+    testSlide->slideSettingAssign("lightsteelblue");
+    QCOMPARE(testSlide->backgroundColor, QString("lightsteelblue"));
+
+
+
 }
 
 

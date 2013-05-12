@@ -66,7 +66,7 @@ private:
 
     stringMapList settingsMapList;
 
-    SlideData customSlide;
+    QSharedPointer<SlideData> customSlideSettings;
     QList<QSharedPointer<SlideData> > slideList;
 
     void populateSlideList(QStringList& listIn,
@@ -102,13 +102,9 @@ void stripSquareBrackets(QSharedPointer<QByteArray>& lineIn,
 
 void populateSlideSettingsMap(QSharedPointer<QStringList>& listIn,
                       QSharedPointer<QMap<QString, QString> >& slideSettings);
-void setSlideSettingsMap(const QByteArray line, bool& isNewSlideShow,
-                      QMap<QString,QString>& slideSettings);
 
-void slideSettingEquals(const QString& lhs_in, const QString& rhs_in,
-                        QSharedPointer<SlideData> currentSlide);
-
-
+void populateSlideSettings(QStringList& listIn,
+                           QSharedPointer<SlideData>& currentSlide);
 
 
 
