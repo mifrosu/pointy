@@ -64,9 +64,13 @@ private:
     typedef QSharedPointer<QMap<QString,QString> > stringMapPtr;
     typedef QList<stringMapPtr> stringMapList;
 
-    QSharedPointer<stringMapList> settingsMapList;
+    stringMapList settingsMapList;
+
+    SlideData customSlide;
     QList<QSharedPointer<SlideData> > slideList;
 
+    void populateSlideList(QStringList& listIn,
+                           QSharedPointer<SlideData>& slide);
     void newSlideSetting();
 
 
@@ -100,6 +104,9 @@ void populateSlideSettingsMap(QSharedPointer<QStringList>& listIn,
                       QSharedPointer<QMap<QString, QString> >& slideSettings);
 void setSlideSettingsMap(const QByteArray line, bool& isNewSlideShow,
                       QMap<QString,QString>& slideSettings);
+
+void slideSettingEquals(const QString& lhs_in, const QString& rhs_in,
+                        QSharedPointer<SlideData> currentSlide);
 
 
 

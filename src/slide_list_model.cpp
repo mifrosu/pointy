@@ -29,7 +29,6 @@ const int SlideListModel::SlideTextRole = Qt::UserRole + 15;
 
 SlideListModel::SlideListModel(QObject *parent) : QAbstractListModel(parent)
 {
-    settingsMapList = QSharedPointer<stringMapList>(new stringMapList);
 
 }
 
@@ -220,9 +219,72 @@ void populateSlideSettingsMap(QSharedPointer<QStringList>& listIn,
 
 }
 
+void slideSettingEquals(const QString &lhs_in, const QString &rhs_in,
+                        QSharedPointer<SlideData> currentSlide)
+{
+    QString lhs((lhs_in.toLower()).trimmed());
+    QString rhs(rhs_in.trimmed());
+
+    if (lhs == "stage-color") {
+        currentSlide->stageColor = rhs;
+    }
+    else if (lhs == "font") {
+        currentSlide->font = rhs;
+    }
+    else if (lhs == "notes-font") {
+        currentSlide->notesFont = rhs;
+    }
+    else if (lhs == "notes-font-size") {
+        currentSlide->notesFontSize = rhs;
+    }
+    else if (lhs == "text-color") {
+        currentSlide->textColor = rhs;
+    }
+    else if (lhs == "text-align") {
+        currentSlide->textAlign = rhs;
+    }
+    else if (lhs == "shading-color") {
+        currentSlide->shadingColor = rhs;
+    }
+    else if (lhs == "shading-opacity") {
+        bool ok;
+        qreal temp = rhs.toFloat(&ok);
+        if (!ok) {
+            return;
+        }
+        else {
+        currentSlide->shadingOpacity = temp;
+        }
+    }
+    else if (lhs == "duration") {
+        bool ok;
+        qreal temp = rhs.toFloat(&ok);
+        if (!ok) {
+            return;
+        }
+        else {
+            currentSlide->duration = temp;
+        }
+    }
+    else if (lhs == "transition") {
+        currentSlide->transition = rhs;
+    }
+    else if (lhs == "camera-framerate") {
+        bool ok;
+        int temp = rhs.toInt(&ok);
+        if (!ok) {
+            return;
+        }
+        else {
+            currentSlide->cameraFrameRate = temp;
+        }
+    }
+
+}
+
 void SlideListModel::newSlideSetting()
 {
-    settingsMapList->push_back(QSharedPointer<QMap<QString,QString> >(
+    settingsMapList.push_back(QSharedPointer<QMap<QString,QString> >(
                                    new QMap<QString,QString>));
 }
 
@@ -240,9 +302,9 @@ void SlideListModel::readSlideFile(const QString fileName)
     QSharedPointer<QStringList> rawSettingsList =
             QSharedPointer<QStringList>(new QStringList);
     newSlideSetting();
-    stringMapPtr customSettings = settingsMapList->first();
+    stringMapPtr customSettings = settingsMapList.first();
     newSlideSetting();
-    stringMapPtr currentSlideSettings = settingsMapList->last();
+    stringMapPtr currentSlideSettings = settingsMapList.last();
     QSharedPointer<QString> currentSlideText =
             QSharedPointer<QString>(new QString);
 
@@ -270,7 +332,7 @@ void SlideListModel::readSlideFile(const QString fileName)
                     }
                 }
                 newSlideSetting();
-                currentSlideSettings = settingsMapList->last();
+                currentSlideSettings = settingsMapList.last();
                 rawSettingsList->clear();
                 currentSlideText->clear();
             }
@@ -298,9 +360,9 @@ QString SlideListModel::getRawSlideData() const
     QString rawData;
     rawData.append('\n');
     QList<stringMapPtr>::const_iterator listIter =
-            settingsMapList->begin();
+            settingsMapList.begin();
     QList<stringMapPtr>::const_iterator endList =
-            settingsMapList->end();
+            settingsMapList.end();
     while (listIter != endList) {
         QMap<QString,QString>::const_iterator mapIter = (*listIter)->begin();
         QMap<QString,QString>::const_iterator endMap = (*listIter)->end();
