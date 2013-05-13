@@ -11,9 +11,6 @@ int main()
     TestSquareBracketParser testSquareBracketParser;
     QTest::qExec(&testSquareBracketParser);
 
-    TestPopulateMapParser popMapParser;
-    QTest::qExec(&popMapParser);
-
     pointy::TestSlideSetting testSlideSetting;
     QTest::qExec(&testSlideSetting);
 

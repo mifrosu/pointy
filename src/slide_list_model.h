@@ -57,15 +57,6 @@ private:
 
     QHash<int, QByteArray> roleNames() const;
 
-
-    SlideData newSlide();
-    //void appendSlide(SlideData currentSlide);
-
-    typedef QSharedPointer<QMap<QString,QString> > stringMapPtr;
-    typedef QList<stringMapPtr> stringMapList;
-
-    stringMapList settingsMapList;
-
     QSharedPointer<SlideData> customSlideSettings;
     QList<QSharedPointer<SlideData> > slideList;
 

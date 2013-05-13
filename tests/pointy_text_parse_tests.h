@@ -46,31 +46,6 @@ private slots:
 
 };
 
-class TestPopulateMapParser: public QObject
-{
-    Q_OBJECT
-public:
-    TestPopulateMapParser();
-
-private:
-    QSharedPointer<QStringList> listInPtr;
-    QSharedPointer<QMap<QString,QString> > slideMapPtr;
-
-private slots:
-    void populateSlideMapEquals();
-    void populateSlideMapEqualsMulti();
-    void populateSlideMapMedia();
-    void populateSlideMapBackgroundScalingFill();
-    void populateSlideMapBackgroundScalingFit();
-    void populateSlideMapBackgroundScalingStretch();
-    void populateSlideMapBackgroundScalingUnscaled();
-    void populateSlideMapPositionBottomLeft();
-    void populateSlideMapPositionTopRight();
-    void populateSlideMapPositionCenter();
-
-    void populateSlideSettings();
-};
-
 
 
 #endif // POINTY_TEXT_PARSE_TESTS_H

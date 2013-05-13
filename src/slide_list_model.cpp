@@ -8,32 +8,12 @@
 
 
 namespace pointy {
-/**
-// define custom data roles starting with Qt::UserRole
-const int SlideListModel::StageColorRole = Qt::UserRole + 1;
-const int SlideListModel::FontRole = Qt::UserRole + 2;
-const int SlideListModel::NotesFontRole = Qt::UserRole + 3;
-const int SlideListModel::NotesFontSizeRole = Qt::UserRole + 4;
-const int SlideListModel::TextColorRole = Qt::UserRole + 5;
-const int SlideListModel::TextAlignRole = Qt::UserRole + 6;
-const int SlideListModel::ShadingColorRole = Qt::UserRole + 7;
-const int SlideListModel::DurationRole = Qt::UserRole + 8;
-const int SlideListModel::CommandRole = Qt::UserRole + 9;
-const int SlideListModel::TransitionRole = Qt::UserRole + 10;
-const int SlideListModel::CameraFrameRateRole = Qt::UserRole + 11;
-const int SlideListModel::BackgroundScaleRole = Qt::UserRole + 12;
-const int SlideListModel::PositionRole = Qt::UserRole + 13;
-const int SlideListModel::UseMarkupRole = Qt::UserRole + 14;
-const int SlideListModel::SlideTextRole = Qt::UserRole + 15;
-**/
-
 
 SlideListModel::SlideListModel(QObject *parent) : QAbstractListModel(parent)
 {
     customSlideSettings = QSharedPointer<SlideData>(new SlideData);
 
 }
-
 
 
 QVariant SlideListModel::data(const QModelIndex &index, int role) const
@@ -178,49 +158,6 @@ void stripSquareBrackets(QSharedPointer<QByteArray>& lineIn,
                         store, lineCount);
 }
 
-void populateSlideSettingsMap(QSharedPointer<QStringList>& listIn,
-                      QSharedPointer<QMap<QString, QString> >& slideSettings)
-{
-    if (!listIn || !slideSettings) {
-        return;
-    }
-    QStringList::const_iterator iter;
-    QStringList::const_iterator end = listIn->end();
-
-    for (iter = listIn->begin(); iter!=end;++iter)
-    {
-        int equalsIndex = (*iter).indexOf("=");
-        if (equalsIndex > 0) {
-            slideSettings->insert((*iter).left(equalsIndex).trimmed(),
-                                  (*iter).mid(equalsIndex+ 1).trimmed());
-            continue;
-        }
-        int stopIndex = (*iter).indexOf(".");
-        if (stopIndex != -1) {
-            // check if file exists?
-            slideSettings->insert("slideMedia",(*iter).trimmed());
-            continue;
-        }
-        int markupIndex = (*iter).indexOf("markup");
-        if (markupIndex != -1) {
-            slideSettings->insert("useMarkup",(*iter).trimmed());
-            continue;
-        }
-        if ((*iter).contains(QRegExp("fill|fit|stretch|unscaled"))) {
-            slideSettings->insert("backgroundScaling",(*iter).trimmed());
-            continue;
-        }
-        if ((*iter).contains(QRegExp("top|bottom|left|right|center"))) {
-            slideSettings->insert("position", (*iter).trimmed());
-            continue;
-        }
-        else {
-            slideSettings->insert("backgroundColor", (*iter).trimmed());
-        }
-    }
-
-}
-
 void populateSlideSettings(QStringList &listIn,
                            QSharedPointer<SlideData> &currentSlide)
 {
@@ -252,8 +189,6 @@ void SlideListModel::newSlideSetting()
 
 void SlideListModel::newSlideSetting(const SlideData& customSlideSettings)
 {
-//    settingsMapList.push_back(QSharedPointer<QMap<QString,QString> >(
-//                                   new QMap<QString,QString>));
     slideList.push_back(QSharedPointer<SlideData>(
                             new SlideData(customSlideSettings)));
 }
