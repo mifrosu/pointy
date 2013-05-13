@@ -25,7 +25,7 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent= QModelIndex()) const;
     void readSlideFile(const QString fileName);
-    QString getRawSlideData() const;
+    QStringList getRawSlideData() const;
 
     void clearSlides();
 
@@ -72,6 +72,7 @@ private:
     void populateSlideList(QStringList& listIn,
                            QSharedPointer<SlideData>& slide);
     void newSlideSetting();
+    void newSlideSetting(const SlideData& customSlideSettings);
 
 
     /**

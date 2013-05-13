@@ -10,18 +10,93 @@ TestFileRead::TestFileRead()
 void TestFileRead::readSimpleFile()
 {
     testModel->readSlideFile(":/test_input_files/simple_file.pin");
-    QString data = testModel->getRawSlideData();
-    QString expectedData("backgroundScaling: fill\n"
-                         "duration: 5.000000\n"
-                         "font: Sans 50px\n"
-                         "backgroundScaling: fit\n"
-                         "slideText: A new slide\n"
-                         "backgroundColor: blue\n"
-                         "font: Sans 20px\n"
-                         "slideText: A blue slide\n"
-                         "slideText: A third slide,\n"
-                         "with a second line!");
-    QCOMPARE(data.trimmed(), expectedData);
+    QStringList data = testModel->getRawSlideData();
+    QStringList expectedData = (QStringList() << "stageColor: black" <<
+                         "font: Sans 50px" <<
+                         "notesFont: Sans" <<
+                         "notesFontSize: black" <<
+                         "textColor: white" <<
+                         "textAlign: left" <<
+                         "shadingColor: black" <<
+                         "shadingOpacity: 0.66" <<
+                         "duration: 5.5" <<
+                         "command: " <<
+                         "transition: fade" <<
+                         "cameraFrameRate: 0" <<
+                         "backgroundScale: fill" <<
+                         "position: center" <<
+                         "useMarkup: 1" <<
+                         "slideText: " <<
+                         "slideMedia: " <<
+                         "backgroundColor: white" <<
+                         "slideNumber: 0" <<
+                         "stageColor: black" <<
+                         "font: Sans 50px" <<
+                         "notesFont: Sans" <<
+                         "notesFontSize: black" <<
+                         "textColor: white" <<
+                         "textAlign: left" <<
+                         "shadingColor: black" <<
+                         "shadingOpacity: 0.66" <<
+                         "duration: 5.5" <<
+                         "command: " <<
+                         "transition: fade" <<
+                         "cameraFrameRate: 0" <<
+                         "backgroundScale: fit" <<
+                         "position: center" <<
+                         "useMarkup: 1" <<
+                         "slideText: A new slide" <<
+                         "slideMedia: " <<
+                         "backgroundColor: white" <<
+                         "slideNumber: 0" <<
+                         "stageColor: black" <<
+                         "font: Sans 20px" <<
+                         "notesFont: Sans" <<
+                         "notesFontSize: black" <<
+                         "textColor: white" <<
+                         "textAlign: left" <<
+                         "shadingColor: black" <<
+                         "shadingOpacity: 0.66" <<
+                         "duration: 5.5" <<
+                         "command: " <<
+                         "transition: fade" <<
+                         "cameraFrameRate: 0" <<
+                         "backgroundScale: fill" <<
+                         "position: center" <<
+                         "useMarkup: 1" <<
+                         "slideText: A blue slide" <<
+                         "slideMedia: " <<
+                         "backgroundColor: blue" <<
+                         "slideNumber: 0" <<
+                         "stageColor: black" <<
+                         "font: Sans 50px" <<
+                         "notesFont: Sans" <<
+                         "notesFontSize: black" <<
+                         "textColor: white" <<
+                         "textAlign: left" <<
+                         "shadingColor: black" <<
+                         "shadingOpacity: 0.66" <<
+                         "duration: 5.5" <<
+                         "command: " <<
+                         "transition: fade" <<
+                         "cameraFrameRate: 0" <<
+                         "backgroundScale: fill" <<
+                         "position: center" <<
+                         "useMarkup: 1" <<
+                         "slideText: A third slide,\nwith a second line!" <<
+                         "slideMedia: " <<
+                         "backgroundColor: white" <<
+                         "slideNumber: 0");
+    QStringList::const_iterator dataIter;
+    QStringList::const_iterator dataEnd = data.end();
+    QStringList::const_iterator expectedIter;
+
+    while (dataIter != dataEnd) {
+        QCOMPARE(dataIter, expectedIter);
+        ++dataIter;
+        ++expectedIter;
+    }
+    QCOMPARE(data,expectedData);
 }
 
 } // namespace pointy

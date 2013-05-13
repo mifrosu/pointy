@@ -247,9 +247,15 @@ void populateSlideSettings(QStringList &listIn,
 
 void SlideListModel::newSlideSetting()
 {
+    slideList.push_back(QSharedPointer<SlideData>(new SlideData));
+}
+
+void SlideListModel::newSlideSetting(const SlideData& customSlideSettings)
+{
 //    settingsMapList.push_back(QSharedPointer<QMap<QString,QString> >(
 //                                   new QMap<QString,QString>));
-    slideList.push_back(QSharedPointer<SlideData>(new SlideData));
+    slideList.push_back(QSharedPointer<SlideData>(
+                            new SlideData(customSlideSettings)));
 }
 
 
@@ -267,6 +273,7 @@ void SlideListModel::readSlideFile(const QString fileName)
             (new QStringList);
     newSlideSetting();
     QSharedPointer<SlideData> currentSlideSettings = slideList.last();
+    QSharedPointer<SlideData> customSlideSettings = slideList.first();
     QSharedPointer<QString> currentSlideText =
             QSharedPointer<QString>(new QString);
 
@@ -290,11 +297,9 @@ void SlideListModel::readSlideFile(const QString fileName)
                 if (!(currentSlideText->isEmpty())) {
                     *currentSlideText = currentSlideText->trimmed();
                     currentSlideSettings->slideText = *currentSlideText;
-                    //                        currentSlideSettings->insert("slideText",
-                    //                                                        *currentSlideText);
                 }
 
-                newSlideSetting();
+                newSlideSetting(*customSlideSettings);
                 currentSlideSettings = slideList.last();
                 rawSettingsList->clear();
                 currentSlideText->clear();
@@ -318,23 +323,44 @@ void SlideListModel::readSlideFile(const QString fileName)
 
 }
 
-QString SlideListModel::getRawSlideData() const
+QStringList SlideListModel::getRawSlideData() const
 {
-    QString rawData;
-    rawData.append('\n');
-    QList<stringMapPtr>::const_iterator listIter =
-            settingsMapList.begin();
-    QList<stringMapPtr>::const_iterator endList =
-            settingsMapList.end();
-    while (listIter != endList) {
-        QMap<QString,QString>::const_iterator mapIter = (*listIter)->begin();
-        QMap<QString,QString>::const_iterator endMap = (*listIter)->end();
-        while (mapIter != endMap) {
-            QString outData = mapIter.key() + ": " + mapIter.value() + "\n";
-            rawData.append(outData);
-            ++mapIter;
-        }
-        ++listIter;
+    QStringList rawData;
+    QList<QSharedPointer<SlideData> >::const_iterator slideIter =
+            slideList.begin();
+    QList<QSharedPointer<SlideData> >::const_iterator endIter =
+            slideList.end();
+    while (slideIter != endIter) {
+        rawData.append(("stageColor: " + (*slideIter)->stageColor));
+        rawData.append(("font: " + (*slideIter)->font));
+        rawData.append(("notesFont: " + (*slideIter)->notesFont));
+        rawData.append(("notesFontSize: " + (*slideIter)->stageColor));
+        rawData.append(("textColor: " + (*slideIter)->textColor));
+        rawData.append(("textAlign: " + (*slideIter)->textAlign));
+        rawData.append(("shadingColor: " + (*slideIter)->shadingColor));
+        rawData.append(QString("shadingOpacity: %1").arg(
+                           (*slideIter)->shadingOpacity));
+        rawData.append(QString("duration: %1").arg(
+                           (*slideIter)->duration));
+        rawData.append(QString("command: %1").arg((*slideIter)->command));
+        rawData.append(QString("transition: %1").arg(
+                           (*slideIter)->transition));
+        rawData.append(QString("cameraFrameRate: %1").arg(
+                           (*slideIter)->cameraFrameRate));
+        rawData.append(QString("backgroundScale: %1").arg(
+                           (*slideIter)->backgroundScale));
+        rawData.append(QString("position: %1").arg((*slideIter)->position));
+        rawData.append(QString("useMarkup: %1").arg(
+                           (*slideIter)->useMarkup));
+        rawData.append(QString("slideText: %1").arg(
+                           (*slideIter)->slideText));
+        rawData.append(QString("slideMedia: %1").arg(
+                           (*slideIter)->slideMedia));
+        rawData.append(QString("backgroundColor: %1").arg(
+                           (*slideIter)->backgroundColor));
+        rawData.append(QString("slideNumber: %1").arg(
+                           (*slideIter)->slideNumber));
+        ++slideIter;
     }
     return rawData;
 
