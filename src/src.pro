@@ -13,7 +13,8 @@ HEADERS += \
     slide_data.h \
     slide_list_model.h
 
-QT += core
+QT += core \
+      qml quick
 
 
 
