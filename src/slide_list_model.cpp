@@ -121,7 +121,8 @@ void stripComments(QSharedPointer<QByteArray>& lineIn, const QString comment)
                 QSharedPointer<QByteArray>(new QByteArray);
         *remains = (lineIn->mid(commentIndex + 1));
         stripComments(remains);
-        *lineIn = (lineIn->left(commentIndex + 1)).append(*remains);
+        *lineIn = (lineIn->left(commentIndex - 1)).append("#"). // removes '\\'
+                append(*remains);
     }
     else {
         *lineIn = (lineIn->left(commentIndex));

@@ -46,7 +46,7 @@ void TestCommentTextParser::stripCommentsEscaped()
     testStr = "Hello \\#and \\#and #goodbye";
     *testPtr = testStr;
     pointy::stripComments(testPtr);
-    QCOMPARE(*testPtr, QByteArray("Hello \\#and \\#and "));
+    QCOMPARE(*testPtr, QByteArray("Hello #and #and "));
 }
 
 
@@ -59,7 +59,7 @@ void TestCommentTextParser::stripCommentsFile()
     testStr = file.readLine();
     *testPtr = testStr;
     pointy::stripComments(testPtr);
-    QCOMPARE(*testPtr, QByteArray("Hello \\#and \\#and "));
+    QCOMPARE(*testPtr, QByteArray("Hello #and #and "));
 }
 
 void TestCommentTextParser::stripCommentsEscapedOutofRange()
@@ -67,7 +67,7 @@ void TestCommentTextParser::stripCommentsEscapedOutofRange()
     testStr = "Hello \\# and \\#";
     *testPtr = testStr;
     pointy::stripComments(testPtr);
-    QCOMPARE(*testPtr, QByteArray("Hello \\# and \\#"));
+    QCOMPARE(*testPtr, QByteArray("Hello # and #"));
 }
 
 TestSquareBracketParser::TestSquareBracketParser()
