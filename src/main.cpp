@@ -18,6 +18,7 @@ void printRaw(const pointy::SlideListModel& showModel, QTextStream& qout);
 
 int main(int argc, char* argv[])
 {
+
     QTextStream qout(stdout, QIODevice::WriteOnly);
     bool rawPrint(false);
 
@@ -34,7 +35,8 @@ int main(int argc, char* argv[])
             }
         }
 
-        //QGuiApplication app();
+
+        QGuiApplication app(argc, argv);
 
         std::cout << "Reading: " << argv[argc - 1] <<std::endl;
         QString fileName = argv[argc - 1];
@@ -49,10 +51,11 @@ int main(int argc, char* argv[])
         QQmlContext* context = view.rootContext();
         context->setContextProperty("slideShow", &showModel);
 
-//        view.setSource(QUrl("qrc:view.qml"));
-//        view.show();
+        view.setSource(QUrl("qrc:slideView.qml"));
+        view.show();
+        return app.exec();
 
-//        return app.exec();
+
 
     }
     else {
@@ -60,6 +63,7 @@ int main(int argc, char* argv[])
         return 0;
     }
     return 0;
+
 }
 
 

@@ -1,7 +1,10 @@
-#include <QtTest/QtTest>
 #include "pointy_text_parse_tests.h"
 #include "pointy_test_file_read.h"
 #include "pointy_test_slide_setting.h"
+
+#include <QtTest/QtTest>
+#include <QtQuickTest/quicktest.h>
+
 
 int main()
 {
@@ -16,6 +19,8 @@ int main()
 
     pointy::TestFileRead testFileRead;
     QTest::qExec(&testFileRead);
+
+
 
     return 0;
 

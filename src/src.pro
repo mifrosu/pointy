@@ -16,6 +16,12 @@ HEADERS += \
 QT += core \
       qml quick
 
+OTHER_FILES += \
+    slideView.qml
+
+RESOURCES += \
+    slide_resources.qrc
+
 
 
 

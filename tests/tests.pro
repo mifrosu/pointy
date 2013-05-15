@@ -24,7 +24,8 @@ SOURCES += \
 
 QT += testlib
 
-CONFIG += debug
+CONFIG += debug \
+    warn_on qmltestcase
 
 RESOURCES += \
     test_resources.qrc
