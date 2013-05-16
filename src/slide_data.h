@@ -30,6 +30,7 @@ public:
     QString slideText;
     QString slideMedia;
     QString backgroundColor;
+    QString notesText;
     int slideNumber;
 
     void slideSettingAssign(const QString& lhs_in, const QString& rhs_in);

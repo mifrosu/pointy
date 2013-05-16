@@ -10,7 +10,7 @@ SlideData::SlideData():
     shadingColor("black"), shadingOpacity(0.66), duration(30),
     command(), transition("fade"), cameraFrameRate(0), backgroundScale("fill"),
     position("center"), useMarkup(true), slideText(), slideMedia(),
-    backgroundColor("white"), slideNumber(0)
+    backgroundColor("white"), notesText(), slideNumber(0)
 {}
 
 void SlideData::slideSettingAssign(const QString &lhs_in,

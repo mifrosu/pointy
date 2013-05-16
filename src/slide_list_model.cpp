@@ -62,6 +62,8 @@ QVariant SlideListModel::data(const QModelIndex &index, int role) const
         return QVariant::fromValue(currentSlide->slideMedia);
     case BackgroundColorRole:
         return QVariant::fromValue(currentSlide->backgroundColor);
+    case NotesTextRole:
+        return QVariant::fromValue(currentSlide->notesText);
     case SlideNumberRole:
         return QVariant::fromValue(currentSlide->slideNumber);
     default:

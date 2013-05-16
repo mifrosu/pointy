@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>slideView.qml</file>
-    </qresource>
-</RCC>

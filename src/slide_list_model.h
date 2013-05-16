@@ -48,6 +48,7 @@ public:
         SlideTextRole,
         SlideMediaRole,
         BackgroundColorRole,
+        NotesTextRole,
         SlideNumberRole
     };
 

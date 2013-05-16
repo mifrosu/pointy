@@ -11,6 +11,7 @@
 #include <qqml.h>
 #include <QtQuick/qquickitem.h>
 #include <QtQuick/qquickview.h>
+#include "qtquick2applicationviewer.h"
 
 
 void helpMessage(const char* execName, QTextStream& qout);
@@ -46,13 +47,15 @@ int main(int argc, char* argv[])
             printRaw(showModel, qout);
             return 0;
         }
-        QQuickView view;
-        view.setResizeMode(QQuickView::SizeRootObjectToView);
+        QtQuick2ApplicationViewer view;
+
+        //view.setResizeMode(QQuickView::SizeRootObjectToView);
         QQmlContext* context = view.rootContext();
         context->setContextProperty("slideShow", &showModel);
 
-        view.setSource(QUrl("qrc:slideView.qml"));
-        view.show();
+        view.setMainQmlFile("src/qml/SlideView.qml");
+        //view.setSource(QUrl("qrc:SlideView.qml"));
+        view.showExpanded();
         return app.exec();
 
 
