@@ -6,6 +6,7 @@
 TestCommentTextParser::TestCommentTextParser()
 {
     testPtr = QSharedPointer<QByteArray>(new QByteArray);
+    notesPtr = QSharedPointer<QString>(new QString);
 
 }
 
@@ -13,40 +14,50 @@ void TestCommentTextParser::stripCommentsMiddle()
 {
     testStr = "Hello # and goodbye";
     *testPtr = testStr;
-    pointy::stripComments(testPtr);
+    pointy::stripComments(testPtr, notesPtr);
     QCOMPARE(*testPtr, QByteArray("Hello "));
+    QCOMPARE(*notesPtr, QString(" and goodbye"));
 }
 
 void TestCommentTextParser::stripCommentsStart()
 {
     testStr = "#Hello and goodbye";
     *testPtr = testStr;
-    pointy::stripComments(testPtr);
+    notesPtr->clear();
+    pointy::stripComments(testPtr, notesPtr);
     QCOMPARE(*testPtr, QByteArray());
+    QCOMPARE(*notesPtr, QString("Hello and goodbye"));
 }
 
 void TestCommentTextParser::stripCommentsNoComment()
 {
     testStr = "Hello and goodbye";
     *testPtr = testStr;
-    pointy::stripComments(testPtr);
+    notesPtr->clear();
+    pointy::stripComments(testPtr, notesPtr);
     QCOMPARE(*testPtr, QByteArray("Hello and goodbye"));
+    QCOMPARE(*notesPtr, QString());
+
 }
 
 void TestCommentTextParser::stripCommentsMultiComment()
 {
     testStr = "Hello #and #goodbye";
     *testPtr = testStr;
-    pointy::stripComments(testPtr);
+    notesPtr->clear();
+    pointy::stripComments(testPtr, notesPtr);
     QCOMPARE(*testPtr, QByteArray("Hello "));
+    QCOMPARE(*notesPtr, QString("and #goodbye"));
 }
 
 void TestCommentTextParser::stripCommentsEscaped()
 {
     testStr = "Hello \\#and \\#and #goodbye";
     *testPtr = testStr;
-    pointy::stripComments(testPtr);
+    notesPtr->clear();
+    pointy::stripComments(testPtr, notesPtr);
     QCOMPARE(*testPtr, QByteArray("Hello #and #and "));
+    QCOMPARE(*notesPtr, QString("goodbye"));
 }
 
 
@@ -56,18 +67,26 @@ void TestCommentTextParser::stripCommentsFile()
     if (!file.open(QIODevice::ReadOnly)) {
         qFatal("Slide file can not be read");
     }
-    testStr = file.readLine();
-    *testPtr = testStr;
-    pointy::stripComments(testPtr);
+    notesPtr->clear();
+    while (!file.atEnd())
+    {
+        testStr = file.readLine();
+        *testPtr = testStr;
+        pointy::stripComments(testPtr, notesPtr);
+    }
     QCOMPARE(*testPtr, QByteArray("Hello #and #and "));
+    QCOMPARE(*notesPtr, QString(" Here is a note\ngoodbye\n"));
+
 }
 
 void TestCommentTextParser::stripCommentsEscapedOutofRange()
 {
     testStr = "Hello \\# and \\#";
     *testPtr = testStr;
-    pointy::stripComments(testPtr);
+    notesPtr->clear();
+    pointy::stripComments(testPtr, notesPtr);
     QCOMPARE(*testPtr, QByteArray("Hello # and #"));
+    QCOMPARE(*notesPtr, QString());
 }
 
 TestSquareBracketParser::TestSquareBracketParser()

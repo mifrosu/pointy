@@ -14,6 +14,7 @@ private:
     int lineCount;
     QByteArray testStr;
     QSharedPointer<QByteArray> testPtr;
+    QSharedPointer<QString> notesPtr;
 
 private slots:
     void stripCommentsMiddle();

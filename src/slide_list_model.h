@@ -88,6 +88,7 @@ private:
 };
 
 void stripComments(QSharedPointer<QByteArray>& lineIn,
+                   QSharedPointer<QString>& commentStore,
                    const QString comment="#");
 void stripSquareBrackets(QSharedPointer<QByteArray>& lineIn,
                          QSharedPointer<QStringList>& store,

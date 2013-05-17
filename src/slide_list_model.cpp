@@ -97,12 +97,15 @@ QHash<int, QByteArray> SlideListModel::roleNames() const
     roles[SlideTextRole] ="slideText";
     roles[SlideMediaRole] ="slideMedia";
     roles[BackgroundColorRole] ="backgroundColor";
+    roles[NotesTextRole] = "notesText";
     roles[SlideNumberRole] = "slideNumber";
     return roles;
 
 }
 
-void stripComments(QSharedPointer<QByteArray>& lineIn, const QString comment)
+void stripComments(QSharedPointer<QByteArray>& lineIn,
+                   QSharedPointer<QString>& commentStore,
+                   const QString comment)
 {
     if(!lineIn)
     {
@@ -115,6 +118,7 @@ void stripComments(QSharedPointer<QByteArray>& lineIn, const QString comment)
     }
     else if (commentIndex == 0) {
         // comment at start of line
+        commentStore->append(lineIn->mid(1));
         lineIn->clear();
     }
     else if (lineIn->at(commentIndex-1) == '\\'){
@@ -122,11 +126,12 @@ void stripComments(QSharedPointer<QByteArray>& lineIn, const QString comment)
         QSharedPointer<QByteArray> remains =
                 QSharedPointer<QByteArray>(new QByteArray);
         *remains = (lineIn->mid(commentIndex + 1));
-        stripComments(remains);
+        stripComments(remains, commentStore);
         *lineIn = (lineIn->left(commentIndex - 1)).append("#"). // removes '\\'
                 append(*remains);
     }
     else {
+        commentStore->append(lineIn->mid(commentIndex+1));
         *lineIn = (lineIn->left(commentIndex));
     }
 }
@@ -214,13 +219,19 @@ void SlideListModel::readSlideFile(const QString fileName)
     QSharedPointer<SlideData> customSlideSettings = slideList.first();
     QSharedPointer<QString> currentSlideText =
             QSharedPointer<QString>(new QString);
+    QSharedPointer<QString> currentNotesText =
+            QSharedPointer<QString>(new QString);
 
     while (!file.atEnd()) {
-        ++lineCount;
+
         QSharedPointer<QByteArray> linePtr =
                 QSharedPointer<QByteArray>(new QByteArray);
         *linePtr = file.readLine();
-        stripComments(linePtr, "#");
+        if (lineCount == 0 && linePtr->startsWith("#!"))
+        {
+            continue;
+        }
+        stripComments(linePtr, currentNotesText, "#");
         if (linePtr->startsWith("[") && haveCustomSettings == false) {
             stripSquareBrackets(linePtr, rawSettingsList, lineCount);
         }
@@ -235,12 +246,15 @@ void SlideListModel::readSlideFile(const QString fileName)
                 if (!(currentSlideText->isEmpty())) {
                     *currentSlideText = currentSlideText->trimmed();
                     currentSlideSettings->slideText = *currentSlideText;
+                    *currentNotesText = currentNotesText->trimmed();
+                    currentSlideSettings->notesText = *currentNotesText;
                 }
 
                 newSlideSetting(*customSlideSettings);
                 currentSlideSettings = slideList.last();
                 rawSettingsList->clear();
                 currentSlideText->clear();
+                currentNotesText->clear();
             }
 
             if (linePtr->contains("[")) {
@@ -252,10 +266,13 @@ void SlideListModel::readSlideFile(const QString fileName)
         else {
             currentSlideText->append(*linePtr);
         }
+        ++lineCount;
     }
     if (!(currentSlideText->isEmpty())) {
         *currentSlideText = currentSlideText->trimmed();
         currentSlideSettings->slideText = *currentSlideText;
+        *currentNotesText = currentNotesText->trimmed();
+        currentSlideSettings->notesText = *currentNotesText;
                 // insert("slideText",*currentSlideText);
     }
 
@@ -296,6 +313,8 @@ QStringList SlideListModel::getRawSlideData() const
                            (*slideIter)->slideMedia));
         rawData.append(QString("backgroundColor: %1").arg(
                            (*slideIter)->backgroundColor));
+        rawData.append(QString("notesText: %1").arg(
+                           (*slideIter)->notesText));
         rawData.append(QString("slideNumber: %1").arg(
                            (*slideIter)->slideNumber));
         ++slideIter;
