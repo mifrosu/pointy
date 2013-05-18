@@ -89,7 +89,7 @@ QHash<int, QByteArray> SlideListModel::roleNames() const
     roles[ShadingOpacityRole] ="shadingOpacity";
     roles[DurationRole] ="duration";
     roles[CommandRole] ="command";
-    roles[TransitionRole] ="transition";
+    roles[TransitionRole] ="transitionType";
     roles[CameraFrameRateRole] ="cameraRameRate";
     roles[BackgroundScaleRole] ="backgroundScale";
     roles[PositionRole] ="postition";

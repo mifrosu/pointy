@@ -1,42 +1,35 @@
 import QtQuick 2.0
 
-Item {
+Rectangle {
     property int slideWidth;
     property int slideHeight;
+    property string pointyNotes: notesText;
+    property string pointyStageColor: stageColor;
+    property string pointyTransition: transitionType;
+
     width: slideWidth;
     height: slideHeight;
+    color: backgroundColor;
 
-    Rectangle {
-        color: backgroundColor;
-        anchors.fill: parent;
+    Image {
+        id: slideImage;
         width: parent.width;
         height: parent.height;
 
-
-        Image {
-            id: slideImage;
-            width: parent.width;
-            height: parent.height;
-
-
-            source: {
-                if (slideMedia != "") {
-                    return currentPath.currentDir + slideMedia;
-                }
-                else {
-                    return "blank.png";
-                }
+        source: {
+            if (slideMedia != "") {
+                return currentPath.currentDir + slideMedia;
             }
-            fillMode: Image.PreserveAspectFit;
+            else {
+                return "blank.png";
+            }
         }
-
-        Text {
-            text: slideText;
-            color: textColor;
-        }
+        fillMode: Image.PreserveAspectFit;
     }
-    property string pointyNotes: notesText;
 
-
+    Text {
+        text: slideText;
+        color: textColor;
+    }
 }
 
