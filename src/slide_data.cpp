@@ -32,7 +32,10 @@ void SlideData::slideSettingAssign(const QString &lhs_in,
         this->notesFontSize = rhs;
     }
     else if (lhs == "text-color") {
-        this->textColor = rhs;
+        if (QColor::isValidColor(rhs)) {
+            this->textColor = rhs;
+        }
+
     }
     else if (lhs == "text-align") {
         this->textAlign = rhs;

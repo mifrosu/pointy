@@ -6,4 +6,4 @@ SOURCES += qml_test_main.cpp
 OTHER_FILES += \
     tst_pointy_qml.qml
 
-IMPORTPATH += $$PWD/../../src/
+IMPORTPATH += $$PWD/../../src/qml

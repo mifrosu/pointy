@@ -1,18 +1,16 @@
 #!/usr/bin/env pinpoint
-# Altering this file will break TestFileRead::readSimpleFile()
-# comments with a hash
-# global settings before first slide
 
 [fill]
 [font=Sans 50px]
 [duration=5.500000]
 
---[fit]
+--[fit] # An initial slide
 A new slide
 
 --[font=Sans 20px][lightsteelblue]
+# Some colour!
 A blue slide
 
---
+-- # a little extra something
 A third slide,
 with a second line!

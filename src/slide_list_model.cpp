@@ -83,7 +83,7 @@ QHash<int, QByteArray> SlideListModel::roleNames() const
     roles[FontRole] = "font";
     roles[NotesFontRole] = "notesFont";
     roles[NotesFontSizeRole] = "notesFontSize";
-    roles[TextColorRole] = "text";
+    roles[TextColorRole] = "textColor";
     roles[TextAlignRole] = "textAlign";
     roles[ShadingColorRole] ="shadingColor";
     roles[ShadingOpacityRole] ="shadingOpacity";
@@ -231,8 +231,8 @@ void SlideListModel::readSlideFile(const QString fileName)
         {
             continue;
         }
-        stripComments(linePtr, currentNotesText, "#");
         if (linePtr->startsWith("[") && haveCustomSettings == false) {
+            stripComments(linePtr, currentNotesText, "#");
             stripSquareBrackets(linePtr, rawSettingsList, lineCount);
         }
         else if (linePtr->startsWith("--")) {
@@ -255,6 +255,7 @@ void SlideListModel::readSlideFile(const QString fileName)
                 rawSettingsList->clear();
                 currentSlideText->clear();
                 currentNotesText->clear();
+                stripComments(linePtr, currentNotesText, "#");
             }
 
             if (linePtr->contains("[")) {
@@ -264,6 +265,7 @@ void SlideListModel::readSlideFile(const QString fileName)
             }
         }
         else {
+            stripComments(linePtr, currentNotesText, "#");
             currentSlideText->append(*linePtr);
         }
         ++lineCount;

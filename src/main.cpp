@@ -12,6 +12,8 @@
 #include <QtQuick/qquickitem.h>
 #include <QtQuick/qquickview.h>
 #include "qtquick2applicationviewer.h"
+#include "qdir.h"
+#include "qqmlpropertymap.h"
 
 
 void helpMessage(const char* execName, QTextStream& qout);
@@ -37,6 +39,7 @@ int main(int argc, char* argv[])
         }
 
 
+
         QGuiApplication app(argc, argv);
 
         std::cout << "Reading: " << argv[argc - 1] <<std::endl;
@@ -53,8 +56,21 @@ int main(int argc, char* argv[])
         QQmlContext* context = view.rootContext();
         context->setContextProperty("slideShow", &showModel);
 
+        // To allow Qt Quick component access to the application's
+        // working directory
+        QString workingDir = QDir::currentPath();
+
+        // Build the path, add it as a context property, and expose
+        // it to QML
+        QSharedPointer<QQmlPropertyMap> currentPath =
+                QSharedPointer<QQmlPropertyMap>(new QQmlPropertyMap);
+
+
+        currentPath->insert("currentDir", QVariant(QString("file://" +
+                                                           workingDir + "/")));
+        context->setContextProperty("currentPath", &(*currentPath));
+
         view.setMainQmlFile("src/qml/SlideView.qml");
-        //view.setSource(QUrl("qrc:SlideView.qml"));
         view.showExpanded();
         return app.exec();
 

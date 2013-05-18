@@ -1,8 +1,12 @@
 import QtQuick 2.0
+import QtQuick.Window 2.0
 
 Rectangle {
     id: mainView;
     width: 400; height: 300;
+    property bool notesVisable: true;
+    property bool horizontalLayout: true;
+
     ListView {
         id: dataView;
         snapMode: ListView.SnapToItem;
@@ -11,16 +15,17 @@ Rectangle {
         keyNavigationWraps: true;
         highlightFollowsCurrentItem: true;
         highlightRangeMode: "StrictlyEnforceRange";
+        orientation: {
+            (mainView.horizontalLayout) ? Qt.Horizontal : Qt.Vertical;
+        }
 
         model: slideShow;
         // To visualize data, bind the view's model property to a model
         // and the delegate property to a component
 
         delegate: PointySlide {
-            width: mainView.width;
-            height: mainView.height;
-            pointyText: slideText;
-            color: backgroundColor;
+            slideWidth: mainView.width;
+            slideHeight: mainView.height;
         }
 
         property int slideCount: count;
@@ -62,6 +67,25 @@ Rectangle {
             }
         }
 
+    }
+    Window {
+        id: notesTextWindow;
+        width: 400; height: 300;
+
+        title: "Pointy Notes"
+        visible: mainView.notesVisable;
+
+        Text {
+            anchors.fill: parent
+            anchors.margins: parent.height * 0.1;
+
+            font.pixelSize: 16
+            wrapMode: Text.WordWrap
+
+            property string notes: dataView.currentItem.pointyNotes;
+            text: notes == "" ? "This slide has no notes." : notes;
+            font.italic: notes == "";
+        }
     }
 }
 

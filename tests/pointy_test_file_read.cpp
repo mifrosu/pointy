@@ -10,10 +10,10 @@ TestFileRead::TestFileRead()
 void TestFileRead::readSimpleFile()
 {
     testModel->readSlideFile(":/test_input_files/simple_file.pin");
-    QString commentSection("Altering this file will break "
-                           "TestFileRead::readSimpleFile()\n"
-                           " comments with a hash\n"
-                           " global settings before first slide");
+//    QString commentSection("Altering this file will break "
+//                           "TestFileRead::readSimpleFile()\n"
+//                           " comments with a hash\n"
+//                           " global settings before first slide");
     QStringList data = testModel->getRawSlideData();
     QStringList expectedData = (QStringList() << "stageColor: black" <<
                          "font: Sans 50px" <<
@@ -33,7 +33,7 @@ void TestFileRead::readSimpleFile()
                          "slideText: " <<
                          "slideMedia: " <<
                          "backgroundColor: white" <<
-                         "notesText: " + commentSection <<
+                         "notesText: " <<
                          "slideNumber: 0" <<
                          "stageColor: black" <<
                          "font: Sans 50px" <<
@@ -53,7 +53,7 @@ void TestFileRead::readSimpleFile()
                          "slideText: A new slide" <<
                          "slideMedia: " <<
                          "backgroundColor: white" <<
-                         "notesText: " <<
+                         "notesText: An initial slide" <<
                          "slideNumber: 0" <<
                          "stageColor: black" <<
                          "font: Sans 20px" <<
@@ -73,7 +73,7 @@ void TestFileRead::readSimpleFile()
                          "slideText: A blue slide" <<
                          "slideMedia: " <<
                          "backgroundColor: lightsteelblue" <<
-                         "notesText: " <<
+                         "notesText: Some colour!" <<
                          "slideNumber: 0" <<
                          "stageColor: black" <<
                          "font: Sans 50px" <<
@@ -93,7 +93,7 @@ void TestFileRead::readSimpleFile()
                          "slideText: A third slide,\nwith a second line!" <<
                          "slideMedia: " <<
                          "backgroundColor: white" <<
-                         "notesText: " <<
+                         "notesText: a little extra something" <<
                          "slideNumber: 0");
     QStringList::const_iterator dataIter= data.begin();
     QStringList::const_iterator dataEnd = data.end();
