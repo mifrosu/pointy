@@ -1,17 +1,24 @@
 import QtQuick 2.0
 import QtQuick.Window 2.0
-import QtQuick.Controls 1.0
 
 Rectangle {
     id: mainView;
-    width: 400; height: 300;
+    width: 800; height: 600;
     property bool notesVisable: true;
     property bool horizontalLayout: true;
 
-
+    Rectangle {
+        id: fadeRectangle;
+        width: mainView.width; height: mainView.height;
+        color: dataView.currentItem.pointyStageColor;
+        opacity: 1.0;
+    }
 
     ListView {
+
         id: dataView;
+        property bool moveForward;
+        opacity: 1.0;
         //interactive: false;
         snapMode: ListView.SnapToItem;
         width: parent.width; height: parent.height;
@@ -25,19 +32,21 @@ Rectangle {
         }
 
         model: slideShow;
-        // To visualize data, bind the view's model property to a model
-        // and the delegate property to a component
 
         delegate: PointySlide {
             slideWidth: mainView.width;
             slideHeight: mainView.height;
         }
 
-        Rectangle {
-            id: fadeRectangle;
-            width: mainView.width; height: mainView.height;
-            color: dataView.currentItem.pointyStageColor;
-            opacity: 0.0;
+        property int slideCount: count;
+
+        currentIndex: {
+            if (slideCount > 0){
+                return 1;
+            }
+            else {
+                return 0;
+            }
         }
 
         Timer {
@@ -46,45 +55,45 @@ Rectangle {
             repeat: false;
         }
 
+        function moveSlide() {
+            if (dataView.moveForward === true) {
+                dataView.currentIndex +=1 ;
+            }
+            else if (dataView.moveForward === false) {
+                dataView.currentIndex -= 1;
+            }
+        }
+
         function loadTransition(pointyTransition) {
             if (pointyTransition === "fade") {
                 animateFade.start();
             }
             else {
-                return;
+                moveSlide();
             }
         }
 
         SequentialAnimation  {
             id: animateFade;
             NumberAnimation {
-                target: fadeRectangle;
+                target: dataView;
+                // target: fadeRectangle;
                 properties: "opacity";
-                from: 0.0; to: 0.3; duration: 0;
+                from: 1.0; to: 0.3; duration: 500;
             }
-//            ScriptAction {
-//                script: {
-//                    dataView.currentIndex +=1;
-//                }
-//            }
-
+            ScriptAction {
+                script: {
+                    dataView.moveSlide();
+                }
+            }
             NumberAnimation {
-                target: fadeRectangle;
+                target: dataView;
                 properties: "opacity";
-                from: 0.3; to: 0.0; duration: 500;
-            }
-            running: true;
-        }
-
-        property int slideCount: count;
-
-        currentIndex: {
-            if (slideCount > 0) {
-                return 1;
-            } else {
-                return 0;
+                from: 0.3; to: 1.0; duration: 500;
             }
         }
+
+
 
         MouseArea {
             id: mouseArea;
@@ -104,17 +113,20 @@ Rectangle {
         focus: true;
         Keys.onPressed: {
             if (event.key === Qt.Key_Space && (currentIndex < slideCount -1)) {
+                dataView.moveForward = true;
                 loadTransition(dataView.currentItem.pointyTransition);
-                currentIndex += 1;
+                //currentIndex += 1;
             }
             else if (event.key === Qt.Key_Backspace && currentIndex > 1) {
+                dataView.moveForward = false;
                 loadTransition(dataView.currentItem.pointyTransition);
-                currentIndex -=1;
+                //currentIndex -=1;
 
             }
         }
 
-    }
+    } // ListView
+
     Window {
         id: notesTextWindow;
         width: 400; height: 300;
@@ -133,7 +145,9 @@ Rectangle {
             text: notes == "" ? "This slide has no notes." : notes;
             font.italic: notes == "";
         }
-    }
-}
+    } // Window
+
+
+} // Rectangle
 
 

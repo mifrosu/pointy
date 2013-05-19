@@ -6,10 +6,12 @@ Rectangle {
     property string pointyNotes: notesText;
     property string pointyStageColor: stageColor;
     property string pointyTransition: transitionType;
+    property double pointyOpacity: 1.0;
 
     width: slideWidth;
     height: slideHeight;
     color: backgroundColor;
+    opacity: pointyOpacity;
 
     Image {
         id: slideImage;
