@@ -4,7 +4,8 @@ import QtQuick.Window 2.0
 Rectangle {
     id: mainView;
     width: 800; height: 600;
-    property bool notesVisable: true;
+    property bool notesVisible: true;
+    property bool gridVisible: true;
     property bool horizontalLayout: true;
 
     Rectangle {
@@ -17,6 +18,7 @@ Rectangle {
     ListView {
 
         id: dataView;
+        focus: true;
         property bool moveForward;
         opacity: 1.0;
         //interactive: false;
@@ -110,7 +112,7 @@ Rectangle {
         }
 
 
-        focus: true;
+
         Keys.onPressed: {
             if (event.key === Qt.Key_Space && (currentIndex < slideCount -1)) {
                 dataView.moveForward = true;
@@ -132,7 +134,7 @@ Rectangle {
         width: 400; height: 300;
 
         title: "Pointy Notes"
-        visible: mainView.notesVisable;
+        visible: mainView.notesVisible;
 
         Text {
             anchors.fill: parent
@@ -145,7 +147,51 @@ Rectangle {
             text: notes == "" ? "This slide has no notes." : notes;
             font.italic: notes == "";
         }
-    } // Window
+    } // Window (notesTextWindow)
+
+    Window {
+        id: gridViewWindow;
+        width: 400; height: 300;
+
+        title: "Pointy Grid View"
+        visible: mainView.gridVisible;
+
+        GridView {
+            id: gridView;
+            model: slideShow;
+            focus: true;
+            width: parent.width; height: parent.height;
+            currentIndex: dataView.currentIndex;
+
+            cellWidth: 100;
+            cellHeight: 75;
+
+            delegate: PointySlide {
+                width: {gridView.cellWidth - 10}
+                height: {gridView.cellHeight - 10}
+                //anchors.centerIn: parent.Center;
+            }
+
+            highlight: Rectangle {
+                color: "gold";
+                border.color: "brown";
+                border.width: 2;
+                radius: 5;
+
+                width: gridView.cellWidth;
+                height: gridView.cellHeight;
+                x: gridView.currentItem.x;
+                y: gridView.currentItem.y;
+                z: {gridView.currentItem.z + 1;}    // put highlight on top
+                opacity: 0.2;
+
+            }
+            highlightFollowsCurrentItem: true;
+            highlightRangeMode: "StrictlyEnforceRange";
+            highlightMoveDuration: 0;
+
+        }
+    }
 
 
 } // Rectangle
