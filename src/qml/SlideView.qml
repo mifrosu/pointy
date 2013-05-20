@@ -23,8 +23,6 @@ Rectangle {
         opacity: 1.0;
         //interactive: false;
         snapMode: ListView.SnapToItem;
-        width: parent.width; height: parent.height;
-        anchors.fill: parent;
         keyNavigationWraps: true;
         highlightFollowsCurrentItem: true;
         highlightRangeMode: "StrictlyEnforceRange";
@@ -81,7 +79,7 @@ Rectangle {
                 target: dataView;
                 // target: fadeRectangle;
                 properties: "opacity";
-                from: 1.0; to: 0.3; duration: 500;
+                from: 1.0; to: 0.0; duration: 200;
             }
             ScriptAction {
                 script: {
@@ -91,7 +89,7 @@ Rectangle {
             NumberAnimation {
                 target: dataView;
                 properties: "opacity";
-                from: 0.3; to: 1.0; duration: 500;
+                from: 0.0; to: 1.0; duration: 200;
             }
         }
 
@@ -167,23 +165,29 @@ Rectangle {
             cellHeight: 75;
 
             delegate: PointySlide {
-                width: {gridView.cellWidth - 10}
-                height: {gridView.cellHeight - 10}
-                //anchors.centerIn: parent.Center;
+                width: {gridView.cellWidth - 5}
+                height: {gridView.cellHeight - 5}
             }
 
             highlight: Rectangle {
-                color: "gold";
-                border.color: "brown";
-                border.width: 2;
-                radius: 5;
+                border.color: "#ffae00"
+                color: "transparent";
+                opacity: 1.0;
+                border.width: 1;
+                radius: 2;
 
                 width: gridView.cellWidth;
                 height: gridView.cellHeight;
                 x: gridView.currentItem.x;
                 y: gridView.currentItem.y;
                 z: {gridView.currentItem.z + 1;}    // put highlight on top
-                opacity: 0.2;
+                Rectangle {
+                    width: parent.width;
+                    height: parent.height;
+                    opacity: 0.2;
+                    color: "gold";
+                    radius: parent.radius;
+                }
 
             }
             highlightFollowsCurrentItem: true;
