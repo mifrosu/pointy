@@ -79,7 +79,7 @@ Rectangle {
                 target: dataView;
                 // target: fadeRectangle;
                 properties: "opacity";
-                from: 1.0; to: 0.0; duration: 200;
+                from: 1.0; to: 0.3; duration: 200;
             }
             ScriptAction {
                 script: {
@@ -89,7 +89,7 @@ Rectangle {
             NumberAnimation {
                 target: dataView;
                 properties: "opacity";
-                from: 0.0; to: 1.0; duration: 200;
+                from: 0.3; to: 1.0; duration: 200;
             }
         }
 
@@ -191,7 +191,6 @@ Rectangle {
 
             }
             highlightFollowsCurrentItem: true;
-            highlightRangeMode: "StrictlyEnforceRange";
             highlightMoveDuration: 0;
 
         }
