@@ -11,7 +11,12 @@ Rectangle {
     property double scaleFactor: 1;
 
     property int scaleFont: {
-        fontPixelSize * scaleFactor;
+        if (fontPixelSize * maxLineLength > slideWidth) {
+            return slideWidth / maxLineLength;
+        }
+        else {
+            return fontPixelSize * scaleFactor;
+        }
     }
     property double padding: { scaleFont/2; }
 
@@ -19,12 +24,6 @@ Rectangle {
     height: slideHeight;
     color: backgroundColor;
     opacity: pointyOpacity;
-
-    Rectangle {
-        anchors.fill: parent;
-        color: stageColor;
-    }
-
 
     Image {
         id: slideImage;
@@ -42,27 +41,11 @@ Rectangle {
         fillMode: Image.PreserveAspectFit;
     }
 
-    Text {
-        id: slideTextDataFirstPass;
-        anchors.centerIn: slideTextBackground;
-        text: slideText;
-        color: "transparent";
-        font.family: fontFamily;
-        font.pixelSize: {
-            scaleFont;
-        }
-        font.pointSize: 1;
-//        width: {
-//            (implicitWidth > (slideWidth-(0.04*parent.width))) ?
-//                        slideWidth-(0.04*parent.width) : undefined;
-//        }
-    }
-
     Rectangle {
         id: slideTextBackground;
         color: shadingColor;
         opacity: {
-            if (slideTextDataFirstPass.text === "") {
+            if (slideTextData.text === "") {
                 return 0;
             }
             else {
@@ -70,8 +53,8 @@ Rectangle {
             }
         }
 
-        height: {slideTextDataSecondPass.height+padding;}
-        width: {slideTextDataSecondPass.width+padding;}
+        height: {slideTextData.height+padding;}
+        width: {slideTextData.width+padding;}
 
         anchors.margins: {0.02 * parent.width}
 
@@ -143,7 +126,7 @@ Rectangle {
 
 
     Text {
-        id: slideTextDataSecondPass;
+        id: slideTextData;
         anchors.centerIn: slideTextBackground;
         text: slideText;
         color: textColor;
@@ -152,11 +135,11 @@ Rectangle {
             scaleFont;
         }
         font.pointSize: 1;
-        width: {
-            (implicitWidth > (slideWidth-(0.04*parent.width))) ?
-                        slideWidth-(0.04*parent.width) : undefined;
+        textFormat: {
+            (useMarkup === true)? Text.AutoText : Text.PlainText;
+
         }
-        //wrapMode: Text.Wrap;
+
     }
 
 

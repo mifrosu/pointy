@@ -170,7 +170,7 @@ Rectangle {
                 slideWidth: width;
                 slideHeight: height;
                 scaleFactor: {
-                    0.8*width/mainView.width;
+                    width/mainView.width;
                 }
             }
 

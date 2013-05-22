@@ -169,6 +169,20 @@ void TestSquareBracketParser::stripSquareBracketsMalformedEnd()
     QCOMPARE(*storePtr, QStringList());
 }
 
+TestMaxLineLength::TestMaxLineLength()
+{
+    linePtr = QSharedPointer<QByteArray>(new QByteArray);
+    lineLength = 0;
+
+}
+
+void TestMaxLineLength::checkLineLength()
+{
+    linePtr->append("Hi there!");
+    pointy::findMaxLineLength(linePtr, lineLength);
+    QCOMPARE(lineLength, int(9));
+}
+
 /**
 class TestQString: public QObject
 {

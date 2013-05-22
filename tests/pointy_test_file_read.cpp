@@ -33,6 +33,7 @@ void TestFileRead::readSimpleFile()
                                 "position: center" <<
                                 "useMarkup: 1" <<
                                 "slideText: " <<
+                                "maxLineLength: 0" <<
                                 "slideMedia: " <<
                                 "backgroundColor: white" <<
                                 "notesText: " <<
@@ -55,6 +56,7 @@ void TestFileRead::readSimpleFile()
                                 "position: center" <<
                                 "useMarkup: 1" <<
                                 "slideText: A new slide" <<
+                                "maxLineLength: 11" <<
                                 "slideMedia: " <<
                                 "backgroundColor: white" <<
                                 "notesText: An initial slide" <<
@@ -77,6 +79,7 @@ void TestFileRead::readSimpleFile()
                                 "position: center" <<
                                 "useMarkup: 1" <<
                                 "slideText: A blue slide" <<
+                                "maxLineLength: 12" <<
                                 "slideMedia: " <<
                                 "backgroundColor: lightsteelblue" <<
                                 "notesText: Some colour!" <<
@@ -99,6 +102,7 @@ void TestFileRead::readSimpleFile()
                                 "position: center" <<
                                 "useMarkup: 1" <<
                          "slideText: A third slide,\nwith a second line!" <<
+                                "maxLineLength: 19" <<
                          "slideMedia: " <<
                          "backgroundColor: white" <<
                          "notesText: a little extra something" <<

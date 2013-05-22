@@ -47,6 +47,21 @@ private slots:
 
 };
 
+class TestMaxLineLength: public QObject
+{
+    Q_OBJECT
+public:
+    TestMaxLineLength();
+
+private:
+    QSharedPointer<QByteArray> linePtr;
+    int lineLength;
+
+private slots:
+    void checkLineLength();
+
+};
+
 
 
 #endif // POINTY_TEXT_PARSE_TESTS_H

@@ -62,6 +62,8 @@ QVariant SlideListModel::data(const QModelIndex &index, int role) const
         return QVariant::fromValue(currentSlide->useMarkup);
     case SlideTextRole:
         return QVariant::fromValue(currentSlide->slideText);
+    case MaxLineLengthRole:
+        return QVariant::fromValue(currentSlide->maxLineLength);
     case SlideMediaRole:
         return QVariant::fromValue(currentSlide->slideMedia);
     case BackgroundColorRole:
@@ -101,6 +103,7 @@ QHash<int, QByteArray> SlideListModel::roleNames() const
     roles[PositionRole] ="position";
     roles[UseMarkupRole] ="useMarkup";
     roles[SlideTextRole] ="slideText";
+    roles[MaxLineLengthRole] = "maxLineLength";
     roles[SlideMediaRole] ="slideMedia";
     roles[BackgroundColorRole] ="backgroundColor";
     roles[NotesTextRole] = "notesText";
@@ -207,6 +210,16 @@ void SlideListModel::newSlideSetting(const SlideData& customSlideSettings)
                             new SlideData(customSlideSettings)));
 }
 
+void findMaxLineLength(QSharedPointer<QByteArray>& lineIn, int &lineLength)
+{
+    if ((lineIn->trimmed()).length() <= lineLength) {
+        return;
+    }
+    else {
+        lineLength = (lineIn->trimmed()).length();
+    }
+}
+
 
 void SlideListModel::readSlideFile(const QString fileName)
 {
@@ -227,6 +240,7 @@ void SlideListModel::readSlideFile(const QString fileName)
             QSharedPointer<QString>(new QString);
     QSharedPointer<QString> currentNotesText =
             QSharedPointer<QString>(new QString);
+    int lineLength(0);
 
     while (!file.atEnd()) {
 
@@ -254,9 +268,13 @@ void SlideListModel::readSlideFile(const QString fileName)
                     currentSlideSettings->slideText = *currentSlideText;
                     *currentNotesText = currentNotesText->trimmed();
                     currentSlideSettings->notesText = *currentNotesText;
+                    if (lineLength > 0) {
+                        currentSlideSettings->maxLineLength = lineLength;
+                    }
                 }
 
                 newSlideSetting(*customSlideSettings);
+                lineLength = 0;
                 currentSlideSettings = slideList.last();
                 rawSettingsList->clear();
                 currentSlideText->clear();
@@ -272,6 +290,7 @@ void SlideListModel::readSlideFile(const QString fileName)
         }
         else {
             stripComments(linePtr, currentNotesText, "#");
+            findMaxLineLength(linePtr, lineLength);
             currentSlideText->append(*linePtr);
         }
         ++lineCount;
@@ -281,6 +300,10 @@ void SlideListModel::readSlideFile(const QString fileName)
         currentSlideSettings->slideText = *currentSlideText;
         *currentNotesText = currentNotesText->trimmed();
         currentSlideSettings->notesText = *currentNotesText;
+        if (lineLength > 0) {
+            currentSlideSettings->maxLineLength = lineLength;
+        }
+
                 // insert("slideText",*currentSlideText);
     }
 
@@ -319,6 +342,8 @@ QStringList SlideListModel::getRawSlideData() const
                            (*slideIter)->useMarkup));
         rawData.append(QString("slideText: %1").arg(
                            (*slideIter)->slideText));
+        rawData.append(QString("maxLineLength: %1").arg(
+                           (*slideIter)->maxLineLength));
         rawData.append(QString("slideMedia: %1").arg(
                            (*slideIter)->slideMedia));
         rawData.append(QString("backgroundColor: %1").arg(

@@ -48,6 +48,7 @@ public:
         PositionRole,
         UseMarkupRole,
         SlideTextRole,
+        MaxLineLengthRole,
         SlideMediaRole,
         BackgroundColorRole,
         NotesTextRole,
@@ -101,6 +102,8 @@ void populateSlideSettingsMap(QSharedPointer<QStringList>& listIn,
 
 void populateSlideSettings(QStringList& listIn,
                            QSharedPointer<SlideData>& currentSlide);
+
+void findMaxLineLength(QSharedPointer<QByteArray>& lineIn, int& lineLength);
 
 
 

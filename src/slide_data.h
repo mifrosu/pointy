@@ -30,6 +30,7 @@ public:
     QString position;
     bool useMarkup;
     QString slideText;
+    int maxLineLength;
     QString slideMedia;
     QString backgroundColor;
     QString notesText;

@@ -14,11 +14,16 @@ int main()
     TestSquareBracketParser testSquareBracketParser;
     QTest::qExec(&testSquareBracketParser);
 
+    TestMaxLineLength testMaxLineLength;
+    QTest::qExec(&testMaxLineLength);
+
     pointy::TestSlideSetting testSlideSetting;
     QTest::qExec(&testSlideSetting);
 
     pointy::TestFileRead testFileRead;
     QTest::qExec(&testFileRead);
+
+
 
 
 
