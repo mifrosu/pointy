@@ -161,8 +161,8 @@ Rectangle {
             width: parent.width; height: parent.height;
             currentIndex: dataView.currentIndex;
 
-            cellWidth: 100;
-            cellHeight: 75;
+            cellWidth: {width/2;}
+            cellHeight: {height/2;}
 
             delegate: PointySlide {
                 width: {gridView.cellWidth - 5}

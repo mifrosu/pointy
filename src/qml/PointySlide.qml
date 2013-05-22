@@ -30,8 +30,13 @@ Rectangle {
     }
 
     Text {
+        id: slideTextSettings;
         text: slideText;
         color: textColor;
+        font.family: fontFamily;
+        font.pixelSize: fontPixelSize;
+        font.pointSize: 1;
+
     }
 }
 

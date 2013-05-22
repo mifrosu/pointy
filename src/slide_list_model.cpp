@@ -84,8 +84,8 @@ QHash<int, QByteArray> SlideListModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles[StageColorRole] = "stageColor";
-    roles[FontRole] = "font";
-    roles[FontSizeRole] = "fontSize";
+    roles[FontRole] = "fontFamily";
+    roles[FontSizeRole] = "fontPixelSize";
     roles[FontSizeUnitRole] = "fontSizeUnit";
     roles[NotesFontRole] = "notesFont";
     roles[NotesFontSizeRole] = "notesFontSize";

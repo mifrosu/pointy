@@ -10,10 +10,10 @@ TestSlideSetting::TestSlideSetting()
 
 void TestSlideSetting::setFontTest()
 {
-    testSlide->setFont("Monospace 100 pt");
+    testSlide->setFont("Monospace 100 px");
     QCOMPARE(testSlide->font, QString("monospace"));
     QCOMPARE(testSlide->fontSize, qreal(100));
-    QCOMPARE(testSlide->fontSizeUnit, QString("pt"));
+    QCOMPARE(testSlide->fontSizeUnit, QString("px"));
 }
 
 void TestSlideSetting::assignSlideSettings()

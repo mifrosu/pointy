@@ -146,11 +146,15 @@ void SlideData::setFont(const QString &fontString)
         bool ok;
         qreal tempSize = fontSettings[0].toFloat(&ok);
         if (ok) {
-            this->fontSize = tempSize;
+            if (tempSize > 0) {
+                this->fontSize = tempSize;
+            }
+
         }
-        if (fontSettings[1].toLower() == "pt") {
-            this->fontSizeUnit = "pt";
-        }
+          // pointsize not supported for now
+//        if (fontSettings[1].toLower() == "pt") {
+//            this->fontSizeUnit = "pt";
+//        }
         else {
             this->fontSizeUnit = "px";
         }
