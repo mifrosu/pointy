@@ -98,7 +98,7 @@ QHash<int, QByteArray> SlideListModel::roleNames() const
     roles[TransitionRole] ="transitionType";
     roles[CameraFrameRateRole] ="cameraRameRate";
     roles[BackgroundScaleRole] ="backgroundScale";
-    roles[PositionRole] ="postition";
+    roles[PositionRole] ="position";
     roles[UseMarkupRole] ="useMarkup";
     roles[SlideTextRole] ="slideText";
     roles[SlideMediaRole] ="slideMedia";
