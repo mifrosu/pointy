@@ -8,11 +8,23 @@ Rectangle {
     property string pointyTransition: transitionType;
     property double pointyOpacity: 1.0;
     property string textPosition: position;
+    property double scaleFactor: 1;
+
+    property int scaleFont: {
+        fontPixelSize * scaleFactor;
+    }
+    property double padding: { scaleFont/2; }
 
     width: slideWidth;
     height: slideHeight;
     color: backgroundColor;
     opacity: pointyOpacity;
+
+    Rectangle {
+        anchors.fill: parent;
+        color: stageColor;
+    }
+
 
     Image {
         id: slideImage;
@@ -30,20 +42,38 @@ Rectangle {
         fillMode: Image.PreserveAspectFit;
     }
 
+    Text {
+        id: slideTextDataFirstPass;
+        anchors.centerIn: slideTextBackground;
+        text: slideText;
+        color: "transparent";
+        font.family: fontFamily;
+        font.pixelSize: {
+            scaleFont;
+        }
+        font.pointSize: 1;
+//        width: {
+//            (implicitWidth > (slideWidth-(0.04*parent.width))) ?
+//                        slideWidth-(0.04*parent.width) : undefined;
+//        }
+    }
+
     Rectangle {
         id: slideTextBackground;
         color: shadingColor;
         opacity: {
-            if (slideTextData.text === "") {
+            if (slideTextDataFirstPass.text === "") {
                 return 0;
             }
             else {
                 return shadingOpacity;
             }
         }
-        property double padding: { fontPixelSize/2; }
-        height: {slideTextData.height+padding;}
-        width: {slideTextData.width+padding;}
+
+        height: {slideTextDataSecondPass.height+padding;}
+        width: {slideTextDataSecondPass.width+padding;}
+
+        anchors.margins: {0.02 * parent.width}
 
         anchors.left: {
             if (position === "left" || position === "top-left" ||
@@ -113,19 +143,21 @@ Rectangle {
 
 
     Text {
-        id: slideTextData;
+        id: slideTextDataSecondPass;
         anchors.centerIn: slideTextBackground;
         text: slideText;
         color: textColor;
         font.family: fontFamily;
-        font.pixelSize: fontPixelSize;
-        font.pointSize: 1;
-
-
+        font.pixelSize: {
+            scaleFont;
         }
-
-
-
+        font.pointSize: 1;
+        width: {
+            (implicitWidth > (slideWidth-(0.04*parent.width))) ?
+                        slideWidth-(0.04*parent.width) : undefined;
+        }
+        //wrapMode: Text.Wrap;
+    }
 
 
 

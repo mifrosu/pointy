@@ -167,6 +167,11 @@ Rectangle {
             delegate: PointySlide {
                 width: {gridView.cellWidth - 5}
                 height: {gridView.cellHeight - 5}
+                slideWidth: width;
+                slideHeight: height;
+                scaleFactor: {
+                    0.8*width/mainView.width;
+                }
             }
 
             highlight: Rectangle {
