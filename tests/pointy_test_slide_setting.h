@@ -17,6 +17,7 @@ private:
     QSharedPointer<SlideData> testSlide;
 
 private slots:
+    void setFontTest();
     void assignSlideSettings();
 };
 

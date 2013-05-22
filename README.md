@@ -18,6 +18,4 @@ test driven development (TDD) with QtTest.
 
 ## Known Issues ##
 
-Observed using nVidia drivers with KDE on Debian Wheezy and Kubuntu 13.04:
-The slide transition fade effect exhibits flickering. Switching off desktop compositing (the default KDE shortcut is Alt-Shift-F12) removes the flicker. 
-
+Flickering during slide fade transitions was observed on KDE using nVidia and Nouveau graphics drivers. This distortion did not occur if desktop effects were switched off (the default shortcut to do this on KDE is Alt-Shift-F12). Pointy exhibited flicker on Gnome-Shell (Fedora 18) with the Nouveau driver, but not with the nVidia driver. No such distortion has been observed, so far, with Intel graphics chips.

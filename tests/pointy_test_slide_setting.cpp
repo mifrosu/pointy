@@ -8,12 +8,22 @@ TestSlideSetting::TestSlideSetting()
      testSlide = QSharedPointer<SlideData>(new SlideData);
 }
 
+void TestSlideSetting::setFontTest()
+{
+    testSlide->setFont("Monospace 100 pt");
+    QCOMPARE(testSlide->font, QString("monospace"));
+    QCOMPARE(testSlide->fontSize, qreal(100));
+    QCOMPARE(testSlide->fontSizeUnit, QString("pt"));
+}
+
 void TestSlideSetting::assignSlideSettings()
 {
     testSlide->slideSettingAssign("stage-color "," black");
     QCOMPARE(testSlide->stageColor, QString("black"));
     testSlide->slideSettingAssign("font", "Sans 50 px");
-    QCOMPARE(testSlide->font, QString("Sans 50 px"));
+    QCOMPARE(testSlide->font, QString("sans"));
+    QCOMPARE(testSlide->fontSize, qreal(50));
+    QCOMPARE(testSlide->fontSizeUnit, QString("px"));
     testSlide->slideSettingAssign("notes-font", "Sans ");
     QCOMPARE(testSlide->notesFont, QString("Sans"));
     testSlide->slideSettingAssign("notes-font-size","100 px");

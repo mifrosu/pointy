@@ -14,6 +14,8 @@ public:
 
     QString stageColor;		// transition tint
     QString font;
+    qreal fontSize;
+    QString fontSizeUnit;
     QString notesFont;
     QString notesFontSize;
     QString textColor;
@@ -35,6 +37,7 @@ public:
 
     void slideSettingAssign(const QString& lhs_in, const QString& rhs_in);
     void slideSettingAssign(const QString& setting);
+    void setFont(const QString& fontString);
 
 private:
     bool isValidPosition(const QString& testString);

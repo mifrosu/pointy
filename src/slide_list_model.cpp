@@ -30,6 +30,10 @@ QVariant SlideListModel::data(const QModelIndex &index, int role) const
         return QVariant::fromValue(currentSlide->stageColor);
     case FontRole:
         return QVariant::fromValue(currentSlide->font);
+    case FontSizeRole:
+        return QVariant::fromValue(currentSlide->fontSize);
+    case FontSizeUnitRole:
+        return QVariant::fromValue(currentSlide->fontSizeUnit);
     case NotesFontRole:
         return QVariant::fromValue(currentSlide->notesFont);
     case NotesFontSizeRole:
@@ -81,6 +85,8 @@ QHash<int, QByteArray> SlideListModel::roleNames() const
     QHash<int, QByteArray> roles;
     roles[StageColorRole] = "stageColor";
     roles[FontRole] = "font";
+    roles[FontSizeRole] = "fontSize";
+    roles[FontSizeUnitRole] = "fontSizeUnit";
     roles[NotesFontRole] = "notesFont";
     roles[NotesFontSizeRole] = "notesFontSize";
     roles[TextColorRole] = "textColor";
@@ -290,6 +296,8 @@ QStringList SlideListModel::getRawSlideData() const
     while (slideIter != endIter) {
         rawData.append(("stageColor: " + (*slideIter)->stageColor));
         rawData.append(("font: " + (*slideIter)->font));
+        rawData.append(QString("fontSize: %1").arg((*slideIter)->fontSize));
+        rawData.append(("fontSizeUnit: " + (*slideIter)->fontSizeUnit));
         rawData.append(("notesFont: " + (*slideIter)->notesFont));
         rawData.append(("notesFontSize: " + (*slideIter)->stageColor));
         rawData.append(("textColor: " + (*slideIter)->textColor));

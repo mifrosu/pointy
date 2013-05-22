@@ -16,80 +16,88 @@ void TestFileRead::readSimpleFile()
 //                           " global settings before first slide");
     QStringList data = testModel->getRawSlideData();
     QStringList expectedData = (QStringList() << "stageColor: black" <<
-                         "font: Sans 50px" <<
-                         "notesFont: Sans" <<
-                         "notesFontSize: black" <<
-                         "textColor: white" <<
-                         "textAlign: left" <<
-                         "shadingColor: black" <<
-                         "shadingOpacity: 0.66" <<
-                         "duration: 5.5" <<
-                         "command: " <<
-                         "transition: fade" <<
-                         "cameraFrameRate: 0" <<
-                         "backgroundScale: fill" <<
-                         "position: center" <<
-                         "useMarkup: 1" <<
-                         "slideText: " <<
-                         "slideMedia: " <<
-                         "backgroundColor: white" <<
-                         "notesText: " <<
-                         "slideNumber: 0" <<
-                         "stageColor: black" <<
-                         "font: Sans 50px" <<
-                         "notesFont: Sans" <<
-                         "notesFontSize: black" <<
-                         "textColor: white" <<
-                         "textAlign: left" <<
-                         "shadingColor: black" <<
-                         "shadingOpacity: 0.66" <<
-                         "duration: 5.5" <<
-                         "command: " <<
-                         "transition: fade" <<
-                         "cameraFrameRate: 0" <<
-                         "backgroundScale: fit" <<
-                         "position: center" <<
-                         "useMarkup: 1" <<
-                         "slideText: A new slide" <<
-                         "slideMedia: " <<
-                         "backgroundColor: white" <<
-                         "notesText: An initial slide" <<
-                         "slideNumber: 0" <<
-                         "stageColor: black" <<
-                         "font: Sans 20px" <<
-                         "notesFont: Sans" <<
-                         "notesFontSize: black" <<
-                         "textColor: white" <<
-                         "textAlign: left" <<
-                         "shadingColor: black" <<
-                         "shadingOpacity: 0.66" <<
-                         "duration: 5.5" <<
-                         "command: " <<
-                         "transition: fade" <<
-                         "cameraFrameRate: 0" <<
-                         "backgroundScale: fill" <<
-                         "position: center" <<
-                         "useMarkup: 1" <<
-                         "slideText: A blue slide" <<
-                         "slideMedia: " <<
-                         "backgroundColor: lightsteelblue" <<
-                         "notesText: Some colour!" <<
-                         "slideNumber: 0" <<
-                         "stageColor: black" <<
-                         "font: Sans 50px" <<
-                         "notesFont: Sans" <<
-                         "notesFontSize: black" <<
-                         "textColor: white" <<
-                         "textAlign: left" <<
-                         "shadingColor: black" <<
-                         "shadingOpacity: 0.66" <<
-                         "duration: 5.5" <<
-                         "command: " <<
-                         "transition: fade" <<
-                         "cameraFrameRate: 0" <<
-                         "backgroundScale: fill" <<
-                         "position: center" <<
-                         "useMarkup: 1" <<
+                                "font: sans" <<
+                                "fontSize: 50" <<
+                                "fontSizeUnit: px" <<
+                                "notesFont: Sans" <<
+                                "notesFontSize: black" <<
+                                "textColor: white" <<
+                                "textAlign: left" <<
+                                "shadingColor: black" <<
+                                "shadingOpacity: 0.66" <<
+                                "duration: 5.5" <<
+                                "command: " <<
+                                "transition: fade" <<
+                                "cameraFrameRate: 0" <<
+                                "backgroundScale: fill" <<
+                                "position: center" <<
+                                "useMarkup: 1" <<
+                                "slideText: " <<
+                                "slideMedia: " <<
+                                "backgroundColor: white" <<
+                                "notesText: " <<
+                                "slideNumber: 0" <<
+                                "stageColor: black" <<
+                                "font: sans" <<
+                                "fontSize: 50" <<
+                                "fontSizeUnit: px" <<
+                                "notesFont: Sans" <<
+                                "notesFontSize: black" <<
+                                "textColor: white" <<
+                                "textAlign: left" <<
+                                "shadingColor: black" <<
+                                "shadingOpacity: 0.66" <<
+                                "duration: 5.5" <<
+                                "command: " <<
+                                "transition: fade" <<
+                                "cameraFrameRate: 0" <<
+                                "backgroundScale: fit" <<
+                                "position: center" <<
+                                "useMarkup: 1" <<
+                                "slideText: A new slide" <<
+                                "slideMedia: " <<
+                                "backgroundColor: white" <<
+                                "notesText: An initial slide" <<
+                                "slideNumber: 0" <<
+                                "stageColor: black" <<
+                                "font: sans" <<
+                                "fontSize: 20" <<
+                                "fontSizeUnit: px" <<
+                                "notesFont: Sans" <<
+                                "notesFontSize: black" <<
+                                "textColor: white" <<
+                                "textAlign: left" <<
+                                "shadingColor: black" <<
+                                "shadingOpacity: 0.66" <<
+                                "duration: 5.5" <<
+                                "command: " <<
+                                "transition: fade" <<
+                                "cameraFrameRate: 0" <<
+                                "backgroundScale: fill" <<
+                                "position: center" <<
+                                "useMarkup: 1" <<
+                                "slideText: A blue slide" <<
+                                "slideMedia: " <<
+                                "backgroundColor: lightsteelblue" <<
+                                "notesText: Some colour!" <<
+                                "slideNumber: 0" <<
+                                "stageColor: black" <<
+                                "font: sans" <<
+                                "fontSize: 50" <<
+                                "fontSizeUnit: px" <<
+                                "notesFont: Sans" <<
+                                "notesFontSize: black" <<
+                                "textColor: white" <<
+                                "textAlign: left" <<
+                                "shadingColor: black" <<
+                                "shadingOpacity: 0.66" <<
+                                "duration: 5.5" <<
+                                "command: " <<
+                                "transition: fade" <<
+                                "cameraFrameRate: 0" <<
+                                "backgroundScale: fill" <<
+                                "position: center" <<
+                                "useMarkup: 1" <<
                          "slideText: A third slide,\nwith a second line!" <<
                          "slideMedia: " <<
                          "backgroundColor: white" <<

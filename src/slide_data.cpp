@@ -1,11 +1,16 @@
 #include "slide_data.h"
 #include <qregexp.h>
 #include <qcolor.h>
+#include <qfont.h>
+#include <qfontinfo.h>
+#include <QMessageLogger>
+#include <qdebug.h>
 
 namespace pointy {
 
 SlideData::SlideData():
-    stageColor("black"), font("Sans 60px"), notesFont("Sans"),
+    stageColor("black"), font("Sans"), fontSize(60), fontSizeUnit("px"),
+    notesFont("Sans"),
     notesFontSize("20px"), textColor("white"), textAlign("left"),
     shadingColor("black"), shadingOpacity(0.66), duration(30),
     command(), transition("fade"), cameraFrameRate(0), backgroundScale("fill"),
@@ -23,7 +28,7 @@ void SlideData::slideSettingAssign(const QString &lhs_in,
         this->stageColor = rhs;
     }
     else if (lhs == "font") {
-        this->font = rhs;
+        setFont(rhs);
     }
     else if (lhs == "notes-font") {
         this->notesFont = rhs;
@@ -117,6 +122,39 @@ bool SlideData::isValidPosition(const QString& testString)
                    "left|center|right|"
                    "bottom-left|bottom|bottom-right)")
             .exactMatch(testString));
+}
+
+void SlideData::setFont(const QString &fontString)
+{
+    QString testFont = fontString.toLower().trimmed();
+    if ((QRegExp("(\\w+ \\d+ ?p(x|t))")).exactMatch(testFont))
+        // 1+ alphanumeric chars followed by a space "\\w+ "
+        // 1+ decimal digits followed by optional space "\\d ?"
+        // either px or pt "p(x|t)"
+    {
+        int splitIndex = testFont.indexOf(QRegExp(" \\d+ ?[Pp]([Xx]|[Tt])"));
+        QString possibleFont = (testFont.left(splitIndex)).trimmed();
+        this->font = possibleFont;
+
+        int splitUnitIndex = (testFont.mid(splitIndex)).
+                indexOf(QRegExp("p(x|t)"));
+        QStringList fontSettings;
+        fontSettings.append((testFont.mid(splitIndex,
+                                           splitUnitIndex)).trimmed());
+        fontSettings.append(((testFont.mid(splitIndex)).
+                             mid(splitUnitIndex)).trimmed());
+        bool ok;
+        qreal tempSize = fontSettings[0].toFloat(&ok);
+        if (ok) {
+            this->fontSize = tempSize;
+        }
+        if (fontSettings[1].toLower() == "pt") {
+            this->fontSizeUnit = "pt";
+        }
+        else {
+            this->fontSizeUnit = "px";
+        }
+    }
 }
 
 

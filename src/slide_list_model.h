@@ -32,6 +32,8 @@ public:
     enum SlideRoles {
         StageColorRole = Qt::UserRole + 1,
         FontRole,
+        FontSizeRole,
+        FontSizeUnitRole,
         NotesFontRole,
         NotesFontSizeRole,
         TextColorRole,
