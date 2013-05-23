@@ -69,7 +69,7 @@ Rectangle {
         }
 
         function loadTransition(pointyTransition) {
-            if (pointyTransition === "fade") {
+            if (dataView.opacity != 0.0) {
                 animateFade.start();
             }
             else {
@@ -97,8 +97,28 @@ Rectangle {
             }
         }
 
+        NumberAnimation {
+            id: blankScreen;
+            target: dataView;
+            properties: "opacity";
+            from: 1.0; to: 0.0; duration: 800;
+        }
 
+        NumberAnimation {
+            id: revealScreen;
+            target: dataView;
+            properties: "opacity";
+            from: 0.0; to: 1.0; duration: 800;
+        }
 
+        function toggleScreenBlank() {
+            if (dataView.opacity != 0.0) {
+                blankScreen.start();
+            }
+            else {
+                revealScreen.start();
+            }
+        }
 
 
         MouseArea {
@@ -113,6 +133,16 @@ Rectangle {
                     console.log("Right")
                 }
             }
+        }
+
+        function toggleWindow(windowId) {
+            if (windowId.visible === true) {
+                windowId.visible = false;
+            }
+            else {
+                windowId.show();
+            }
+
         }
 
 
@@ -136,6 +166,15 @@ Rectangle {
                      event.key === Qt.Key_Escape) {
                 quitPointy();
             }
+            else if (event.key === Qt.Key_B) {
+                toggleScreenBlank();
+            }
+            else if (event.key === Qt.Key_N) {
+                toggleWindow(notesTextWindow);
+            }
+            else if (event.key === Qt.Key_G) {
+                toggleWindow(gridViewWindow);
+            }
         }
 
     } // ListView
@@ -148,6 +187,7 @@ Rectangle {
         visible: mainView.notesVisible;
 
         Text {
+            focus: true;
             anchors.fill: parent
             anchors.margins: parent.height * 0.1;
 
@@ -157,6 +197,15 @@ Rectangle {
             property string notes: dataView.currentItem.pointyNotes;
             text: notes == "" ? "This slide has no notes." : notes;
             font.italic: notes == "";
+
+            Keys.onPressed: {
+                if (event.key === Qt.Key_N) {
+                    if (notesTextWindow.visible === true )
+                    {
+                        notesTextWindow.visible = false;
+                    }
+                }
+            }
         }
     } // Window (notesTextWindow)
 
@@ -207,6 +256,14 @@ Rectangle {
                     radius: parent.radius;
                 }
 
+            }
+            Keys.onPressed: {
+                if (event.key === Qt.Key_G) {
+                    if (gridViewWindow.visible === true )
+                    {
+                        gridViewWindow.visible = false;
+                    }
+                }
             }
             highlightFollowsCurrentItem: true;
             highlightMoveDuration: 0;
