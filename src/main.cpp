@@ -1,3 +1,4 @@
+#include "pointy_slide_viewer.h"
 #include "slide_data.h"
 #include "slide_list_model.h"
 #include <qdebug.h>
@@ -14,6 +15,7 @@
 #include "qtquick2applicationviewer.h"
 #include "qdir.h"
 #include "qqmlpropertymap.h"
+#include <QKeyEvent>
 
 
 void helpMessage(const char* execName, QTextStream& qout);
@@ -24,6 +26,7 @@ int main(int argc, char* argv[])
 
     QTextStream qout(stdout, QIODevice::WriteOnly);
     bool rawPrint(false);
+    bool setFullScreen(false);
 
     if (argc > 1) {
         for (int i=1; i < argc; ++i) {
@@ -32,9 +35,13 @@ int main(int argc, char* argv[])
                 helpMessage(argv[0], qout);
                 return 0;
             }
-            if (QString(argv[i]) == "-r" ||
+            else if (QString(argv[i]) == "-r" ||
                     QString(argv[i]) == "--raw") {
                 rawPrint = true;
+            }
+            else if (QString(argv[i]) == "-f" ||
+                     QString(argv[i]) == "--fullscreen") {
+                setFullScreen = true;
             }
         }
 
@@ -50,7 +57,8 @@ int main(int argc, char* argv[])
             printRaw(showModel, qout);
             return 0;
         }
-        QtQuick2ApplicationViewer view;
+        //QtQuick2ApplicationViewer view;
+        PointySlideViewer view;
 
         //view.setResizeMode(QQuickView::SizeRootObjectToView);
         QQmlContext* context = view.rootContext();
@@ -71,7 +79,20 @@ int main(int argc, char* argv[])
         context->setContextProperty("currentPath", &(*currentPath));
 
         view.setMainQmlFile("src/qml/SlideView.qml");
+        //view.showFullScreen();
         view.showExpanded();
+
+        if (setFullScreen == true) {
+            view.toggleFullScreen();
+        }
+
+        QObject *rootObject = qobject_cast<QObject*>(view.rootObject());
+        QObject::connect(rootObject, SIGNAL(toggleScreenMode()),
+                         &view, SLOT(toggleFullScreen()));
+
+
+
+
         return app.exec();
 
 
@@ -91,8 +112,11 @@ void helpMessage(const char* execName, QTextStream& qout)
     QString msg = QString("\nUsage:"
                           "%1 [arguments] [file]\n"
                           "\nArguments:\n"
-                          "\t-h, --help\t Print this message, then exit\n"
-                          "\t-r, --raw\t Write processed slide text to stdout,"
+                          "\t-f, --fullscreen\t\t"
+                          "Start presentation in fullscreen mode"
+                          "\t-h, --help\t\t\t Print this message, then exit\n"
+                          "\t-r, --raw\t\t\t"
+                          "Write processed slide text to stdout,"
                           " then exit"
             ).arg(execName);
     qout << msg << endl << endl;
@@ -110,3 +134,4 @@ void printRaw(const pointy::SlideListModel &showModel, QTextStream &qout)
       //  ++slideNumber;
     }
 }
+

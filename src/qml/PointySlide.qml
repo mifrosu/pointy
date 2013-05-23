@@ -1,6 +1,8 @@
 import QtQuick 2.0
+import QtMultimedia 5.0
 
 Rectangle {
+    id: slideElement;
     property int slideWidth;
     property int slideHeight;
     property string pointyNotes: notesText;
@@ -25,21 +27,78 @@ Rectangle {
     color: backgroundColor;
     opacity: pointyOpacity;
 
-    Image {
+    Component {
+        // encapsulates element, only loaded when required
         id: slideImage;
-        width: parent.width;
-        height: parent.height;
+        Image {
+            width: slideElement.width;
+            height: slideElement.height;
 
-        source: {
-            if (slideMedia != "") {
-                return currentPath.currentDir + slideMedia;
+            source: {
+                if (slideMedia != "") {
+                    return currentPath.currentDir + slideMedia;
+                }
+                else {
+                    return "blank.png";
+                }
             }
-            else {
-                return "blank.png";
+            fillMode: Image.PreserveAspectFit;
+        }
+    }
+
+
+
+    Component {
+        id: videoComponent;
+        Video {
+            id: video;
+            width : slideElement.width;
+            height : slideElement.height;
+            source: { currentPath.currentDir + slideMedia; }
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    video.play()
+                }
+            }
+
+            focus: true
+            Keys.onSpacePressed: video.playbackState ===
+                                 MediaPlayer.PlayingState ? video.pause()
+                                                          : video.play()
+            Keys.onLeftPressed: video.seek(video.position - 5000)
+            Keys.onRightPressed: video.seek(video.position + 5000)
+        }
+
+    }
+
+    Component {
+        id: animatedComponent;
+        AnimatedImage {
+            width : slideElement.width;
+            height : slideElement.height;
+            source: { currentPath.currentDir + slideMedia; }
+        }
+    }
+
+    Loader {
+        sourceComponent: {
+            if (slideMedia.match(/.jpeg|.jpg/i)) {
+                return slideImage;
+            }
+            else if (slideMedia.match(
+              /.avi|.flv|.mkv|.mov|.mp4|.mpeg|.ogv|.webm/i)) {
+
+                return videoComponent;
+            }
+            else if (slideMedia.match(/.gif/i)) {
+                return animatedComponent;
             }
         }
-        fillMode: Image.PreserveAspectFit;
     }
+
+
 
     Rectangle {
         id: slideTextBackground;
@@ -123,6 +182,10 @@ Rectangle {
             }
         }
     }
+
+
+
+
 
 
     Text {

@@ -1,12 +1,15 @@
 import QtQuick 2.0
 import QtQuick.Window 2.0
 
+
 Rectangle {
     id: mainView;
     width: 800; height: 600;
     property bool notesVisible: true;
     property bool gridVisible: true;
     property bool horizontalLayout: true;
+
+    signal toggleScreenMode();
 
     Rectangle {
         id: fadeRectangle;
@@ -95,6 +98,8 @@ Rectangle {
 
 
 
+
+
         MouseArea {
             id: mouseArea;
             anchors.fill: parent;
@@ -121,7 +126,9 @@ Rectangle {
                 dataView.moveForward = false;
                 loadTransition(dataView.currentItem.pointyTransition);
                 //currentIndex -=1;
-
+            }
+            else if (event.key === Qt.Key_F) {
+                toggleScreenMode();
             }
         }
 
