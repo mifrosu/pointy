@@ -128,7 +128,8 @@ Rectangle {
                 loadTransition(dataView.currentItem.pointyTransition);
                 //currentIndex -=1;
             }
-            else if (event.key === Qt.Key_F) {
+            else if (event.key === Qt.Key_F ||
+                     event.key === Qt.Key_F11 ) {
                 toggleScreenMode();
             }
             else if (event.key === Qt.Key_Q ||
