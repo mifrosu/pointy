@@ -89,6 +89,8 @@ int main(int argc, char* argv[])
         QObject *rootObject = qobject_cast<QObject*>(view.rootObject());
         QObject::connect(rootObject, SIGNAL(toggleScreenMode()),
                          &view, SLOT(toggleFullScreen()));
+        QObject::connect(rootObject,SIGNAL(quitPointy()),
+                         &view, SLOT(close()));
 
 
 

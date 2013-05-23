@@ -10,6 +10,7 @@ Rectangle {
     property bool horizontalLayout: true;
 
     signal toggleScreenMode();
+    signal quitPointy();
 
     Rectangle {
         id: fadeRectangle;
@@ -129,6 +130,10 @@ Rectangle {
             }
             else if (event.key === Qt.Key_F) {
                 toggleScreenMode();
+            }
+            else if (event.key === Qt.Key_Q ||
+                     event.key === Qt.Key_Escape) {
+                quitPointy();
             }
         }
 
