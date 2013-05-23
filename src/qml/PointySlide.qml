@@ -51,19 +51,44 @@ Rectangle {
     Component {
         id: videoComponent;
         Video {
+
+            Image {
+                id: playControl;
+                source: "play_control.svg";
+                width: 100
+                height: 75
+                anchors.centerIn: parent;
+                visible: true;
+                antialiasing: true;
+            }
+
             id: video;
             width : slideElement.width;
             height : slideElement.height;
-            source: { currentPath.currentDir + slideMedia; }
+            focus: true;
+
+            source: { currentPath.currentDir + slideMedia;}
+            Component.onCompleted: {
+                video.seek(5);
+            }
+
 
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    video.play()
+                    if (video.playbackState != MediaPlayer.PlayingState)
+                    {
+                        playControl.visible = false;
+                        video.play();
+                    }
+                    else {
+                        playControl.visible = true;
+                        video.pause();
+                    }
                 }
             }
 
-            focus: true
+
             Keys.onSpacePressed: video.playbackState ===
                                  MediaPlayer.PlayingState ? video.pause()
                                                           : video.play()
