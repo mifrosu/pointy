@@ -32,6 +32,7 @@ Rectangle {
     color: backgroundColor;
     opacity: pointyOpacity;
 
+
     Component {
         // encapsulates element, only loaded when required
         id: slideImage;
@@ -48,7 +49,21 @@ Rectangle {
                 }
             }
             fillMode: {
-                Image.PreserveAspectFit;
+                // fill|fit|stretch|unscaled
+                if (backgroundScale === "fit") {
+                    Image.PreserveAspectFit;
+                }
+                else if (backgroundScale === "fill") {
+                    Image.PreserveAspectCrop;
+                }
+                else if (backgroundScale === "stretch") {
+                    Image.Stretch;
+                }
+                else if (backgroundScale === "unscaled")
+                {
+                    Image.Pad;
+                }
+
             }
 
         }
@@ -78,14 +93,29 @@ Rectangle {
 
                 source: { currentPath.currentDir + slideMedia;}
 
+                fillMode: {
+
+                    if (backgroundScale === "fill") {
+                        VideoOutput.PreserveAspectCrop;
+                    }
+                    else if (backgroundScale === "stretch") {
+                        VideoOutput.Stretch;
+                    }
+                    else
+                    {
+                        VideoOutput.PreserveAspectFit;
+                    }
+
+                }
+
                 function playToggle() {
                     if (video.playbackState !== MediaPlayer.PlayingState)
                     {
-                        playControl.visible = false;
+                        playControl.z = video.z-1;
                         video.play();
                     }
                     else {
-                        playControl.visible = true;
+                        playControl.z = video.z+1;
                         video.pause();
                     }
                 }
@@ -128,6 +158,23 @@ Rectangle {
             width : slideElement.width;
             height : slideElement.height;
             source: { currentPath.currentDir + slideMedia; }
+            fillMode: {
+                // fill|fit|stretch|unscaled
+                if (backgroundScale === "fit") {
+                    Image.PreserveAspectFit;
+                }
+                else if (backgroundScale === "fill") {
+                    Image.PreserveAspectCrop;
+                }
+                else if (backgroundScale === "stretch") {
+                    Image.Stretch;
+                }
+                else if (backgroundScale === "unscaled")
+                {
+                    Image.Pad;
+                }
+
+            }
         }
     }
 
@@ -146,6 +193,7 @@ Rectangle {
                 return slideImage;
             }
         }
+
 
     }
 
