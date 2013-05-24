@@ -246,6 +246,7 @@ Rectangle {
             focus: true;
             width: parent.width; height: parent.height;
             currentIndex: dataView.currentIndex;
+            snapMode: GridView.SnapToRow;
 
             cellWidth: {width/2;}
             cellHeight: {height/2;}
@@ -257,6 +258,20 @@ Rectangle {
                 slideHeight: height;
                 scaleFactor: {
                     width/mainView.width;
+                }
+                MouseArea {
+                    id: mouseGridArea;
+                    anchors.fill: parent;
+                    acceptedButtons: Qt.LeftButton | Qt.RightButton
+                    onClicked: {
+                        if (mouse.button === Qt.LeftButton) {
+                            // index role is available to delegate
+                            dataView.currentIndex = index;
+                        }
+                        else {
+                            console.log("Right")
+                        }
+                    }
                 }
             }
 
@@ -281,12 +296,17 @@ Rectangle {
                 }
 
             }
+
+
             Keys.onPressed: {
                 if (event.key === Qt.Key_G) {
                     if (gridViewWindow.visible === true )
                     {
                         gridViewWindow.visible = false;
                     }
+                }
+                if (event.key === Qt.Key_Return) {
+                    dataView.currentIndex = currentIndex;
                 }
             }
             highlightFollowsCurrentItem: true;
