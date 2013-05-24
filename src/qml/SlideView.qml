@@ -37,9 +37,11 @@ Rectangle {
 
         model: slideShow;
 
-        delegate: PointySlide {
+        delegate:
+            PointySlide {
             slideWidth: mainView.width;
             slideHeight: mainView.height;
+
         }
 
         property int slideCount: count;
@@ -151,13 +153,35 @@ Rectangle {
             if (event.key === Qt.Key_Space && (currentIndex < slideCount -1)) {
                 dataView.moveForward = true;
                 loadTransition(dataView.currentItem.pointyTransition);
+
                 //currentIndex += 1;
             }
+
             else if (event.key === Qt.Key_Backspace && currentIndex > 1) {
                 dataView.moveForward = false;
                 loadTransition(dataView.currentItem.pointyTransition);
                 //currentIndex -=1;
             }
+
+            else if (event.key === Qt.Key_Return &&
+                                dataView.currentItem.isMediaSlide === true ) {
+                dataView.currentItem.mediaSignal();
+            }
+
+
+            if (event.key === Qt.Key_Less &&
+                    dataView.currentItem.isMediaSlide === true ) {
+                dataView.currentItem.backMedia();
+            }
+            else if (event.key === Qt.Key_Greater &&
+                     dataView.currentItem.isMediaSlide === true ) {
+                dataView.currentItem.forwardMedia();
+
+            }
+
+
+
+
             else if (event.key === Qt.Key_F ||
                      event.key === Qt.Key_F11 ) {
                 toggleScreenMode();

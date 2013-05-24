@@ -3,6 +3,10 @@ import QtMultimedia 5.0
 
 Rectangle {
     id: slideElement;
+    signal mediaSignal();
+    signal backMedia();
+    signal forwardMedia();
+
     property int slideWidth;
     property int slideHeight;
     property string pointyNotes: notesText;
@@ -11,6 +15,7 @@ Rectangle {
     property double pointyOpacity: 1.0;
     property string textPosition: position;
     property double scaleFactor: 1;
+    property bool isMediaSlide: false;
 
     property int scaleFont: {
         if (fontPixelSize * maxLineLength > slideWidth) {
@@ -47,36 +52,31 @@ Rectangle {
     }
 
 
-
     Component {
         id: videoComponent;
-        Video {
 
-            Image {
-                id: playControl;
-                source: "play_control.svg";
-                width: 100
-                height: 75
-                anchors.centerIn: parent;
-                visible: true;
-                antialiasing: true;
-            }
+            Video {
+                id: video;
 
-            id: video;
-            width : slideElement.width;
-            height : slideElement.height;
-            focus: true;
-
-            source: { currentPath.currentDir + slideMedia;}
-            Component.onCompleted: {
-                video.seek(5);
-            }
+                Image {
+                    id: playControl;
+                    source: "play_control.svg";
+                    width: 100
+                    height: 75
+                    anchors.centerIn: parent;
+                    visible: true;
+                    antialiasing: true;
+                }
 
 
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    if (video.playbackState != MediaPlayer.PlayingState)
+
+                width : slideElement.width;
+                height : slideElement.height;
+
+                source: { currentPath.currentDir + slideMedia;}
+
+                function playToggle() {
+                    if (video.playbackState !== MediaPlayer.PlayingState)
                     {
                         playControl.visible = false;
                         video.play();
@@ -86,17 +86,38 @@ Rectangle {
                         video.pause();
                     }
                 }
-            }
+
+                function forwardSeek() {
+                    video.seek(video.position + 2000);  // 2000 msec
+                }
+
+                function backwardSeek() {
+                    video.seek(video.position - 2000);
+                }
 
 
-            Keys.onSpacePressed: video.playbackState ===
-                                 MediaPlayer.PlayingState ? video.pause()
-                                                          : video.play()
-            Keys.onLeftPressed: video.seek(video.position - 5000)
-            Keys.onRightPressed: video.seek(video.position + 5000)
-        }
 
-    }
+
+                MouseArea {
+                    id: mouseArea
+                    anchors.fill: parent
+                    onClicked: {
+                        playToggle();
+                    }
+                }
+
+                Keys.onPressed: {
+                    if (event.key === Qt.Key_Space) {
+                        playToggle();
+
+                    }
+                }
+                Keys.onLeftPressed: video.seek(video.position - 5000);
+                Keys.onRightPressed: video.seek(video.position + 5000);
+            } // video
+
+    } // component
+
 
     Component {
         id: animatedComponent;
@@ -108,19 +129,33 @@ Rectangle {
     }
 
     Loader {
+        id: loadedComponent
         sourceComponent: {
             if (slideMedia.match(/.jpeg|.jpg/i)) {
                 return slideImage;
             }
             else if (slideMedia.match(
               /.avi|.flv|.mkv|.mov|.mp4|.mpeg|.ogv|.webm/i)) {
-
+                slideElement.isMediaSlide = true;
                 return videoComponent;
             }
             else if (slideMedia.match(/.gif/i)) {
                 return animatedComponent;
             }
         }
+
+    }
+
+    onMediaSignal: {
+        loadedComponent.item.playToggle();
+    }
+
+    onBackMedia: {
+        loadedComponent.item.backwardSeek();
+    }
+
+    onForwardMedia: {
+        loadedComponent.item.forwardSeek();
     }
 
 
