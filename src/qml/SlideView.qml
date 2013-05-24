@@ -11,6 +11,7 @@ Rectangle {
 
     signal toggleScreenMode();
     signal quitPointy();
+    signal checkFileInfo();
 
     Rectangle {
         id: fadeRectangle;
@@ -24,7 +25,12 @@ Rectangle {
         id: dataView;
         focus: true;
         property bool moveForward;
-        opacity: 1.0;
+        opacity: 1.0; 
+
+        onActiveFocusChanged: {
+            checkFileInfo();
+        }
+
         //interactive: false;
         snapMode: ListView.SnapToItem;
         keyNavigationWraps: true;

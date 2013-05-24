@@ -9,6 +9,7 @@
 #include <qmap.h>
 #include <qstring.h>
 #include <qstringlist.h>
+#include <qfile.h>
 
 
 
@@ -27,7 +28,7 @@ public:
     void readSlideFile(const QString fileName);
     QStringList getRawSlideData() const;
 
-    void clearSlides();
+
 
     enum SlideRoles {
         StageColorRole = Qt::UserRole + 1,
@@ -55,6 +56,8 @@ public:
         SlideNumberRole
     };
 
+public slots:
+    void reloadSlides();
 
 private:
     Q_DISABLE_COPY(SlideListModel)
@@ -68,6 +71,8 @@ private:
                            QSharedPointer<SlideData>& slide);
     void newSlideSetting();
     void newSlideSetting(const SlideData& customSlideSettings);
+
+    QString currentFileName;
 
 
     /**

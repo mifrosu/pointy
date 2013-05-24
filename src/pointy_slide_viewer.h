@@ -3,6 +3,8 @@
 
 #include "qtquick2applicationviewer.h"
 #include <QKeyEvent>
+#include <qdatetime.h>
+#include <qfileinfo.h>
 
 class PointySlideViewer: public QtQuick2ApplicationViewer
 {
@@ -10,9 +12,18 @@ class PointySlideViewer: public QtQuick2ApplicationViewer
 public:
     explicit PointySlideViewer(QWindow* parent = 0);
     virtual ~PointySlideViewer();
+    void setFileMonitor(const QString& fileName);
 
 public slots:
+    void checkFileChanged();
     void toggleFullScreen();
+
+signals:
+    void fileIsChanged();
+
+private:
+    QFileInfo currentFileInfo;
+    QDateTime fileLastModified;
 
     //void keyPressEvent(QKeyEvent *event);
 

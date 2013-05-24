@@ -1,4 +1,5 @@
 #include "pointy_slide_viewer.h"
+#include <qdebug.h>
 
 PointySlideViewer::PointySlideViewer(QWindow* parent) :
     QtQuick2ApplicationViewer(parent)
@@ -8,6 +9,26 @@ PointySlideViewer::PointySlideViewer(QWindow* parent) :
 
 PointySlideViewer::~PointySlideViewer()
 {
+}
+
+void PointySlideViewer::setFileMonitor(const QString &fileName)
+{
+    currentFileInfo = fileName;
+    fileLastModified = currentFileInfo.lastModified();
+}
+
+void PointySlideViewer::checkFileChanged()
+{
+    currentFileInfo.refresh();
+    QDateTime newFileCheck = currentFileInfo.lastModified();
+    if (newFileCheck != fileLastModified)
+    {
+        emit fileIsChanged();
+        fileLastModified = newFileCheck;
+    }
+    else {
+        return;
+    }
 }
 
 void PointySlideViewer::toggleFullScreen()

@@ -16,6 +16,8 @@
 #include "qdir.h"
 #include "qqmlpropertymap.h"
 #include <QKeyEvent>
+#include <qfileinfo.h>
+#include <qdatetime.h>
 
 
 void helpMessage(const char* execName, QTextStream& qout);
@@ -56,9 +58,13 @@ int main(int argc, char* argv[])
         if (rawPrint) {
             printRaw(showModel, qout);
             return 0;
-        }
+        }        
+
         //QtQuick2ApplicationViewer view;
         PointySlideViewer view;
+
+        // monitor slide source file for updates
+        view.setFileMonitor(fileName);
 
         //view.setResizeMode(QQuickView::SizeRootObjectToView);
         QQmlContext* context = view.rootContext();
@@ -91,6 +97,10 @@ int main(int argc, char* argv[])
                          &view, SLOT(toggleFullScreen()));
         QObject::connect(rootObject,SIGNAL(quitPointy()),
                          &view, SLOT(close()));
+        QObject::connect(rootObject, SIGNAL(checkFileInfo()),
+                         &view, SLOT(checkFileChanged()));
+        QObject::connect(&view, SIGNAL(fileIsChanged()),
+                         &showModel, SLOT(reloadSlides()));
 
 
 

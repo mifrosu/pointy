@@ -226,6 +226,8 @@ void SlideListModel::readSlideFile(const QString fileName)
     int lineCount = 0;      // for error reporting
     bool haveCustomSettings = false;
 
+    currentFileName = fileName;  // stored for reloading if needed later
+
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly)) {
         qFatal("Slide file can not be read");
@@ -306,6 +308,17 @@ void SlideListModel::readSlideFile(const QString fileName)
 
                 // insert("slideText",*currentSlideText);
     }
+
+}
+
+void SlideListModel::reloadSlides()
+{
+    this->layoutAboutToBeChanged();  // signal to Qt Quick view
+    this->beginResetModel();
+    slideList.clear();
+    readSlideFile(currentFileName);
+    this->endResetModel();
+    this->layoutChanged();           // signal to Qt Quick view
 
 }
 
