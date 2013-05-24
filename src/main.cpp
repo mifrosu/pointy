@@ -113,13 +113,22 @@ void helpMessage(const char* execName, QTextStream& qout)
 {
     QString msg = QString("\nUsage:"
                           "%1 [arguments] [file]\n"
-                          "\nArguments:\n"
+                          "\nArguments:\n\n"
                           "\t-f, --fullscreen\t\t"
-                          "Start presentation in fullscreen mode"
-                          "\t-h, --help\t\t\t Print this message, then exit\n"
+                          "Start presentation in fullscreen mode\n"
+                          "\t-h, --help\t\t\tPrint this message, then exit\n"
                           "\t-r, --raw\t\t\t"
-                          "Write processed slide text to stdout,"
+                          "Write raw slides to stdout,"
                           " then exit"
+                          "\n\nPresentation Controls:\n\n"
+                          "\tSpacebar\t\t\tNext Slide\n"
+                          "\tBackspace\t\t\tPrevious Slide\n"
+                          "\tLeft/Right Cursor keys\t\tSkip to "
+                          "previous/next slide\n"
+                          "\tg\t\t\t\tToggle Grid Window\n"
+                          "\tn\t\t\t\tToggle Notes Window\n"
+                          "\tReturn\t\t\t\tPlay Media\n"
+                          "\t<, >\t\t\t\tSeek backwards/forwards\n"
             ).arg(execName);
     qout << msg << endl << endl;
 }
