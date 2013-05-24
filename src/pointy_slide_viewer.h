@@ -2,6 +2,7 @@
 #define POINTY_SLIDE_VIEWER_H
 
 #include "qtquick2applicationviewer.h"
+#include "pointy_command.h"
 #include <QKeyEvent>
 #include <qdatetime.h>
 #include <qfileinfo.h>
@@ -13,6 +14,7 @@ public:
     explicit PointySlideViewer(QWindow* parent = 0);
     virtual ~PointySlideViewer();
     void setFileMonitor(const QString& fileName);
+    pointy::PointyCommand pointyCommand;
 
 public slots:
     void checkFileChanged();

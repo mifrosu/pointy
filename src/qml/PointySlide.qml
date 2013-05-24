@@ -6,6 +6,7 @@ Rectangle {
     signal mediaSignal();
     signal backMedia();
     signal forwardMedia();
+    signal sendCommand(string commandString);
 
     property int slideWidth;
     property int slideHeight;
@@ -178,6 +179,40 @@ Rectangle {
         }
     }
 
+    Component {
+        id: commandComponent;
+        TextInput {
+            id: commandField;
+            function playToggle() {
+                console.log(commandField.text);
+            }
+            color: "white";
+            text: command;
+            font.pixelSize: scaleFont;
+            font.family: "Monospace";
+            parent: slideElement;
+            anchors.bottom: parent.bottom;
+            anchors.horizontalCenter: parent.horizontalCenter;
+//            Keys.onPressed: {
+//                if (event.key === Qt.Key_Return) {
+//                    playToggle();
+
+//                }
+//            }
+            Rectangle {
+                width: parent.width;
+                height: parent.height;
+                border.color: "white";
+                color: "black";
+                z: parent.z-1;
+                opacity: 0.3;
+            }
+
+        }
+
+
+    } // component
+
     Loader {
         id: loadedComponent
         sourceComponent: {
@@ -189,6 +224,11 @@ Rectangle {
             else if (slideMedia.match(/.gif/i)) {
                 return animatedComponent;
             }
+            else if (command !== "") {
+                slideElement.isMediaSlide = true;
+                return commandComponent;
+            }
+
             else {
                 return slideImage;
             }

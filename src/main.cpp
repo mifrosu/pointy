@@ -1,6 +1,7 @@
 #include "pointy_slide_viewer.h"
 #include "slide_data.h"
 #include "slide_list_model.h"
+#include "pointy_command.h"
 #include <qdebug.h>
 #include <qtextstream.h>
 #include <iostream>

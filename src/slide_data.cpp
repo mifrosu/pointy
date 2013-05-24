@@ -16,7 +16,7 @@ SlideData::SlideData():
     command(), transition("fade"), cameraFrameRate(0), backgroundScale("fill"),
     position("center"), useMarkup(true), slideText(""), maxLineLength(0),
     slideMedia(),
-    backgroundColor("white"), notesText(" "), slideNumber(0)
+    backgroundColor("white"), notesText(), slideNumber(0)
 {}
 
 void SlideData::slideSettingAssign(const QString &lhs_in,
@@ -75,6 +75,9 @@ void SlideData::slideSettingAssign(const QString &lhs_in,
         else {
             this->duration = temp;
         }
+    }
+    else if (lhs == "command") {
+        this->command = rhs;
     }
     else if (lhs == "transition") {
         this->transition = rhs;

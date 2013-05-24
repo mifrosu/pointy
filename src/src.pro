@@ -3,7 +3,8 @@ SOURCES += \
     main.cpp \
     slide_list_model.cpp \
     slide_data.cpp \
-    pointy_slide_viewer.cpp
+    pointy_slide_viewer.cpp \
+    pointy_command.cpp
 
 
 TEMPLATE = app
@@ -13,7 +14,8 @@ TARGET = ../pointy
 HEADERS += \
     slide_data.h \
     slide_list_model.h \
-    pointy_slide_viewer.h
+    pointy_slide_viewer.h \
+    pointy_command.h
 
 QT += core \
       qml quick
