@@ -26,7 +26,9 @@ void SlideData::slideSettingAssign(const QString &lhs_in,
     QString rhs(rhs_in.trimmed());
 
     if (lhs == "stage-color") {
-        this->stageColor = rhs;
+        if (QColor::isValidColor(rhs)) {
+            this->textColor = rhs;
+        }
     }
     else if (lhs == "font") {
         setFont(rhs);
@@ -47,7 +49,9 @@ void SlideData::slideSettingAssign(const QString &lhs_in,
         this->textAlign = rhs;
     }
     else if (lhs == "shading-color") {
-        this->shadingColor = rhs;
+        if (QColor::isValidColor(rhs)) {
+            this->textColor = rhs;
+        }
     }
     else if (lhs == "shading-opacity") {
         bool ok;
@@ -56,7 +60,10 @@ void SlideData::slideSettingAssign(const QString &lhs_in,
             return;
         }
         else {
-        this->shadingOpacity = temp;
+            if (temp >= 0.0 && temp <= 1.0) {
+                this->shadingOpacity = temp;
+            }
+
         }
     }
     else if (lhs == "duration") {

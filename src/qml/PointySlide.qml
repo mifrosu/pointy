@@ -47,7 +47,10 @@ Rectangle {
                     return "blank.png";
                 }
             }
-            fillMode: Image.PreserveAspectFit;
+            fillMode: {
+                Image.PreserveAspectFit;
+            }
+
         }
     }
 
@@ -131,16 +134,16 @@ Rectangle {
     Loader {
         id: loadedComponent
         sourceComponent: {
-            if (slideMedia.match(/.jpeg|.jpg/i)) {
-                return slideImage;
-            }
-            else if (slideMedia.match(
+            if (slideMedia.match(
               /.avi|.flv|.mkv|.mov|.mp4|.mpeg|.ogv|.webm/i)) {
                 slideElement.isMediaSlide = true;
                 return videoComponent;
             }
             else if (slideMedia.match(/.gif/i)) {
                 return animatedComponent;
+            }
+            else {
+                return slideImage;
             }
         }
 
