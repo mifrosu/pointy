@@ -308,6 +308,9 @@ void SlideListModel::readSlideFile(const QString fileName)
 
                 // insert("slideText",*currentSlideText);
     }
+    if (!slideList.isEmpty()) {
+        slideList.pop_front();
+    }
 
 }
 

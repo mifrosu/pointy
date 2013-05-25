@@ -18,8 +18,8 @@ void TestSlideSetting::setFontTest()
 
 void TestSlideSetting::assignSlideSettings()
 {
-    testSlide->slideSettingAssign("stage-color "," black");
-    QCOMPARE(testSlide->stageColor, QString("black"));
+    testSlide->slideSettingAssign("stage-color "," red");
+    QCOMPARE(testSlide->stageColor, QString("red"));
     testSlide->slideSettingAssign("font", "Sans 50 px");
     QCOMPARE(testSlide->font, QString("sans"));
     QCOMPARE(testSlide->fontSize, qreal(50));
@@ -32,8 +32,8 @@ void TestSlideSetting::assignSlideSettings()
     QCOMPARE(testSlide->textColor, QString("crimson"));
     testSlide->slideSettingAssign("text-align","left");
     QCOMPARE(testSlide->textAlign, QString("left"));
-    testSlide->slideSettingAssign("shading-color", "blue");
-    QCOMPARE(testSlide->shadingColor, QString("blue"));
+    testSlide->slideSettingAssign("shading-color", "red");
+    QCOMPARE(testSlide->shadingColor, QString("red"));
 
     testSlide->slideSettingAssign("shading-opacity","0.5");
     QCOMPARE(testSlide->shadingOpacity, qreal(0.5));

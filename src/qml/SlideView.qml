@@ -52,14 +52,7 @@ Rectangle {
 
         property int slideCount: count;
 
-        currentIndex: {
-            if (slideCount > 0){
-                return 1;
-            }
-            else {
-                return 0;
-            }
-        }
+        currentIndex: 0;
 
         Timer {
             id: waitTime;
@@ -91,7 +84,7 @@ Rectangle {
                 target: dataView;
                 // target: fadeRectangle;
                 properties: "opacity";
-                from: 1.0; to: 0.3; duration: 200;
+                from: 1.0; to: 0.3; duration: 500;
             }
             ScriptAction {
                 script: {
@@ -101,7 +94,7 @@ Rectangle {
             NumberAnimation {
                 target: dataView;
                 properties: "opacity";
-                from: 0.3; to: 1.0; duration: 200;
+                from: 0.3; to: 1.0; duration: 500;
             }
         }
 
@@ -163,7 +156,7 @@ Rectangle {
                 //currentIndex += 1;
             }
 
-            else if (event.key === Qt.Key_Backspace && currentIndex > 1) {
+            else if (event.key === Qt.Key_Backspace && currentIndex > 0) {
                 dataView.moveForward = false;
                 loadTransition(dataView.currentItem.pointyTransition);
                 //currentIndex -=1;

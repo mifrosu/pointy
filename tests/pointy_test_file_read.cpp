@@ -15,29 +15,30 @@ void TestFileRead::readSimpleFile()
 //                           " comments with a hash\n"
 //                           " global settings before first slide");
     QStringList data = testModel->getRawSlideData();
-    QStringList expectedData = (QStringList() << "stageColor: black" <<
-                                "font: sans" <<
-                                "fontSize: 50" <<
-                                "fontSizeUnit: px" <<
-                                "notesFont: Sans" <<
-                                "notesFontSize: black" <<
-                                "textColor: white" <<
-                                "textAlign: left" <<
-                                "shadingColor: black" <<
-                                "shadingOpacity: 0.66" <<
-                                "duration: 5.5" <<
-                                "command: " <<
-                                "transition: fade" <<
-                                "cameraFrameRate: 0" <<
-                                "backgroundScale: fill" <<
-                                "position: center" <<
-                                "useMarkup: 1" <<
-                                "slideText: " <<
-                                "maxLineLength: 0" <<
-                                "slideMedia: " <<
-                                "backgroundColor: white" <<
-                                "notesText: " <<
-                                "slideNumber: 0" <<
+    QStringList expectedData = (QStringList() <<
+//                                "stageColor: black" <<
+//                                "font: sans" <<
+//                                "fontSize: 50" <<
+//                                "fontSizeUnit: px" <<
+//                                "notesFont: Sans" <<
+//                                "notesFontSize: black" <<
+//                                "textColor: white" <<
+//                                "textAlign: left" <<
+//                                "shadingColor: black" <<
+//                                "shadingOpacity: 0.66" <<
+//                                "duration: 5.5" <<
+//                                "command: " <<
+//                                "transition: fade" <<
+//                                "cameraFrameRate: 0" <<
+//                                "backgroundScale: fill" <<
+//                                "position: center" <<
+//                                "useMarkup: 1" <<
+//                                "slideText: " <<
+//                                "maxLineLength: 0" <<
+//                                "slideMedia: " <<
+//                                "backgroundColor: white" <<
+//                                "notesText: " <<
+//                                "slideNumber: 0" <<
                                 "stageColor: black" <<
                                 "font: sans" <<
                                 "fontSize: 50" <<
