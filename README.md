@@ -30,11 +30,11 @@ Pointy uses Pinpoint syntax:
         -- [command=gvim pin_file.pin]
         See pin_file.pin for more examples
 
-## Known Issues ##
+### Known Issues ###
 
 In non-fullscreen mode, flickering was observed during slide fade transitions on KDE using nVidia and Nouveau graphics drivers. This distortion did not occur if desktop effects were switched off (the default shortcut to do this on KDE is Alt-Shift-F12). Pointy exhibited flicker on Gnome-Shell (Fedora 18) with the Nouveau driver, but not with the nVidia driver. No such distortion has been observed, so far, with Intel graphics chips.
 
-## Notes ##
+### Notes ###
 
 1 Pinpoint, the program that inspired Pointy, is available from  
  
