@@ -1,7 +1,7 @@
 pointy
 ======
 
-Pointy is a Qt/QML implementation of Pinpoint(1). It reads in a simple plain text file, which contains a mark-up-type syntax, and generates a presentation. A notes screen, which displays comments from the text file, and an overview grid window is also generated.
+Pointy is a Qt 5/Qt Quick 2 implementation of Pinpoint[1]. It reads in a simple plain text file, which contains a mark-up-type syntax, and generates a presentation. A notes screen, which displays comments from the text file, and an overview grid window is also generated.
 
 The program is capable of displaying video, images and animated gif files. Commands may also be embedded in a slide, so that a terminal or another program may be launched without leaving the presentation. 
 
@@ -36,7 +36,7 @@ In non-fullscreen mode, flickering was observed during slide fade transitions on
 
 ### Notes ###
 
-1 Pinpoint, the program that inspired Pointy, is available from  
+[1] Pinpoint, the program that inspired Pointy, is available from  
  
 https://live.gnome.org/Pinpoint  
 
