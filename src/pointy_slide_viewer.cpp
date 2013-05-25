@@ -41,6 +41,11 @@ void PointySlideViewer::toggleFullScreen()
     }
 }
 
+void PointySlideViewer::runCommand(const QString &command) {
+    qDebug() << "Running:" << command;
+    pointyCommand.runCommand(command);
+}
+
 //void PointySlideViewer::keyPressEvent(QKeyEvent *event){
 //    switch(event->key()) {
 //    case Qt::Key_F:

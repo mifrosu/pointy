@@ -6,7 +6,6 @@ Rectangle {
     signal mediaSignal();
     signal backMedia();
     signal forwardMedia();
-    signal sendCommand(string commandString);
 
     property int slideWidth;
     property int slideHeight;
@@ -17,6 +16,8 @@ Rectangle {
     property string textPosition: position;
     property double scaleFactor: 1;
     property bool isMediaSlide: false;
+    property bool isCommandSlide: false;
+    property string commandOut;
 
     property int scaleFont: {
         if (fontPixelSize * maxLineLength > slideWidth) {
@@ -185,6 +186,7 @@ Rectangle {
             id: commandField;
             function playToggle() {
                 console.log(commandField.text);
+                slideElement.commandOut = commandField.text;
             }
             color: "white";
             text: command;
@@ -225,7 +227,7 @@ Rectangle {
                 return animatedComponent;
             }
             else if (command !== "") {
-                slideElement.isMediaSlide = true;
+                slideElement.isCommandSlide = true;
                 return commandComponent;
             }
 

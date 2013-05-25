@@ -10,11 +10,18 @@ PointyCommand::PointyCommand()
 
 void PointyCommand::runCommand(const QString &command)
 {
-    bool isSuccess = process->startDetached(command);
-    if (!isSuccess) {
-        QTextStream qout(stdout, QIODevice::WriteOnly);
-        qout << "Command: " << command << " failed.";
+    if (command.startsWith("sudo ") || command.startsWith("rm ") ||
+            command.startsWith("su ")) {
+                QTextStream qout(stdout, QIODevice::WriteOnly);
+                qout << "Command: " << command << " is not permitted.";
+                return;
     }
+    process->start(command);
+//        bool isSuccess = process->startDetached(command);
+//    if (!isSuccess) {
+//        QTextStream qout(stdout, QIODevice::WriteOnly);
+//        qout << "Command: " << command << " failed.";
+//    }
 
 
 }

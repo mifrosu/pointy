@@ -102,6 +102,8 @@ int main(int argc, char* argv[])
                          &view, SLOT(checkFileChanged()));
         QObject::connect(&view, SIGNAL(fileIsChanged()),
                          &showModel, SLOT(reloadSlides()));
+        QObject::connect(rootObject,SIGNAL(sendCommand(QString)),
+                         &view, SLOT(runCommand(QString)));
 
 
 

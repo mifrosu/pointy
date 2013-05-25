@@ -12,6 +12,7 @@ Rectangle {
     signal toggleScreenMode();
     signal quitPointy();
     signal checkFileInfo();
+    signal sendCommand(string command);
 
     Rectangle {
         id: fadeRectangle;
@@ -50,6 +51,9 @@ Rectangle {
 
         }
 
+
+
+
         property int slideCount: count;
 
         currentIndex: 0;
@@ -85,7 +89,7 @@ Rectangle {
                 // target: fadeRectangle;
                 properties: "opacity";
                 easing.type: "InOutQuad";
-                from: 1.0; to: 0.3; duration: 400;
+                from: 1.0; to: 0.0; duration: 400;
             }
             ScriptAction {
                 script: {
@@ -96,7 +100,7 @@ Rectangle {
                 target: dataView;
                 properties: "opacity";
                 easing.type: "InOutQuad";
-                from: 0.3; to: 1.0; duration: 400;
+                from: 0.0; to: 1.0; duration: 400;
             }
         }
 
@@ -182,6 +186,13 @@ Rectangle {
             else if (event.key === Qt.Key_Return &&
                                 dataView.currentItem.isMediaSlide === true ) {
                 dataView.currentItem.mediaSignal();
+            }
+
+            else if (event.key === Qt.Key_Return &&
+                                dataView.currentItem.isCommandSlide === true ) {
+                console.log("sending ", currentItem.commandOut);
+                dataView.currentItem.mediaSignal();
+                mainView.sendCommand(currentItem.commandOut);
             }
 
 

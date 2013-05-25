@@ -14,11 +14,12 @@ public:
     explicit PointySlideViewer(QWindow* parent = 0);
     virtual ~PointySlideViewer();
     void setFileMonitor(const QString& fileName);
-    pointy::PointyCommand pointyCommand;
+
 
 public slots:
     void checkFileChanged();
     void toggleFullScreen();
+    void runCommand(const QString& command);
 
 signals:
     void fileIsChanged();
@@ -26,6 +27,7 @@ signals:
 private:
     QFileInfo currentFileInfo;
     QDateTime fileLastModified;
+    pointy::PointyCommand pointyCommand;
 
     //void keyPressEvent(QKeyEvent *event);
 
