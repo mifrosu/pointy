@@ -7,10 +7,10 @@
 [font=Sans 50px]
 [duration=5.000000]
 
---[fill]
+--[fit]  # slide settings may be overridden 
 A new slide
 
---[images/molly.jpeg][fill]
+--[images/molly.jpeg]
 A slide with a specific background
 
 --[font=monospace 18px][shading-opacity=1.0]
@@ -39,19 +39,11 @@ Text positions:
 
 [center] is default
 
---[transition=sheet][top-left]
-Transitions:
+--[transition=fade][top-left]
 
-text-side-up
-swing
-sheet
-slide-left
-slide-up
-slide-down
-slide-in-left
 
 --[command=killall xeyes; xeyes]
 
 Enter - run the command
-Tab - edit the command
+Click on the command to edit it
 
