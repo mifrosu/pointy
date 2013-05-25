@@ -121,7 +121,8 @@ void SlideData::slideSettingAssign(const QString& setting)
             this->position = lowerInput;
         }
         else if (QColor::isValidColor(lowerInput)) {
-                this->backgroundColor = lowerInput;
+            this->backgroundColor = lowerInput;
+            this->slideMedia = QString();
         }
     }
 
