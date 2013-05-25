@@ -84,7 +84,8 @@ Rectangle {
                 target: dataView;
                 // target: fadeRectangle;
                 properties: "opacity";
-                from: 1.0; to: 0.3; duration: 500;
+                easing.type: "InOutQuad";
+                from: 1.0; to: 0.3; duration: 400;
             }
             ScriptAction {
                 script: {
@@ -94,22 +95,38 @@ Rectangle {
             NumberAnimation {
                 target: dataView;
                 properties: "opacity";
-                from: 0.3; to: 1.0; duration: 500;
+                easing.type: "InOutQuad";
+                from: 0.3; to: 1.0; duration: 400;
             }
         }
 
-        NumberAnimation {
+        ParallelAnimation {
             id: blankScreen;
-            target: dataView;
-            properties: "opacity";
-            from: 1.0; to: 0.0; duration: 800;
+            NumberAnimation {
+                target: dataView;
+                properties: "opacity";
+                easing.type: "InOutQuad";
+                from: 1.0; to: 0.0; duration: 800;
+            }
+            NumberAnimation {
+                target: fadeRectangle;
+                properties: "opacity";
+                from: 0.0; to: 1.0; duration: 400;
+            }
         }
 
-        NumberAnimation {
+        ParallelAnimation {
             id: revealScreen;
-            target: dataView;
-            properties: "opacity";
-            from: 0.0; to: 1.0; duration: 800;
+            NumberAnimation {
+                target: dataView;
+                properties: "opacity";
+                from: 0.0; to: 1.0; duration: 800;
+            }
+            NumberAnimation {
+                target: fadeRectangle;
+                properties: "opacity";
+                from: 1.0; to: 0.0; duration: 800;
+            }
         }
 
         function toggleScreenBlank() {
