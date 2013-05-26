@@ -5,7 +5,17 @@ Pointy is a Qt 5/Qt Quick 2 implementation of Pinpoint[1]. It reads in a simple 
 
 The program is capable of displaying video, images and animated gif files. Commands may also be embedded in a slide, so that a terminal or another program may be launched without leaving the presentation. 
 
-Pointy was developed as a didactic exercise. The graphical interface is implemented in QML on top of Qt/C++, using test driven development (TDD) with QtTest. 
+The graphical interface is implemented in QML on top of Qt/C++, using test driven development (TDD) with QtTest. 
+
+### Compiling Pointy ###
+
+*Note:* Pointy is still in active development, and is not considered released. 
+
+Pointy uses the Qt Quick 2 framework, which is part of Qt 5. Most Linux distributions are using Qt 4.7 or 4.8. As such, you will need to install Qt 5. Happily, the Qt Project make installation binaries available (from http://qt-project.org/downloads), so no long compilation step is necessary. Open GL development library installation may also be required.
+
+A move from QMake to CMake is being considered. The current recommendation for building Pointy is through Qt Creator (included in the Qt 5 installation). _Do not_ run make install.
+
+Alternative build and installation instructions will follow soon.
 
 ### File Syntax ###
 
@@ -29,6 +39,10 @@ Pointy uses Pinpoint syntax:
 
         -- [command=gvim pin_file.pin]
         See pin_file.pin for more examples
+
+### Todo ###
+
+Implement an option to output the presentation as a pdf.
 
 ### Known Issues ###
 
