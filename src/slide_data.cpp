@@ -32,7 +32,7 @@ namespace pointy {
 SlideData::SlideData():
     stageColor("black"), font("Sans"), fontSize(60), fontSizeUnit("px"),
     notesFont("Sans"),
-    notesFontSize("20px"), textColor("white"), textAlign("left"),
+    notesFontSize("20px"), textColor("white"), textAlign("center"),
     shadingColor("black"), shadingOpacity(0.66), duration(30),
     command(), transition("fade"), cameraFrameRate(0), backgroundScale("fill"),
     position("center"), useMarkup(true), slideText(""), maxLineLength(0),

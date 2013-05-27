@@ -42,8 +42,9 @@ Rectangle {
     property string commandOut;
 
     property int scaleFont: {
-        if (fontPixelSize * maxLineLength > slideWidth) {
-            return slideWidth / maxLineLength;
+        if (0.5 * fontPixelSize * maxLineLength > slideWidth) {
+        //if (slideTextData.contentWidth > slideWidth) {
+            return 2 * slideWidth / maxLineLength;
         }
         else {
             return fontPixelSize * scaleFactor;
@@ -248,10 +249,10 @@ Rectangle {
             else if (slideMedia.match(/.gif/i)) {
                 return animatedComponent;
             }
-            else if (command !== "") {
-                slideElement.isCommandSlide = true;
-                return commandComponent;
-            }
+//            else if (command !== "") {
+//                slideElement.isCommandSlide = true;
+//                return commandComponent;
+//            }
 
             else {
                 return slideImage;
@@ -261,8 +262,25 @@ Rectangle {
 
     }
 
+    Loader {
+        id: commandLoader
+        sourceComponent: {
+            if (command !== "") {
+                slideElement.isCommandSlide = true;
+                return commandComponent;
+            }
+        }
+    }
+
     onMediaSignal: {
-        loadedComponent.item.playToggle();
+        if (slideElement.isCommandSlide === true) {
+            commandLoader.item.playToggle();
+        }
+        else {
+            loadedComponent.item.playToggle();
+        }
+
+
     }
 
     onBackMedia: {
@@ -287,8 +305,8 @@ Rectangle {
             }
         }
 
-        height: {slideTextData.height+padding;}
-        width: {slideTextData.width+padding;}
+        height: {slideTextData.contentHeight + padding;}
+        width: {slideTextData.contentWidth + padding;}
 
         anchors.margins: {0.02 * parent.width}
 
@@ -365,6 +383,7 @@ Rectangle {
 
     Text {
         id: slideTextData;
+        //parent: slideTextBackground;
         anchors.centerIn: slideTextBackground;
         text: slideText;
         color: textColor;
@@ -373,6 +392,8 @@ Rectangle {
             scaleFont;
         }
         font.pointSize: 1;
+        width: slideTextBackground.width;
+        horizontalAlignment: Text.AlignHCenter;
         textFormat: {
             (useMarkup === true)? Text.AutoText : Text.PlainText;
 

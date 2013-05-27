@@ -87,6 +87,7 @@ int main(int argc, char* argv[])
 
         // monitor slide source file for updates
         view.setFileMonitor(fileName);
+        view.setPosition(0,0);
 
         //view.setResizeMode(QQuickView::SizeRootObjectToView);
         QQmlContext* context = view.rootContext();

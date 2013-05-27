@@ -26,8 +26,8 @@ import QtQuick.Window 2.0
 
 Rectangle {
     id: mainView;
-    width: 800; height: 600;
-    property bool notesVisible: true;
+    width: 1024; height: 576;
+    property bool notesVisible: false;
     property bool gridVisible: true;
     property bool horizontalLayout: true;
 
@@ -264,7 +264,7 @@ Rectangle {
             anchors.fill: parent
             anchors.margins: parent.height * 0.1;
 
-            font.pixelSize: 16
+            font.pixelSize: 50
             wrapMode: Text.WordWrap
 
             property string notes: dataView.currentItem.pointyNotes;
