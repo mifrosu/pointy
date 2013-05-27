@@ -3,6 +3,8 @@ pointy
 
 Pointy is a Qt 5/Qt Quick 2 implementation of Pinpoint[1]. It reads in a simple plain text file, which contains a mark-up-type syntax, and generates a presentation. A notes screen, which displays comments from the text file, and an overview grid window is also generated.
 
+A demo screencast is available on Youtube: http://youtu.be/e9eizBmsZ3w
+
 The program is capable of displaying video, images and animated gif files. Commands may also be embedded in a slide, so that a terminal or another program may be launched without leaving the presentation. 
 
 The graphical interface is implemented in QML on top of Qt/C++, using test driven development (TDD) with QtTest. 
