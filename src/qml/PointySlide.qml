@@ -36,6 +36,7 @@ Rectangle {
     property string pointyTransition: transitionType;
     property double pointyOpacity: 1.0;
     property string textPosition: position;
+    property string pointyTextAlign: textAlign;
     property double scaleFactor: 1;
     property bool isMediaSlide: false;
     property bool isCommandSlide: false;
@@ -393,7 +394,21 @@ Rectangle {
         }
         font.pointSize: 1;
         width: slideTextBackground.width;
-        horizontalAlignment: Text.AlignHCenter;
+        horizontalAlignment: {
+            if (pointyTextAlign == "left") {
+                return Text.AlignLeft;
+            }
+            else if (pointyTextAlign == "right") {
+                return Text.AlignRight;
+            }
+            else if (pointyTextAlign == "justify") {
+                return Text.AlignJustify;
+            }
+            else {
+                Text.AlignHCenter;
+            }
+        }
+
         textFormat: {
             (useMarkup === true)? Text.AutoText : Text.PlainText;
 

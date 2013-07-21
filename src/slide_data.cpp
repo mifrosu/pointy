@@ -67,7 +67,13 @@ void SlideData::slideSettingAssign(const QString &lhs_in,
 
     }
     else if (lhs == "text-align") {
-        this->textAlign = rhs;
+        if (rhs == "left" || rhs == "right" || rhs == "center" ||
+                rhs == "justify" ) {
+            this->textAlign = rhs;
+        }
+        else {
+            this->textAlign = "center";
+        }
     }
     else if (lhs == "shading-color") {
         if (QColor::isValidColor(rhs)) {
