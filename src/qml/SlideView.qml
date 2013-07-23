@@ -96,7 +96,7 @@ Rectangle {
         }
 
         function loadTransition(pointyTransition) {
-            if (dataView.opacity != 0.0) {
+            if (dataView.opacity != 0.0 && pointyTransition === "fade") {
                 animateFade.start();
             }
             else {
