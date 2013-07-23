@@ -68,7 +68,7 @@ void TestFileRead::readSimpleFile()
                                 "notesFont: Sans" <<
                                 "notesFontSize: black" <<
                                 "textColor: white" <<
-                                "textAlign: left" <<
+                                "textAlign: center" <<
                                 "shadingColor: black" <<
                                 "shadingOpacity: 0.66" <<
                                 "duration: 5.5" <<
@@ -91,7 +91,7 @@ void TestFileRead::readSimpleFile()
                                 "notesFont: Sans" <<
                                 "notesFontSize: black" <<
                                 "textColor: white" <<
-                                "textAlign: left" <<
+                                "textAlign: center" <<
                                 "shadingColor: black" <<
                                 "shadingOpacity: 0.66" <<
                                 "duration: 5.5" <<
@@ -114,7 +114,7 @@ void TestFileRead::readSimpleFile()
                                 "notesFont: Sans" <<
                                 "notesFontSize: black" <<
                                 "textColor: white" <<
-                                "textAlign: left" <<
+                                "textAlign: center" <<
                                 "shadingColor: black" <<
                                 "shadingOpacity: 0.66" <<
                                 "duration: 5.5" <<
