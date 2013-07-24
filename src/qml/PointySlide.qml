@@ -55,59 +55,44 @@ Rectangle {
 
     width: slideWidth;
     height: slideHeight;
-    color: pointyStageColor;
-    //color: backgroundColor;
+    color: backgroundColor;
     opacity: pointyOpacity;
 
 
     Component {
         // encapsulates element, only loaded when required
         id: slideImage;
-        Rectangle {
+        Image {
             width: slideElement.width;
             height: slideElement.height;
-            color: {
-                if (pointyStageColor != "") {
-                return pointyStageColor;
+
+            source: {
+                if (slideMedia != "") {
+                    return currentPath.currentDir + slideMedia;
+                }
+                else {
+                    return "blank.png";
                 }
             }
-            Image {
-                width: slideElement.width;
-                height: slideElement.height;
-
-
-
-                source: {
-                    if (slideMedia != "") {
-                        return currentPath.currentDir + slideMedia;
-                    }
-                    else {
-                        return "blank.png";
-                    }
+            fillMode: {
+                // fill|fit|stretch|unscaled
+                if (backgroundScale === "fit") {
+                    Image.PreserveAspectFit;
                 }
-
-
-                fillMode: {
-                    // fill|fit|stretch|unscaled
-                    if (backgroundScale === "fit") {
-                        Image.PreserveAspectFit;
-                    }
-                    else if (backgroundScale === "fill") {
-                        Image.PreserveAspectCrop;
-                    }
-                    else if (backgroundScale === "stretch") {
-                        Image.Stretch;
-                    }
-                    else if (backgroundScale === "unscaled")
-                    {
-                        Image.Pad;
-                    }
-
+                else if (backgroundScale === "fill") {
+                    Image.PreserveAspectCrop;
+                }
+                else if (backgroundScale === "stretch") {
+                    Image.Stretch;
+                }
+                else if (backgroundScale === "unscaled")
+                {
+                    Image.Pad;
                 }
 
             }
+
         }
-
     }
 
 
